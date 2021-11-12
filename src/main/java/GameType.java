@@ -1,3 +1,3 @@
 public enum GameType {
-    PLAYER, BOMB, FIRE, GHOST, PLATFORM
+    PLAYER, BOMB, FIRE, GHOST, WOOD, BRICK
 }

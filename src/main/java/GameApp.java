@@ -15,8 +15,8 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
-        gameSettings.setWidth(800);
-        gameSettings.setHeight(700);
+        gameSettings.setWidth(704);
+        gameSettings.setHeight(704);
         gameSettings.setTitle("Basic Game App");
         gameSettings.setVersion("0.1");
     }
@@ -27,7 +27,7 @@ public class GameApp extends GameApplication {
         FXGL.setLevelFromMap("0.tmx");
 
 
-        player = FXGL.spawn("player", 100, 300);
+        player = FXGL.spawn("player", 0, 0);
         ghost = FXGL.spawn("Ghost", 300, 200);
 
         Viewport viewport = FXGL.getGameScene().getViewport();
@@ -110,6 +110,14 @@ public class GameApp extends GameApplication {
             protected void onCollisionBegin(Entity fire, Entity ghost) {
                 FXGL.play("ghost.wav");
                 ghost.setY(200 + Math.random() * 300);
+            }
+        });
+
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.BRICK) {
+
+            @Override
+            protected void onCollisionBegin(Entity player, Entity brick) {
+
             }
         });
 

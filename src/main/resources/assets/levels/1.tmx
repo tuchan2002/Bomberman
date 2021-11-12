@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="20" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="5">
+ <tileset firstgid="1" name="tiles_spritesheet" tilewidth="64" tileheight="64" spacing="2" tilecount="144" columns="12">
+  <image source="tiles_spritesheet.png" width="835" height="855"/>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="20" height="11">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,133,133,133,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,28,28,28,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,28,28,28,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+50,50,50,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" type="wood" x="64" y="446.072" width="188.794" height="62.9313"/>
+  <object id="3" type="brick" x="64" y="516.406" width="188.794" height="122.161"/>
+  <object id="4" type="brick" x="0" y="640" width="249.874" height="62.9313"/>
+ </objectgroup>
+</map>

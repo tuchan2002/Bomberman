@@ -7,17 +7,25 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import javafx.scene.paint.Color;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
 
 public class GameFactory implements EntityFactory {
-    @Spawns("platform")
-    public Entity newPlatform(SpawnData data) {
+    @Spawns("brick")
+    public Entity newBrick(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(GameType.PLATFORM)
+                .type(GameType.BRICK)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
-                .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
+                .build();
+    }
+    @Spawns("wood")
+    public Entity newWood(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(GameType.WOOD)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .build();
     }
 
@@ -25,6 +33,7 @@ public class GameFactory implements EntityFactory {
     public Entity newPlayer(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(GameType.PLAYER)
+                .viewWithBBox(new Rectangle(63, 63, Color.TRANSPARENT))
                 .with(new CollidableComponent(true))
                 .with(new PlayerComponent())
                 .buildAndAttach();
@@ -35,8 +44,9 @@ public class GameFactory implements EntityFactory {
                 .type(GameType.BOMB)
                 .viewWithBBox("bomb.png")
                 .with(new BombComponent(15))
-                .atAnchored(new Point2D(13, 11), new Point2D(data.getX() + 64 / 2, data.getY() + 64 / 2))
+                .atAnchored(new Point2D(0, 0), new Point2D(data.getX() , data.getY() ))
                 .with(new CollidableComponent(true))
+                .zIndex(-1)
                 .build();
     }
     @Spawns("Fire")
