@@ -15,8 +15,8 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
-        gameSettings.setWidth(600);
-        gameSettings.setHeight(600);
+        gameSettings.setWidth(800);
+        gameSettings.setHeight(700);
         gameSettings.setTitle("Basic Game App");
         gameSettings.setVersion("0.1");
     }
@@ -24,15 +24,16 @@ public class GameApp extends GameApplication {
     @Override
     protected void initGame() {
         FXGL.getGameWorld().addEntityFactory(new GameFactory());
+        FXGL.setLevelFromMap("0.tmx");
 
 
         player = FXGL.spawn("player", 100, 300);
         ghost = FXGL.spawn("Ghost", 300, 200);
 
-//        Viewport viewport = FXGL.getGameScene().getViewport();
-//        viewport.setBounds(0, 0, 1200, FXGL.getAppHeight());
-//        viewport.bindToEntity(player, FXGL.getAppWidth() / 2, FXGL.getAppHeight() / 2);
-//        viewport.setLazy(true);
+        Viewport viewport = FXGL.getGameScene().getViewport();
+        viewport.setBounds(0, 0, 1200, FXGL.getAppHeight());
+        viewport.bindToEntity(player, FXGL.getAppWidth() / 2, FXGL.getAppHeight() / 2);
+        viewport.setLazy(true);
     }
 
     public PlayerComponent getPlayerComponent() {
