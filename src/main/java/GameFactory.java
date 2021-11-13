@@ -7,7 +7,13 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import component.BombComponent;
+import component.FireComponent;
+import component.GhostComponent;
+import component.PlayerComponent;
 import javafx.scene.paint.Color;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Rectangle;
@@ -18,23 +24,33 @@ public class GameFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(GameType.BRICK)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
-                .with(new CollidableComponent(true))
+                .with(new PhysicsComponent())
                 .build();
     }
     @Spawns("wood")
     public Entity newWood(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(GameType.WOOD)
+                .view("wood.png")
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
                 .build();
     }
 
     @Spawns("player")
     public Entity newPlayer(SpawnData data) {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setFixtureDef(new FixtureDef().friction(0).density(0.1f));
+        BodyDef bd = new BodyDef();
+        bd.setFixedRotation(true);
+        bd.setType(BodyType.DYNAMIC);
+        physics.setBodyDef(bd);
+
         return FXGL.entityBuilder(data)
                 .type(GameType.PLAYER)
-                .viewWithBBox(new Rectangle(63, 63, Color.TRANSPARENT))
-                .with(new CollidableComponent(true))
+                .viewWithBBox(new Rectangle(60, 60, Color.BLUE))
+                .with(physics)
                 .with(new PlayerComponent())
                 .buildAndAttach();
     }

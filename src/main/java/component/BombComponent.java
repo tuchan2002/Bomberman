@@ -1,3 +1,5 @@
+package component;
+
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
@@ -17,10 +19,10 @@ public class BombComponent extends Component {
 
     public void explode() {
         listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX(), entity.getY())));
-        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX() + 64, entity.getY())));
-        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX() - 64, entity.getY())));
-        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX(), entity.getY() + 64)));
-        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX(), entity.getY() - 64)));
+        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX() + 56, entity.getY())));
+        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX() - 56, entity.getY())));
+        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX(), entity.getY() + 56)));
+        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX(), entity.getY() - 56)));
 
 
         FXGL.getGameTimer().runOnceAfter(() -> {

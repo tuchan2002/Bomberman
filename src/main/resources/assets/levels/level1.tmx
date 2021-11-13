@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="21" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="26">
+ <tileset firstgid="1" name="tiles_spritesheet" tilewidth="64" tileheight="64" spacing="2" tilecount="144" columns="12">
+  <image source="tiles_spritesheet.png" width="835" height="855"/>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="21" height="11">
+  <data encoding="csv">
+17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
+17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
+17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
+17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
+17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
+17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17
+</data>
+ </layer>
+ <objectgroup id="2" name="Object Layer 1">
+  <object id="1" type="brick" x="0" y="0" width="1340" height="64"/>
+  <object id="2" type="brick" x="0" y="640" width="1344" height="64"/>
+  <object id="3" type="brick" x="0" y="64" width="64" height="576"/>
+  <object id="5" type="brick" x="1280" y="64" width="64" height="576"/>
+  <object id="6" type="brick" x="128" y="128" width="64" height="64"/>
+  <object id="7" type="brick" x="128" y="256" width="64" height="64"/>
+  <object id="8" type="brick" x="256" y="256" width="64" height="64"/>
+  <object id="9" type="brick" x="256" y="128" width="64" height="64"/>
+  <object id="10" type="brick" x="128" y="384" width="64" height="64"/>
+  <object id="11" type="brick" x="256" y="384" width="64" height="64"/>
+  <object id="12" type="brick" x="256" y="512" width="64" height="64"/>
+  <object id="13" type="brick" x="128" y="512" width="64" height="64"/>
+  <object id="14" type="wood" x="192" y="128" width="64" height="64"/>
+  <object id="15" type="brick" x="384" y="256" width="64" height="64"/>
+  <object id="16" type="brick" x="384" y="384" width="64" height="64"/>
+  <object id="17" type="brick" x="384" y="512" width="64" height="64"/>
+  <object id="18" type="brick" x="384" y="128" width="64" height="64"/>
+  <object id="19" type="wood" x="192" y="192" width="64" height="64"/>
+  <object id="20" type="wood" x="192" y="256" width="64" height="64"/>
+  <object id="21" type="wood" x="256" y="192" width="64" height="64"/>
+  <object id="23" type="wood" x="320" y="384" width="64" height="64"/>
+  <object id="25" type="wood" x="192" y="512" width="64" height="64"/>
+ </objectgroup>
+</map>

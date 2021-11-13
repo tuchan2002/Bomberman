@@ -1,18 +1,23 @@
+package component;
+
+import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-import javafx.geometry.Point2D;
+import component.BombComponent;
 import javafx.util.Duration;
 
 public class PlayerComponent extends Component {
     enum MoveDirection {
         UP, RIGHT, DOWN, LEFT, STOP
     }
+    public static final int SPEED = 150;
+
+    private PhysicsComponent physics;
 
     private MoveDirection currentMoveDir = MoveDirection.STOP;
 
@@ -49,6 +54,24 @@ public class PlayerComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        if (physics.getVelocityX() != 0) {
+
+            physics.setVelocityX((int) physics.getVelocityX() * 0.9);
+
+            if (FXGLMath.abs(physics.getVelocityX()) < 1) {
+                physics.setVelocityX(0);
+            }
+        }
+
+        if (physics.getVelocityY() != 0) {
+
+            physics.setVelocityY((int) physics.getVelocityY() * 0.9);
+
+            if (FXGLMath.abs(physics.getVelocityY()) < 1) {
+                physics.setVelocityY(0);
+            }
+        }
+
         switch (currentMoveDir) {
             case UP:
                 texture.loopNoOverride(animWalkUp);
@@ -78,18 +101,22 @@ public class PlayerComponent extends Component {
 
     public void up() {
         currentMoveDir = MoveDirection.UP;
+        physics.setVelocityY(-SPEED);
     }
 
     public void down() {
         currentMoveDir = MoveDirection.DOWN;
+        physics.setVelocityY(SPEED);
     }
 
     public void left() {
         currentMoveDir = MoveDirection.LEFT;
+        physics.setVelocityX(-SPEED);
     }
 
     public void right() {
         currentMoveDir = MoveDirection.RIGHT;
+        physics.setVelocityX(SPEED);
     }
 
     public void stop() {

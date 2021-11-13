@@ -5,11 +5,11 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
+import component.PlayerComponent;
 import javafx.scene.input.KeyCode;
 
 
 public class GameApp extends GameApplication {
-    public static final int SPEED = 2;
     private Entity player;
     private Entity ghost;
 
@@ -24,10 +24,10 @@ public class GameApp extends GameApplication {
     @Override
     protected void initGame() {
         FXGL.getGameWorld().addEntityFactory(new GameFactory());
-        FXGL.setLevelFromMap("0.tmx");
+        FXGL.setLevelFromMap("level1.tmx");
 
 
-        player = FXGL.spawn("player", 0, 0);
+        player = FXGL.spawn("player", 64, 64);
         ghost = FXGL.spawn("Ghost", 300, 200);
 
         Viewport viewport = FXGL.getGameScene().getViewport();
@@ -46,7 +46,6 @@ public class GameApp extends GameApplication {
             @Override
             protected void onAction() {
                 getPlayerComponent().up();
-                player.translateY(-SPEED);
             }
 
             @Override
@@ -59,7 +58,6 @@ public class GameApp extends GameApplication {
             @Override
             protected void onAction() {
                 getPlayerComponent().down();
-                player.translateY(SPEED);
             }
 
             @Override
@@ -72,7 +70,6 @@ public class GameApp extends GameApplication {
             @Override
             protected void onAction() {
                 getPlayerComponent().left();
-                player.translateX(-SPEED);
             }
 
             @Override
@@ -85,7 +82,6 @@ public class GameApp extends GameApplication {
             @Override
             protected void onAction() {
                 getPlayerComponent().right();
-                player.translateX(SPEED);
             }
 
             @Override
@@ -104,6 +100,7 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initPhysics() {
+        FXGL.getPhysicsWorld().setGravity(0, 0);
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.GHOST) {
 
             @Override
@@ -113,11 +110,11 @@ public class GameApp extends GameApplication {
             }
         });
 
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.BRICK) {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.WOOD) {
 
             @Override
-            protected void onCollisionBegin(Entity player, Entity brick) {
-
+            protected void onCollisionBegin(Entity fire, Entity wood) {
+                wood.removeFromWorld();
             }
         });
 
