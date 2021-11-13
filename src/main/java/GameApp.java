@@ -118,6 +118,15 @@ public class GameApp extends GameApplication {
             }
         });
 
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.BRICK) {
+
+            @Override
+            protected void onCollisionBegin(Entity fire, Entity brick) {
+                fire.removeFromWorld();
+                System.out.println("OK");
+            }
+        });
+
     }
 
 

@@ -25,6 +25,7 @@ public class GameFactory implements EntityFactory {
                 .type(GameType.BRICK)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
                 .build();
     }
     @Spawns("wood")
@@ -73,6 +74,7 @@ public class GameFactory implements EntityFactory {
                 .with(new FireComponent())
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX() , data.getY() ))
                 .with(new CollidableComponent(true))
+                .zIndex(-1)
                 .build();
     }
 
