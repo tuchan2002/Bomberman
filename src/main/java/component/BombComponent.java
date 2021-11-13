@@ -10,26 +10,27 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 
 public class BombComponent extends Component {
-    private int radius;
+    public static final int FIRE_SIZE = 60;
     private ArrayList<Entity> listFire = new ArrayList<Entity>();
 
-    public BombComponent(int radius) {
-        this.radius = radius;
+    public BombComponent() {
     }
 
-    public void explode() {
+    public void explode(int damageLevel) {
         listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX(), entity.getY())));
-        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX() + 60, entity.getY())));
-        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX() - 60, entity.getY())));
-        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX(), entity.getY() + 60)));
-        listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX(), entity.getY() - 60)));
+        for (int i = 1; i <= damageLevel; i++) {
+            listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX() + FIRE_SIZE * i, entity.getY())));
+            listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX() - FIRE_SIZE * i, entity.getY())));
+            listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX(), entity.getY() + FIRE_SIZE * i)));
+            listFire.add(FXGL.spawn("Fire", new SpawnData(entity.getX(), entity.getY() - FIRE_SIZE * i)));
+        }
 
 
         FXGL.getGameTimer().runOnceAfter(() -> {
-            for(int i=0;i<listFire.size();i++) {
+            for (int i = 0; i < listFire.size(); i++) {
                 listFire.get(i).removeFromWorld();
             }
-        }, Duration.seconds(0.3));
+        }, Duration.seconds(0.4));
 
 
         entity.removeFromWorld();

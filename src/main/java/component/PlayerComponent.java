@@ -15,6 +15,7 @@ public class PlayerComponent extends Component {
     enum MoveDirection {
         UP, RIGHT, DOWN, LEFT, STOP
     }
+
     public static final int SPEED = 150;
 
     private PhysicsComponent physics;
@@ -123,18 +124,25 @@ public class PlayerComponent extends Component {
         currentMoveDir = MoveDirection.STOP;
     }
 
-    public void placeBomb() {
+    public void placeBomb(int damageLevel) {
         if (bombsPlaced == maxBombs) {
             return;
         }
         bombsPlaced++;
 
-        Entity bomb = FXGL.spawn("Bomb", new SpawnData(entity.getX(), entity.getY()));
+        int bombLocationX = (int) (entity.getX() % 64 > 32
+                ? entity.getX() + 64 - entity.getX() % 64 + 1
+                : entity.getX() - entity.getX() % 64 + 1);
+        int bombLocationY = (int) (entity.getY() % 64 > 32
+                ? entity.getY() + 64 - entity.getY() % 64 + 1
+                : entity.getY() - entity.getY() % 64 + 1);
+
+        Entity bomb = FXGL.spawn("Bomb", new SpawnData(bombLocationX, bombLocationY));
 
         FXGL.getGameTimer().runOnceAfter(() -> {
-            bomb.getComponent(BombComponent.class).explode();
+            bomb.getComponent(BombComponent.class).explode(damageLevel);
             FXGL.play("slash.wav");
             bombsPlaced--;
-        }, Duration.seconds(1.2));
+        }, Duration.seconds(1.3));
     }
 }

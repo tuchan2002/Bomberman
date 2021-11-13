@@ -12,7 +12,6 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import component.BombComponent;
 import component.FireComponent;
-import component.GhostComponent;
 import component.PlayerComponent;
 import javafx.scene.paint.Color;
 import javafx.geometry.Point2D;
@@ -53,6 +52,7 @@ public class GameFactory implements EntityFactory {
                 .viewWithBBox(new Rectangle(60, 60, Color.BLUE))
                 .with(physics)
                 .with(new PlayerComponent())
+                .with(new CollidableComponent(true))
                 .buildAndAttach();
     }
     @Spawns("Bomb")
@@ -60,7 +60,7 @@ public class GameFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(GameType.BOMB)
                 .viewWithBBox("bomb.png")
-                .with(new BombComponent(15))
+                .with(new BombComponent())
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX() , data.getY() ))
                 .with(new CollidableComponent(true))
                 .zIndex(-1)
@@ -78,14 +78,16 @@ public class GameFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("Ghost")
-    public Entity newGhost(SpawnData data) {
+    @Spawns("increaseDamage")
+    public Entity newItem(SpawnData data) {
         return FXGL.entityBuilder(data)
-                .type(GameType.GHOST)
-                .viewWithBBox("ghost.png")
-                .with(new GhostComponent())
+                .type(GameType.INCREASEDAMAGE)
+                .view("increaseDamage.png")
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
                 .build();
     }
+
 
 }

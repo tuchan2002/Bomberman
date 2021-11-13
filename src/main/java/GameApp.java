@@ -11,7 +11,7 @@ import javafx.scene.input.KeyCode;
 
 public class GameApp extends GameApplication {
     private Entity player;
-    private Entity ghost;
+    private int damageLevel = 1;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -28,7 +28,6 @@ public class GameApp extends GameApplication {
 
 
         player = FXGL.spawn("player", 64, 64);
-        ghost = FXGL.spawn("Ghost", 300, 200);
 
         Viewport viewport = FXGL.getGameScene().getViewport();
         viewport.setBounds(0, 0, 1200, FXGL.getAppHeight());
@@ -93,7 +92,7 @@ public class GameApp extends GameApplication {
         FXGL.getInput().addAction(new UserAction("Place Bomb") {
             @Override
             protected void onActionBegin() {
-                getPlayerComponent().placeBomb();
+                getPlayerComponent().placeBomb(damageLevel);
             }
         }, KeyCode.SPACE);
     }
@@ -101,15 +100,6 @@ public class GameApp extends GameApplication {
     @Override
     protected void initPhysics() {
         FXGL.getPhysicsWorld().setGravity(0, 0);
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.GHOST) {
-
-            @Override
-            protected void onCollisionBegin(Entity fire, Entity ghost) {
-                FXGL.play("ghost.wav");
-                ghost.setY(200 + Math.random() * 300);
-            }
-        });
-
         FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.WOOD) {
 
             @Override
@@ -123,7 +113,24 @@ public class GameApp extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity fire, Entity brick) {
                 fire.removeFromWorld();
-                System.out.println("OK");
+            }
+        });
+
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.INCREASEDAMAGE) {
+
+            @Override
+            protected void onCollisionBegin(Entity player, Entity increaseDamage) {
+                increaseDamage.removeFromWorld();
+                FXGL.play("increaseDamage.wav");
+                damageLevel++;
+            }
+        });
+
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.INCREASEDAMAGE) {
+
+            @Override
+            protected void onCollisionBegin(Entity fire, Entity increaseDamage) {
+                fire.removeFromWorld();
             }
         });
 
