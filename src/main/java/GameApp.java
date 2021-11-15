@@ -1,21 +1,33 @@
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.Viewport;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.PhysicsWorld;
 import component.PlayerComponent;
+import javafx.geometry.Point2D;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
+import java.util.Map;
+
+import static com.almasb.fxgl.dsl.FXGL.*;
 
 
 public class GameApp extends GameApplication {
     private Entity player;
-    private int damageLevel = 1;
+    private static final int MAX_LEVEL = 5;
+    private static final int STARTING_LEVEL = 0;
+
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
-        gameSettings.setWidth(704);
+        gameSettings.setWidth(896);
         gameSettings.setHeight(704);
         gameSettings.setTitle("Basic Game App");
         gameSettings.setVersion("0.1");
@@ -23,15 +35,14 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initGame() {
-        FXGL.getGameWorld().addEntityFactory(new GameFactory());
-        FXGL.setLevelFromMap("level1.tmx");
+        getGameWorld().addEntityFactory(new GameFactory());
+        player = null;
+        nextLevel();
+        player = spawn("player", 64, 64);
 
-
-        player = FXGL.spawn("player", 64, 64);
-
-        Viewport viewport = FXGL.getGameScene().getViewport();
-        viewport.setBounds(0, 0, 1200, FXGL.getAppHeight());
-        viewport.bindToEntity(player, FXGL.getAppWidth() / 2, FXGL.getAppHeight() / 2);
+        Viewport viewport = getGameScene().getViewport();
+        viewport.setBounds(0, 0, 1200, getAppHeight());
+        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
     }
 
@@ -41,7 +52,7 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initInput() {
-        FXGL.getInput().addAction(new UserAction("Move Up") {
+        getInput().addAction(new UserAction("Move Up") {
             @Override
             protected void onAction() {
                 getPlayerComponent().up();
@@ -53,7 +64,7 @@ public class GameApp extends GameApplication {
             }
         }, KeyCode.W);
 
-        FXGL.getInput().addAction(new UserAction("Move Down") {
+        getInput().addAction(new UserAction("Move Down") {
             @Override
             protected void onAction() {
                 getPlayerComponent().down();
@@ -65,7 +76,7 @@ public class GameApp extends GameApplication {
             }
         }, KeyCode.S);
 
-        FXGL.getInput().addAction(new UserAction("Move Left") {
+        getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
                 getPlayerComponent().left();
@@ -77,7 +88,7 @@ public class GameApp extends GameApplication {
             }
         }, KeyCode.A);
 
-        FXGL.getInput().addAction(new UserAction("Move Right") {
+        getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
                 getPlayerComponent().right();
@@ -89,26 +100,29 @@ public class GameApp extends GameApplication {
             }
         }, KeyCode.D);
 
-        FXGL.getInput().addAction(new UserAction("Place Bomb") {
+        getInput().addAction(new UserAction("Place Bomb") {
             @Override
             protected void onActionBegin() {
-                getPlayerComponent().placeBomb(damageLevel);
+                getPlayerComponent().placeBomb(geti("damage"));
             }
         }, KeyCode.SPACE);
     }
 
     @Override
     protected void initPhysics() {
-        FXGL.getPhysicsWorld().setGravity(0, 0);
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.WOOD) {
+        PhysicsWorld physics = getPhysicsWorld();
+        physics.setGravity(0, 0);
+
+        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.WOOD) {
 
             @Override
             protected void onCollisionBegin(Entity fire, Entity wood) {
                 wood.removeFromWorld();
+                inc("score", 10);
             }
         });
 
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.BRICK) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.BRICK) {
 
             @Override
             protected void onCollisionBegin(Entity fire, Entity brick) {
@@ -116,17 +130,17 @@ public class GameApp extends GameApplication {
             }
         });
 
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.INCREASEDAMAGE) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.INCREASEDAMAGE) {
 
             @Override
             protected void onCollisionBegin(Entity player, Entity increaseDamage) {
                 increaseDamage.removeFromWorld();
-                FXGL.play("increaseDamage.wav");
-                damageLevel++;
+                play("increaseDamage.wav");
+                inc("damage", 1);
             }
         });
 
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.INCREASEDAMAGE) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.INCREASEDAMAGE) {
 
             @Override
             protected void onCollisionBegin(Entity fire, Entity increaseDamage) {
@@ -134,8 +148,56 @@ public class GameApp extends GameApplication {
             }
         });
 
+        onCollisionOneTimeOnly(GameType.PLAYER, GameType.DOOR, (player, door) -> {
+            door.removeFromWorld();
+            getGameScene().getViewport().fade(() -> {
+                nextLevel();
+            });
+        });
+
+    }
+    @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("level", STARTING_LEVEL);
+        vars.put("score", 0);
+        vars.put("damage", 1);
+
     }
 
+    @Override
+    protected void initUI() {
+        Label score =  new Label();
+        score.setTextFill(Color.BLACK);
+        score.setFont(Font.font(20));
+        score.textProperty().bind(getip("score").asString("Score: %d"));
+        addUINode(score,76,16);
+
+        Label damage =  new Label();
+        damage.setTextFill(Color.BLACK);
+        damage.setFont(Font.font(20d));
+        damage.textProperty().bind(getip("damage").asString("Damage: %d"));
+        addUINode(damage,200,16);
+    }
+
+    public void nextLevel() {
+        if (geti("level") == MAX_LEVEL) {
+            showMessage("OK !!!");
+            return;
+        }
+
+        inc("level", +1);
+
+        setLevel(geti("level"));
+    }
+
+    public void setLevel(int levelNum) {
+        if (player != null) {
+            player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(64, 64));
+            player.setZIndex(Integer.MAX_VALUE);
+        }
+
+        Level level = setLevelFromMap("level" + levelNum  + ".tmx");
+    }
 
     public static void main(String[] args) {
         launch(args);

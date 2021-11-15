@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="21" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="46">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="21" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="48">
  <tileset firstgid="1" name="tiles_spritesheet" tilewidth="64" tileheight="64" spacing="2" tilecount="144" columns="12">
   <image source="tiles_spritesheet.png" width="835" height="855"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="21" height="11">
   <data encoding="csv">
 17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,
-17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
+17,0,0,0,0,0,0,82,0,0,0,0,0,0,0,0,0,0,0,0,17,
 17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
 17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
 17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
@@ -41,14 +41,14 @@
   <object id="21" type="wood" x="256" y="192" width="64" height="64"/>
   <object id="23" type="wood" x="320" y="384" width="64" height="64"/>
   <object id="25" type="wood" x="192" y="512" width="64" height="64"/>
-  <object id="26" type="increaseDamage" x="256" y="320" width="64" height="64"/>
+  <object id="26" type="increaseDamage" x="263" y="327" width="50" height="50"/>
   <object id="27" type="wood" x="256" y="448" width="64" height="64"/>
-  <object id="28" type="increaseDamage" x="320" y="192" width="64" height="64"/>
+  <object id="28" type="increaseDamage" x="327" y="199" width="50" height="50"/>
   <object id="29" type="brick" x="512" y="128" width="64" height="64"/>
   <object id="30" type="brick" x="512" y="256" width="64" height="64"/>
   <object id="31" type="brick" x="512" y="384" width="64" height="64"/>
   <object id="32" type="brick" x="512" y="512" width="64" height="64"/>
-  <object id="33" type="increaseDamage" x="512" y="320" width="64" height="64"/>
+  <object id="33" type="increaseDamage" x="519" y="327" width="50" height="50"/>
   <object id="34" type="brick" x="640" y="384" width="64" height="64"/>
   <object id="35" type="brick" x="640" y="512" width="64" height="64"/>
   <object id="36" type="brick" x="640" y="256" width="64" height="64"/>
@@ -61,5 +61,6 @@
   <object id="43" type="brick" x="896" y="256" width="64" height="64"/>
   <object id="44" type="brick" x="896" y="384" width="64" height="64"/>
   <object id="45" type="brick" x="896" y="512" width="64" height="64"/>
+  <object id="47" type="door" x="448" y="64" width="64" height="64"/>
  </objectgroup>
 </map>

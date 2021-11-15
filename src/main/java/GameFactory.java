@@ -15,12 +15,14 @@ import component.FireComponent;
 import component.PlayerComponent;
 import javafx.scene.paint.Color;
 import javafx.geometry.Point2D;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class GameFactory implements EntityFactory {
     @Spawns("brick")
     public Entity newBrick(SpawnData data) {
-        return FXGL.entityBuilder(data)
+        return entityBuilder(data)
                 .type(GameType.BRICK)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
@@ -29,12 +31,22 @@ public class GameFactory implements EntityFactory {
     }
     @Spawns("wood")
     public Entity newWood(SpawnData data) {
-        return FXGL.entityBuilder(data)
+        return entityBuilder(data)
                 .type(GameType.WOOD)
                 .view("wood.png")
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("door")
+    public Entity newDoor(SpawnData data) {
+        return entityBuilder(data)
+                .type(GameType.DOOR)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new CollidableComponent(true))
+                .with(new PhysicsComponent())
                 .build();
     }
 
@@ -47,9 +59,9 @@ public class GameFactory implements EntityFactory {
         bd.setType(BodyType.DYNAMIC);
         physics.setBodyDef(bd);
 
-        return FXGL.entityBuilder(data)
+        return entityBuilder(data)
                 .type(GameType.PLAYER)
-                .viewWithBBox(new Rectangle(60, 60, Color.BLUE))
+                .viewWithBBox(new Circle(32,32, 30, Color.BLUE))
                 .with(physics)
                 .with(new PlayerComponent())
                 .with(new CollidableComponent(true))
@@ -57,7 +69,7 @@ public class GameFactory implements EntityFactory {
     }
     @Spawns("Bomb")
     public Entity newBomb(SpawnData data) {
-        return FXGL.entityBuilder(data)
+        return entityBuilder(data)
                 .type(GameType.BOMB)
                 .viewWithBBox("bomb.png")
                 .with(new BombComponent())
@@ -68,7 +80,7 @@ public class GameFactory implements EntityFactory {
     }
     @Spawns("Fire")
     public Entity newFire(SpawnData data) {
-        return FXGL.entityBuilder(data)
+        return entityBuilder(data)
                 .type(GameType.FIRE)
                 .viewWithBBox("fire.png")
                 .with(new FireComponent())
@@ -80,7 +92,7 @@ public class GameFactory implements EntityFactory {
 
     @Spawns("increaseDamage")
     public Entity newItem(SpawnData data) {
-        return FXGL.entityBuilder(data)
+        return entityBuilder(data)
                 .type(GameType.INCREASEDAMAGE)
                 .view("increaseDamage.png")
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
