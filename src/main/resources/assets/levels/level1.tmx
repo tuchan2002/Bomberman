@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="21" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="56">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="21" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="57">
  <tileset firstgid="1" name="tiles_spritesheet" tilewidth="64" tileheight="64" spacing="2" tilecount="144" columns="12">
   <image source="tiles_spritesheet.png" width="835" height="855"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="21" height="11">
   <data encoding="csv">
 17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,
-17,0,0,0,0,0,0,0,0,0,0,0,0,0,82,0,0,0,0,0,17,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,82,0,0,0,17,
 17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
 17,0,0,0,0,0,0,0,0,0,0,0,17,0,0,0,0,0,0,0,17,
 17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
@@ -52,20 +52,19 @@
   <object id="35" type="brick" x="640" y="512" width="64" height="64"/>
   <object id="36" type="brick" x="640" y="256" width="64" height="64"/>
   <object id="37" type="brick" x="640" y="128" width="64" height="64"/>
-  <object id="38" type="brick" x="768" y="256" width="64" height="64"/>
-  <object id="39" type="brick" x="768" y="128" width="64" height="64"/>
+  <object id="38" type="brick" x="768" y="128" width="64" height="192"/>
   <object id="40" type="brick" x="768" y="384" width="64" height="64"/>
   <object id="41" type="brick" x="768" y="512" width="64" height="64"/>
   <object id="42" type="brick" x="896" y="128" width="64" height="64"/>
   <object id="43" type="brick" x="896" y="256" width="64" height="64"/>
   <object id="44" type="brick" x="896" y="384" width="64" height="64"/>
   <object id="45" type="brick" x="896" y="512" width="64" height="64"/>
-  <object id="47" type="door" x="902" y="65" width="52" height="58"/>
+  <object id="47" type="door" x="1030" y="65" width="52" height="58"/>
   <object id="48" type="player" x="65" y="65" width="58" height="58"/>
   <object id="50" type="enemy1" x="645" y="450" width="56" height="56"/>
   <object id="52" type="brick" x="512" y="128" width="64" height="64"/>
-  <object id="53" type="brick" x="768" y="192" width="64" height="64"/>
   <object id="54" type="brick" x="704" y="576" width="64" height="64"/>
   <object id="55" type="enemy1" x="580" y="130" width="56" height="56"/>
+  <object id="56" type="enemy1" x="835.775" y="259.925" width="56" height="56"/>
  </objectgroup>
 </map>
