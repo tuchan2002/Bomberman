@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="21" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="48">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="21" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="50">
  <tileset firstgid="1" name="tiles_spritesheet" tilewidth="64" tileheight="64" spacing="2" tilecount="144" columns="12">
   <image source="tiles_spritesheet.png" width="835" height="855"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="21" height="11">
   <data encoding="csv">
 17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,
-17,0,0,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
-17,0,17,17,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
-17,17,17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
+17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
+17,0,17,0,17,0,17,58,17,0,17,0,17,0,17,0,17,0,17,0,17,
+17,17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
 17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
 17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,
 17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,0,17,
@@ -57,7 +57,8 @@
   <object id="43" type="brick" x="896" y="256" width="64" height="64"/>
   <object id="44" type="brick" x="896" y="384" width="64" height="64"/>
   <object id="45" type="brick" x="896" y="512" width="64" height="64"/>
-  <object id="46" type="brick" x="192" y="64" width="64" height="192"/>
   <object id="47" type="brick" x="64" y="192" width="128" height="64"/>
+  <object id="48" type="player" x="65" y="65" width="58" height="58"/>
+  <object id="49" type="door" x="452" y="131" width="57" height="57"/>
  </objectgroup>
 </map>

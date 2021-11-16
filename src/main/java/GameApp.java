@@ -1,14 +1,12 @@
+import Components.Enemy.Enemy1;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.level.Level;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.PhysicsWorld;
-import component.PlayerComponent;
-import javafx.geometry.Point2D;
+import Components.PlayerComponent;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -16,38 +14,33 @@ import javafx.scene.text.Font;
 
 import java.util.Map;
 
+import static Constants.Constanst.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 
 public class GameApp extends GameApplication {
-    private Entity player;
-    private static final int MAX_LEVEL = 5;
-    private static final int STARTING_LEVEL = 0;
-
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
-        gameSettings.setWidth(896);
-        gameSettings.setHeight(704);
-        gameSettings.setTitle("Basic Game App");
-        gameSettings.setVersion("0.1");
+        gameSettings.setWidth(SCENE_WIDTH);
+        gameSettings.setHeight(SCENE_HEIGHT);
+        gameSettings.setTitle(GAME_TITLE);
+        gameSettings.setVersion(GAME_VERSION);
     }
 
     @Override
     protected void initGame() {
         getGameWorld().addEntityFactory(new GameFactory());
-        player = null;
         nextLevel();
-        player = spawn("player", 64, 64);
 
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(0, 0, 1200, getAppHeight());
-        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
+        viewport.setBounds(0, 0, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
+        viewport.bindToEntity(getPlayer(), SCENE_WIDTH/2, SCENE_HEIGHT / 2);
         viewport.setLazy(true);
     }
 
-    public PlayerComponent getPlayerComponent() {
-        return player.getComponent(PlayerComponent.class);
+    private static Entity getPlayer() {
+        return getGameWorld().getSingleton(GameType.PLAYER);
     }
 
     @Override
@@ -55,55 +48,55 @@ public class GameApp extends GameApplication {
         getInput().addAction(new UserAction("Move Up") {
             @Override
             protected void onAction() {
-                getPlayerComponent().up();
+                getPlayer().getComponent(PlayerComponent.class).up();
             }
 
             @Override
             protected void onActionEnd() {
-                getPlayerComponent().stop();
+                getPlayer().getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.W);
 
         getInput().addAction(new UserAction("Move Down") {
             @Override
             protected void onAction() {
-                getPlayerComponent().down();
+                getPlayer().getComponent(PlayerComponent.class).down();
             }
 
             @Override
             protected void onActionEnd() {
-                getPlayerComponent().stop();
+                getPlayer().getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.S);
 
         getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                getPlayerComponent().left();
+                getPlayer().getComponent(PlayerComponent.class).left();
             }
 
             @Override
             protected void onActionEnd() {
-                getPlayerComponent().stop();
+                getPlayer().getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.A);
 
         getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                getPlayerComponent().right();
+                getPlayer().getComponent(PlayerComponent.class).right();
             }
 
             @Override
             protected void onActionEnd() {
-                getPlayerComponent().stop();
+                getPlayer().getComponent(PlayerComponent.class).stop();
             }
         }, KeyCode.D);
 
         getInput().addAction(new UserAction("Place Bomb") {
             @Override
             protected void onActionBegin() {
-                getPlayerComponent().placeBomb(geti("damage"));
+                getPlayer().getComponent(PlayerComponent.class).placeBomb(geti("damage"));
             }
         }, KeyCode.SPACE);
     }
@@ -148,14 +141,44 @@ public class GameApp extends GameApplication {
             }
         });
 
-        onCollisionOneTimeOnly(GameType.PLAYER, GameType.DOOR, (player, door) -> {
-            door.removeFromWorld();
-            getGameScene().getViewport().fade(() -> {
-                nextLevel();
-            });
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.DOOR) {
+
+            @Override
+            protected void onCollisionBegin(Entity player, Entity door) {
+                door.removeFromWorld();
+                getGameScene().getViewport().fade(() -> {
+                    nextLevel();
+                });
+            }
+        });
+
+        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.BRICK) {
+            @Override
+            protected void onCollisionBegin(Entity enemy1, Entity brick) {
+                enemy1.getComponent(Enemy1.class).turn();
+            }
+        });
+        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.WOOD) {
+            @Override
+            protected void onCollisionBegin(Entity enemy1, Entity wood) {
+                enemy1.getComponent(Enemy1.class).turn();
+            }
+        });
+        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.INCREASEDAMAGE) {
+            @Override
+            protected void onCollisionBegin(Entity enemy1, Entity increaseDamage) {
+                enemy1.getComponent(Enemy1.class).turn();
+            }
+        });
+        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.DOOR) {
+            @Override
+            protected void onCollisionBegin(Entity enemy1, Entity door) {
+                enemy1.getComponent(Enemy1.class).turn();
+            }
         });
 
     }
+
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("level", STARTING_LEVEL);
@@ -166,37 +189,32 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        Label score =  new Label();
+        Label score = new Label();
         score.setTextFill(Color.BLACK);
         score.setFont(Font.font(20));
         score.textProperty().bind(getip("score").asString("Score: %d"));
-        addUINode(score,76,16);
+        addUINode(score, 76, 16);
 
-        Label damage =  new Label();
+        Label damage = new Label();
         damage.setTextFill(Color.BLACK);
-        damage.setFont(Font.font(20d));
+        damage.setFont(Font.font(20));
         damage.textProperty().bind(getip("damage").asString("Damage: %d"));
-        addUINode(damage,200,16);
+        addUINode(damage, 200, 16);
+
+        Label level = new Label();
+        level.setTextFill(Color.BLACK);
+        level.setFont(Font.font(20));
+        level.textProperty().bind(getip("level").asString("Level: %d"));
+        addUINode(level, 330, 16);
     }
 
-    public void nextLevel() {
+    private void nextLevel() {
         if (geti("level") == MAX_LEVEL) {
-            showMessage("OK !!!");
+            showMessage("Chúc mừng bạn đã phá đảo game này !!!");
             return;
         }
-
         inc("level", +1);
-
-        setLevel(geti("level"));
-    }
-
-    public void setLevel(int levelNum) {
-        if (player != null) {
-            player.getComponent(PhysicsComponent.class).overwritePosition(new Point2D(64, 64));
-            player.setZIndex(Integer.MAX_VALUE);
-        }
-
-        Level level = setLevelFromMap("level" + levelNum  + ".tmx");
+        setLevelFromMap("level" + geti("level") + ".tmx");
     }
 
     public static void main(String[] args) {

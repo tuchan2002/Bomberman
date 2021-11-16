@@ -1,4 +1,4 @@
-import com.almasb.fxgl.dsl.FXGL;
+import Components.Enemy.Enemy1;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -10,13 +10,11 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
-import component.BombComponent;
-import component.FireComponent;
-import component.PlayerComponent;
+import Components.BombComponent;
+import Components.PlayerComponent;
 import javafx.scene.paint.Color;
 import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class GameFactory implements EntityFactory {
@@ -61,11 +59,20 @@ public class GameFactory implements EntityFactory {
 
         return entityBuilder(data)
                 .type(GameType.PLAYER)
-                .viewWithBBox(new Circle(32,32, 30, Color.BLUE))
+                .viewWithBBox(new Circle(32,32, 30, Color.rgb(230, 230, 230)))
                 .with(physics)
                 .with(new PlayerComponent())
                 .with(new CollidableComponent(true))
-                .buildAndAttach();
+                .build();
+    }
+    @Spawns("enemy1")
+    public Entity newEnemy1(SpawnData data) {
+        return entityBuilder(data)
+                .type(GameType.ENEMY1)
+                .viewWithBBox(new Circle(32,32, 29, Color.rgb(240, 240, 240)))
+                .with(new Enemy1())
+                .with(new CollidableComponent(true))
+                .build();
     }
     @Spawns("Bomb")
     public Entity newBomb(SpawnData data) {
@@ -83,7 +90,6 @@ public class GameFactory implements EntityFactory {
         return entityBuilder(data)
                 .type(GameType.FIRE)
                 .viewWithBBox("fire.png")
-                .with(new FireComponent())
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX() , data.getY() ))
                 .with(new CollidableComponent(true))
                 .zIndex(-1)

@@ -1,4 +1,4 @@
-package component;
+package Components;
 
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
@@ -8,16 +8,11 @@ import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
-import component.BombComponent;
 import javafx.util.Duration;
 import static com.almasb.fxgl.dsl.FXGL.*;
+import static Constants.Constanst.*;
 public class PlayerComponent extends Component {
-    enum MoveDirection {
-        UP, RIGHT, DOWN, LEFT, STOP
-    }
     private MoveDirection currentMoveDir = MoveDirection.STOP;
-    public static final int SPEED = 150;
-
     private PhysicsComponent physics;
 
     private int maxBombs = 3;
@@ -32,16 +27,15 @@ public class PlayerComponent extends Component {
     private AnimationChannel animWalkDown, animWalkRight, animWalkUp, animWalkLeft;
 
     public PlayerComponent() {
+        animIdleDown = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 10, 9 * 10);
+        animIdleRight = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 11, 9 * 11);
+        animIdleUp = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 8, 9 * 8);
+        animIdleLeft = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 9, 9 * 9);
 
-        animIdleDown = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(1), 9 * 10, 9 * 10);
-        animIdleRight = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(1), 9 * 11, 9 * 11);
-        animIdleUp = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(1), 9 * 8, 9 * 8);
-        animIdleLeft = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(1), 9 * 9, 9 * 9);
-
-        animWalkDown = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 10, 9 * 10 + 9 - 1);
-        animWalkRight = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 11, 9 * 11 + 9 - 1);
-        animWalkUp = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(1), 9 * 8, 9 * 8 + 9 - 1);
-        animWalkLeft = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(1), 9 * 9, 9 * 9 + 9 - 1);
+        animWalkDown = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 10, 9 * 10 + 9 - 1);
+        animWalkRight = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 11, 9 * 11 + 9 - 1);
+        animWalkUp = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 8, 9 * 8 + 9 - 1);
+        animWalkLeft = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 9, 9 * 9 + 9 - 1);
 
         texture = new AnimatedTexture(animIdleDown);
     }
@@ -143,4 +137,5 @@ public class PlayerComponent extends Component {
             bombsPlaced--;
         }, Duration.seconds(1.3));
     }
+
 }
