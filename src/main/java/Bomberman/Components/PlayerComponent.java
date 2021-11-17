@@ -28,7 +28,7 @@ public class PlayerComponent extends Component {
     private AnimationChannel animDie;
 
     public PlayerComponent() {
-        animDie = new AnimationChannel(image("player.png"), 6, 64, 64, Duration.seconds(1.4), 0, 0+6-1);
+        animDie = new AnimationChannel(image("playerDie.png"), 6, 64, 64, Duration.seconds(1.8), 0, 0+6-1);
 
         animIdleDown = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 10, 9 * 10);
         animIdleRight = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 11, 9 * 11);
@@ -92,31 +92,44 @@ public class PlayerComponent extends Component {
                     texture.loopNoOverride(animIdleRight);
                 }
                 break;
+            case DIE:
+                texture.loopNoOverride(animDie);
+                break;
         }
     }
 
     public void up() {
-        currentMoveDir = MoveDirection.UP;
-        physics.setVelocityY(-SPEED);
+        if(currentMoveDir != MoveDirection.DIE) {
+            currentMoveDir = MoveDirection.UP;
+            physics.setVelocityY(-SPEED);
+        }
     }
 
     public void down() {
-        currentMoveDir = MoveDirection.DOWN;
-        physics.setVelocityY(SPEED);
+        if(currentMoveDir != MoveDirection.DIE) {
+            currentMoveDir = MoveDirection.DOWN;
+            physics.setVelocityY(SPEED);
+        }
     }
 
     public void left() {
-        currentMoveDir = MoveDirection.LEFT;
-        physics.setVelocityX(-SPEED);
+        if(currentMoveDir != MoveDirection.DIE) {
+            currentMoveDir = MoveDirection.LEFT;
+            physics.setVelocityX(-SPEED);
+        }
     }
 
     public void right() {
-        currentMoveDir = MoveDirection.RIGHT;
-        physics.setVelocityX(SPEED);
+        if(currentMoveDir != MoveDirection.DIE) {
+            currentMoveDir = MoveDirection.RIGHT;
+            physics.setVelocityX(SPEED);
+        }
     }
 
     public void stop() {
-        currentMoveDir = MoveDirection.STOP;
+        if(currentMoveDir != MoveDirection.DIE) {
+            currentMoveDir = MoveDirection.STOP;
+        }
     }
 
     public void placeBomb(int damageLevel) {
@@ -138,7 +151,11 @@ public class PlayerComponent extends Component {
             bomb.getComponent(BombComponent.class).explode(damageLevel);
             play("slash.wav");
             bombsPlaced--;
-        }, Duration.seconds(1.6));
+        }, Duration.seconds(2.1));
     }
+    public void die() {
+        currentMoveDir = MoveDirection.DIE;
+    }
+
 
 }

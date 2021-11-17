@@ -3,6 +3,7 @@ package Bomberman;
 import Bomberman.Components.Enemy.Enemy1;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.GameView;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
@@ -117,6 +118,7 @@ public class GameApp extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity fire, Entity wood) {
                 wood.removeFromWorld();
+                inc("score", 10);
             }
         });
 
@@ -147,6 +149,19 @@ public class GameApp extends GameApplication {
                 });
             }
         });
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY1) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity enemy) {
+                onPlayerDied();
+            }
+        });
+
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.FIRE) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity enemy) {
+                onPlayerDied();
+            }
+        });
 
         physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.ENEMY1) {
 
@@ -156,7 +171,7 @@ public class GameApp extends GameApplication {
                 play("skeleton.wav");
                 getGameTimer().runOnceAfter(() -> {
                     enemy1.removeFromWorld();
-                }, Duration.seconds(1.4));
+                }, Duration.seconds(1.5));
             }
         });
 
@@ -222,17 +237,31 @@ public class GameApp extends GameApplication {
         addUINode(level, 330, 16);
     }
 
+    public void onPlayerDied() {
+        play("playerDie.wav");
+        getPlayer().getComponent(PlayerComponent.class).die();
+        getGameTimer().runOnceAfter(() -> {
+            getGameScene().getViewport().fade(() -> {
+                setLevel();
+            });
+        }, Duration.seconds(0.9));
+    }
+
+    private void setLevel() {
+        setLevelFromMap("level" + geti("level") + ".tmx");
+        Viewport viewport = getGameScene().getViewport();
+        viewport.setBounds(0, 0, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
+        viewport.bindToEntity(getPlayer(), getAppWidth() / 2, getAppHeight() / 2);
+        viewport.setLazy(true);
+    }
+
     private void nextLevel() {
         if (geti("level") == MAX_LEVEL) {
             showMessage("Bạn đã thắng !!!");
             return;
         }
         inc("level", +1);
-        setLevelFromMap("level" + geti("level") + ".tmx");
-        Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(0, 0, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
-        viewport.bindToEntity(getPlayer(), getAppWidth() / 2, getAppHeight() / 2);
-        viewport.setLazy(true);
+        setLevel();
     }
 
     public static void main(String[] args) {

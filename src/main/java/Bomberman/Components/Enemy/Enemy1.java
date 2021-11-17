@@ -19,7 +19,7 @@ public class Enemy1 extends Component {
     private AnimationChannel animWalkDown, animWalkRight, animWalkUp, animWalkLeft;
 
     public Enemy1() {
-        animDie = new AnimationChannel(image("skeletonDie.png"), 6, 64, 64, Duration.seconds(1.4), 0, 0+6-1);
+        animDie = new AnimationChannel(image("skeletonDie.png"), 6, 64, 64, Duration.seconds(1.5), 0, 0+6-1);
 
         animWalkDown = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 10, 9 * 10 + 9 - 1);
         animWalkRight = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 11, 9 * 11 + 9 - 1);

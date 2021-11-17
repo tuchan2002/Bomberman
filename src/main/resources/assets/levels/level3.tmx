@@ -37,14 +37,12 @@
   <object id="18" type="brick" x="384" y="128" width="64" height="64"/>
   <object id="23" type="wood" x="320" y="384" width="64" height="64"/>
   <object id="25" type="wood" x="192" y="512" width="64" height="64"/>
-  <object id="26" type="increaseDamage" x="262.758" y="320" width="52.7362" height="64"/>
   <object id="27" type="wood" x="256" y="448" width="64" height="64"/>
-  <object id="28" type="increaseDamage" x="325.632" y="197.632" width="54.9889" height="51.6098"/>
   <object id="29" type="brick" x="512" y="128" width="64" height="64"/>
   <object id="30" type="brick" x="512" y="256" width="64" height="64"/>
   <object id="31" type="brick" x="512" y="384" width="64" height="64"/>
   <object id="32" type="brick" x="512" y="512" width="64" height="64"/>
-  <object id="33" type="increaseDamage" x="518.758" y="320" width="50.4834" height="64"/>
+  <object id="33" type="increaseDamage" x="774.447" y="456.292" width="50.4834" height="54.9889"/>
   <object id="35" type="brick" x="640" y="448" width="64" height="192"/>
   <object id="36" type="brick" x="640" y="256" width="64" height="64"/>
   <object id="37" type="brick" x="640" y="128" width="64" height="64"/>
