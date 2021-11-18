@@ -1,11 +1,14 @@
 package Bomberman.Components;
 
+import Bomberman.GameType;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
+import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.PhysicsWorld;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
@@ -15,12 +18,8 @@ public class PlayerComponent extends Component {
     private MoveDirection currentMoveDir = MoveDirection.STOP;
     private PhysicsComponent physics;
 
-    private int maxBombs = 2;
     private int bombsPlaced = 0;
-
-    public void increaseMaxBombs() {
-        maxBombs++;
-    }
+    private int speed = SPEED;
 
     private AnimatedTexture texture;
     private AnimationChannel animIdleDown, animIdleRight, animIdleUp, animIdleLeft;
@@ -28,6 +27,36 @@ public class PlayerComponent extends Component {
     private AnimationChannel animDie;
 
     public PlayerComponent() {
+        PhysicsWorld physics = getPhysicsWorld();
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_FLAMES) {
+
+            @Override
+            protected void onCollisionBegin(Entity player, Entity powerup) {
+                powerup.removeFromWorld();
+                play("powerup.wav");
+                inc("flame", 1);
+            }
+        });
+
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_BOMBS) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity powerup) {
+                powerup.removeFromWorld();
+                play("powerup.wav");
+                inc("bomb", 1);
+            }
+        });
+
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_SPEED) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity powerup) {
+                powerup.removeFromWorld();
+                play("powerup.wav");
+                inc("speed", INC_SPEED);
+                powerupSpeed();
+            }
+        });
+
         animDie = new AnimationChannel(image("playerDie.png"), 6, 64, 64, Duration.seconds(1.8), 0, 0+6-1);
 
         animIdleDown = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 10, 9 * 10);
@@ -101,28 +130,28 @@ public class PlayerComponent extends Component {
     public void up() {
         if(currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.UP;
-            physics.setVelocityY(-SPEED);
+            physics.setVelocityY(-speed);
         }
     }
 
     public void down() {
         if(currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.DOWN;
-            physics.setVelocityY(SPEED);
+            physics.setVelocityY(speed);
         }
     }
 
     public void left() {
         if(currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.LEFT;
-            physics.setVelocityX(-SPEED);
+            physics.setVelocityX(-speed);
         }
     }
 
     public void right() {
         if(currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.RIGHT;
-            physics.setVelocityX(SPEED);
+            physics.setVelocityX(speed);
         }
     }
 
@@ -133,7 +162,7 @@ public class PlayerComponent extends Component {
     }
 
     public void placeBomb(int damageLevel) {
-        if (bombsPlaced == maxBombs) {
+        if (bombsPlaced == geti("bomb")) {
             return;
         }
         bombsPlaced++;
@@ -152,6 +181,13 @@ public class PlayerComponent extends Component {
             play("slash.wav");
             bombsPlaced--;
         }, Duration.seconds(2.1));
+    }
+    public void powerupSpeed() {
+        speed = SPEED + 100;
+        getGameTimer().runOnceAfter(() -> {
+            speed = SPEED;
+            inc("speed", -INC_SPEED);
+        }, Duration.seconds(8));
     }
     public void die() {
         currentMoveDir = MoveDirection.DIE;

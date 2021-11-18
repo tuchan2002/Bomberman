@@ -13,7 +13,7 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 import static Bomberman.Constants.Constanst.*;
 import static com.almasb.fxgl.dsl.FXGL.image;
 
-public class Enemy1 extends Component {
+public class Enemy2 extends Component {
     private double dx = -ENEMY_SPEED;
     private double dy = 0;
 
@@ -22,52 +22,50 @@ public class Enemy1 extends Component {
     private AnimationChannel animDie;
     private AnimationChannel animWalkDown, animWalkRight, animWalkUp, animWalkLeft;
 
-    public Enemy1() {
+    public Enemy2() {
         PhysicsWorld physics = getPhysicsWorld();
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.BRICK) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.BRICK) {
             @Override
-            protected void onCollisionBegin(Entity enemy1, Entity brick) {
-                enemy1.getComponent(Enemy1.class).turn();
+            protected void onCollisionBegin(Entity enemy2, Entity brick) {
+                enemy2.getComponent(Enemy2.class).turn();
             }
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.WOOD) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.WOOD) {
             @Override
-            protected void onCollisionBegin(Entity enemy1, Entity wood) {
-                enemy1.getComponent(Enemy1.class).turn();
+            protected void onCollisionBegin(Entity enemy2, Entity wood) {
+                enemy2.getComponent(Enemy2.class).turn();
             }
         });
-
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.DOOR) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.DOOR) {
             @Override
-            protected void onCollisionBegin(Entity enemy1, Entity door) {
-                enemy1.getComponent(Enemy1.class).turn();
+            protected void onCollisionBegin(Entity enemy2, Entity door) {
+                enemy2.getComponent(Enemy2.class).turn();
             }
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.BOMB) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.BOMB) {
             @Override
-            protected void onCollisionBegin(Entity enemy1, Entity door) {
-                enemy1.getComponent(Enemy1.class).turn();
+            protected void onCollisionBegin(Entity enemy2, Entity door) {
+                enemy2.getComponent(Enemy2.class).turn();
             }
         });
-
-        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.ENEMY1) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.ENEMY2) {
 
             @Override
-            protected void onCollisionBegin(Entity fire, Entity enemy1) {
-                enemy1.getComponent(Enemy1.class).die();
+            protected void onCollisionBegin(Entity fire, Entity enemy2) {
+                enemy2.getComponent(Enemy2.class).die();
                 play("skeleton.wav");
                 getGameTimer().runOnceAfter(() -> {
-                    enemy1.removeFromWorld();
+                    enemy2.removeFromWorld();
                 }, Duration.seconds(1.5));
             }
         });
 
-        animDie = new AnimationChannel(image("skeletonDie.png"), 6, 64, 64, Duration.seconds(1.5), 0, 0 + 6 - 1);
+        animDie = new AnimationChannel(image("skeleton2Die.png"), 6, 64, 64, Duration.seconds(1.5), 0, 0 + 6 - 1);
 
-        animWalkDown = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 10, 9 * 10 + 9 - 1);
-        animWalkRight = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 11, 9 * 11 + 9 - 1);
-        animWalkUp = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(1), 9 * 8, 9 * 8 + 9 - 1);
-        animWalkLeft = new AnimationChannel(image("skeleton.png"), 9, 64, 64, Duration.seconds(1), 9 * 9, 9 * 9 + 9 - 1);
+        animWalkDown = new AnimationChannel(image("skeleton2.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 10, 9 * 10 + 9 - 1);
+        animWalkRight = new AnimationChannel(image("skeleton2.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 11, 9 * 11 + 9 - 1);
+        animWalkUp = new AnimationChannel(image("skeleton2.png"), 9, 64, 64, Duration.seconds(1), 9 * 8, 9 * 8 + 9 - 1);
+        animWalkLeft = new AnimationChannel(image("skeleton2.png"), 9, 64, 64, Duration.seconds(1), 9 * 9, 9 * 9 + 9 - 1);
 
         texture = new AnimatedTexture(animWalkLeft);
         texture.loop();
@@ -104,7 +102,7 @@ public class Enemy1 extends Component {
 
     public void turn() {
         if (dx < 0) {
-            entity.translateX(2);
+            entity.translateX(4);
             dx = 0;
             dy = getRandomSpeed();
             if (dy > 0) {
@@ -113,7 +111,7 @@ public class Enemy1 extends Component {
                 currentMoveDir = MoveDirection.UP;
             }
         } else if (dx > 0) {
-            entity.translateX(-2);
+            entity.translateX(-4);
             dx = 0;
             dy = getRandomSpeed();
             if (dy > 0) {
@@ -122,7 +120,7 @@ public class Enemy1 extends Component {
                 currentMoveDir = MoveDirection.UP;
             }
         } else if (dy < 0.0) {
-            entity.translateY(2);
+            entity.translateY(4);
             dy = 0;
             dx = getRandomSpeed();
             if (dx > 0) {
@@ -131,7 +129,7 @@ public class Enemy1 extends Component {
                 currentMoveDir = MoveDirection.LEFT;
             }
         } else {
-            entity.translateY(-2);
+            entity.translateY(-4);
             dy = 0;
             dx = getRandomSpeed();
             if (dx > 0) {
@@ -144,14 +142,15 @@ public class Enemy1 extends Component {
     }
 
     private double getRandomSpeed() {
-        return Math.random() > 0.5 ? ENEMY_SPEED : -ENEMY_SPEED;
+        double x = Math.random() > 0.5 ? 1 : 1.8;
+        double speed = Math.random() > 0.5 ? ENEMY_SPEED * x : -ENEMY_SPEED * x;
+
+        return speed;
     }
 
-    public void die() {
+    private void die() {
         dx = 0;
         dy = 0;
         currentMoveDir = MoveDirection.DIE;
     }
-
-
 }

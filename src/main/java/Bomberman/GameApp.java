@@ -1,6 +1,7 @@
 package Bomberman;
 
 import Bomberman.Components.Enemy.Enemy1;
+import Bomberman.Components.Enemy.Enemy2;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.GameView;
@@ -36,6 +37,7 @@ public class GameApp extends GameApplication {
     protected void initGame() {
         getGameWorld().addEntityFactory(new GameFactory());
         nextLevel();
+        spawn("background");
     }
 
     private static Entity getPlayer() {
@@ -95,7 +97,7 @@ public class GameApp extends GameApplication {
         getInput().addAction(new UserAction("Place Bomb") {
             @Override
             protected void onActionBegin() {
-                getPlayer().getComponent(PlayerComponent.class).placeBomb(geti("damage"));
+                getPlayer().getComponent(PlayerComponent.class).placeBomb(geti("flame"));
             }
         }, KeyCode.SPACE);
     }
@@ -105,40 +107,6 @@ public class GameApp extends GameApplication {
         PhysicsWorld physics = getPhysicsWorld();
         physics.setGravity(0, 0);
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.BRICK) {
-
-            @Override
-            protected void onCollisionBegin(Entity fire, Entity brick) {
-                fire.removeFromWorld();
-            }
-        });
-
-        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.WOOD) {
-
-            @Override
-            protected void onCollisionBegin(Entity fire, Entity wood) {
-                wood.removeFromWorld();
-                inc("score", 10);
-            }
-        });
-
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.INCREASEDAMAGE) {
-
-            @Override
-            protected void onCollisionBegin(Entity player, Entity increaseDamage) {
-                increaseDamage.removeFromWorld();
-                play("increaseDamage.wav");
-                inc("damage", 1);
-            }
-        });
-
-        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.INCREASEDAMAGE) {
-
-            @Override
-            protected void onCollisionBegin(Entity fire, Entity increaseDamage) {
-                increaseDamage.removeFromWorld();
-            }
-        });
 
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.DOOR) {
             @Override
@@ -155,6 +123,12 @@ public class GameApp extends GameApplication {
                 onPlayerDied();
             }
         });
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY2) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity enemy) {
+                onPlayerDied();
+            }
+        });
 
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.FIRE) {
             @Override
@@ -163,48 +137,6 @@ public class GameApp extends GameApplication {
             }
         });
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.ENEMY1) {
-
-            @Override
-            protected void onCollisionBegin(Entity fire, Entity enemy1) {
-                enemy1.getComponent(Enemy1.class).die();
-                play("skeleton.wav");
-                getGameTimer().runOnceAfter(() -> {
-                    enemy1.removeFromWorld();
-                }, Duration.seconds(1.5));
-            }
-        });
-
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.BRICK) {
-            @Override
-            protected void onCollisionBegin(Entity enemy1, Entity brick) {
-                enemy1.getComponent(Enemy1.class).turn();
-            }
-        });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.WOOD) {
-            @Override
-            protected void onCollisionBegin(Entity enemy1, Entity wood) {
-                enemy1.getComponent(Enemy1.class).turn();
-            }
-        });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.INCREASEDAMAGE) {
-            @Override
-            protected void onCollisionBegin(Entity enemy1, Entity increaseDamage) {
-                enemy1.getComponent(Enemy1.class).turn();
-            }
-        });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.DOOR) {
-            @Override
-            protected void onCollisionBegin(Entity enemy1, Entity door) {
-                enemy1.getComponent(Enemy1.class).turn();
-            }
-        });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.BOMB) {
-            @Override
-            protected void onCollisionBegin(Entity enemy1, Entity door) {
-                enemy1.getComponent(Enemy1.class).turn();
-            }
-        });
 
     }
 
@@ -212,7 +144,9 @@ public class GameApp extends GameApplication {
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("level", STARTING_LEVEL);
         vars.put("score", 0);
-        vars.put("damage", 1);
+        vars.put("flame", 1);
+        vars.put("speed", SPEED);
+        vars.put("bomb", 1);
 
     }
 
@@ -224,17 +158,29 @@ public class GameApp extends GameApplication {
         score.textProperty().bind(getip("score").asString("Score: %d"));
         addUINode(score, 76, 16);
 
-        Label damage = new Label();
-        damage.setTextFill(Color.BLACK);
-        damage.setFont(Font.font(20));
-        damage.textProperty().bind(getip("damage").asString("Damage: %d"));
-        addUINode(damage, 200, 16);
-
         Label level = new Label();
         level.setTextFill(Color.BLACK);
         level.setFont(Font.font(20));
         level.textProperty().bind(getip("level").asString("Level: %d"));
-        addUINode(level, 330, 16);
+        addUINode(level, 200, 16);
+
+        Label flame = new Label();
+        flame.setTextFill(Color.BLACK);
+        flame.setFont(Font.font(20));
+        flame.textProperty().bind(getip("flame").asString("Flame: %d"));
+        addUINode(flame, 330, 16);
+
+        Label speed = new Label();
+        speed.setTextFill(Color.BLACK);
+        speed.setFont(Font.font(20));
+        speed.textProperty().bind(getip("speed").asString("Speed: %d"));
+        addUINode(speed, 480, 16);
+
+        Label bomb = new Label();
+        bomb.setTextFill(Color.BLACK);
+        bomb.setFont(Font.font(20));
+        bomb.textProperty().bind(getip("bomb").asString("Bomb: %d"));
+        addUINode(bomb, 650, 16);
     }
 
     public void onPlayerDied() {
