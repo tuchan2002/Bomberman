@@ -112,20 +112,34 @@ public class GameApp extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity player, Entity door) {
                 door.removeFromWorld();
-                getGameScene().getViewport().fade(() -> {
-                    nextLevel();
-                });
+                var texture = texture("openDoor.png").brighter();
+                texture.setTranslateX(door.getX());
+                texture.setTranslateY(door.getY() - 12);
+
+                var gameView = new GameView(texture, 1);
+
+                getGameScene().addGameView(gameView);
+                runOnce(() -> getGameScene().removeGameView(gameView), Duration.seconds(1.5));
+
+                play("next_level.wav");
+                getGameTimer().runOnceAfter(() -> {
+                    getGameScene().getViewport().fade(() -> {
+                        nextLevel();
+                    });
+                }, Duration.seconds(0.6));
             }
         });
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY1) {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
+                play("slash.wav");
                 onPlayerDied();
             }
         });
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY2) {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
+                play("slash.wav");
                 onPlayerDied();
             }
         });

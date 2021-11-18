@@ -176,9 +176,10 @@ public class PlayerComponent extends Component {
 
         Entity bomb = spawn("Bomb", new SpawnData(bombLocationX, bombLocationY));
 
+        play("place_bomb.wav");
         FXGL.getGameTimer().runOnceAfter(() -> {
             bomb.getComponent(BombComponent.class).explode(damageLevel);
-            play("slash.wav");
+            play("buzz.wav");
             bombsPlaced--;
         }, Duration.seconds(2.1));
     }

@@ -58,7 +58,7 @@ public class FlameComponent extends Component {
         });
 
 
-        animationFlame = new AnimationChannel(image("fire.png"), 8, 60, 60,  Duration.seconds(0.4), 0, 7);
+        animationFlame = new AnimationChannel(image("fire.png"), 8, 64, 64,  Duration.seconds(0.4), 0, 7);
 
         texture = new AnimatedTexture(animationFlame);
         texture.loop();

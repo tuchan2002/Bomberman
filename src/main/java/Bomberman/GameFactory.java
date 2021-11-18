@@ -81,6 +81,7 @@ public class GameFactory implements EntityFactory {
                 .with(physics)
                 .with(new PlayerComponent())
                 .with(new CollidableComponent(true))
+                .zIndex(5)
                 .build();
     }
 
