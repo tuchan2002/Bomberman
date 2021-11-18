@@ -45,7 +45,7 @@
   <object id="30" type="brick" x="512" y="256" width="64" height="64"/>
   <object id="31" type="brick" x="512" y="384" width="64" height="64"/>
   <object id="32" type="brick" x="512" y="512" width="64" height="64"/>
-  <object id="33" type="powerup_flames" x="648.534" y="71.3111" width="50" height="50"/>
+  <object id="33" type="powerup_bombs" x="648.534" y="71.3111" width="50" height="50"/>
   <object id="34" type="brick" x="640" y="384" width="64" height="64"/>
   <object id="35" type="brick" x="640" y="512" width="64" height="64"/>
   <object id="36" type="brick" x="640" y="256" width="64" height="64"/>

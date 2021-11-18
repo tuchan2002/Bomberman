@@ -70,7 +70,7 @@
   <object id="62" type="brick" x="1024" y="512" width="64" height="64"/>
   <object id="63" type="brick" x="1149.2" y="512" width="64" height="64"/>
   <object id="64" type="enemy2" x="1221.64" y="132.483" width="54" height="54"/>
-  <object id="65" type="powerup_bombs" x="517.809" y="329.006" width="50" height="50"/>
+  <object id="65" type="powerup_flames" x="517.809" y="329.006" width="50" height="50"/>
   <object id="66" type="powerup_speed" x="1223.46" y="262.925" width="50" height="50"/>
   <object id="67" type="brick" x="1152" y="256" width="64" height="64"/>
   <object id="68" type="brick" x="768" y="128" width="64" height="64.5578"/>
