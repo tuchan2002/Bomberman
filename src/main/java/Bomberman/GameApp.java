@@ -1,11 +1,14 @@
 package Bomberman;
 
-import Bomberman.Components.Enemy.Enemy1;
-import Bomberman.Components.Enemy.Enemy2;
+import Bomberman.Menu.BombermanGameMenu;
+import Bomberman.Menu.BombermanMenu;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.GameView;
+import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.app.scene.Viewport;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
@@ -24,6 +27,7 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 
 public class GameApp extends GameApplication {
+    public static boolean sound_enabled = true;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -31,6 +35,22 @@ public class GameApp extends GameApplication {
         gameSettings.setHeight(SCENE_HEIGHT);
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
+
+        gameSettings.setIntroEnabled(false);
+        gameSettings.setMainMenuEnabled(true);
+        gameSettings.setGameMenuEnabled(true);
+        gameSettings.setFontUI("Quinquefive-Ea6d4.ttf");
+        gameSettings.setSceneFactory(new SceneFactory() {
+            @Override
+            public FXGLMenu newMainMenu() {
+                return new BombermanMenu();
+            }
+
+            @Override
+            public FXGLMenu newGameMenu() {
+                return new BombermanGameMenu();
+            }
+        });
     }
 
     @Override
@@ -155,12 +175,31 @@ public class GameApp extends GameApplication {
     }
 
     @Override
+    protected void onPreInit() {
+        getSettings().setGlobalSoundVolume(sound_enabled ? 0.3 : 0.0);
+        getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
+        loopBGM("title_screen.mp3");
+
+    }
+
+    @Override
+    protected void onUpdate(double tpf) {
+        inc("levelTime", -tpf);
+
+        if (getd("levelTime") <= 0.0) {
+            showMessage("you lose");
+            set("levelTime", TIME_LEVEL);
+        }
+    }
+
+    @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("level", STARTING_LEVEL);
         vars.put("score", 0);
         vars.put("flame", 1);
         vars.put("speed", SPEED);
         vars.put("bomb", 1);
+        vars.put("levelTime", TIME_LEVEL);
 
     }
 
@@ -195,6 +234,12 @@ public class GameApp extends GameApplication {
         bomb.setFont(Font.font(20));
         bomb.textProperty().bind(getip("bomb").asString("Bomb: %d"));
         addUINode(bomb, 650, 16);
+
+        Label timeLabel = new Label();
+        timeLabel.setTextFill(Color.BLACK);
+        timeLabel.setFont(Font.font(20.0));
+        timeLabel.textProperty().bind(FXGL.getdp("levelTime").asString("Time: %.0f"));
+        FXGL.addUINode(timeLabel, 780, 16);
     }
 
     public void onPlayerDied() {
@@ -216,6 +261,7 @@ public class GameApp extends GameApplication {
     }
 
     private void nextLevel() {
+        loopBGM("stage_theme.mp3");
         if (geti("level") == MAX_LEVEL) {
             showMessage("Bạn đã thắng !!!");
             return;

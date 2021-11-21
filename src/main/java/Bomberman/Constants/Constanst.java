@@ -14,10 +14,11 @@ public class Constanst {
     public static final int ENEMY_SPEED = 100;
     public static final int FIRE_SIZE = 60;
     public static final int INC_SPEED = 200;
+    public static final double TIME_LEVEL = 200.0;
 
 
     public enum MoveDirection {
-        UP, RIGHT, DOWN, LEFT, STOP,DIE
+        UP, RIGHT, DOWN, LEFT, STOP, DIE
     }
 
 }

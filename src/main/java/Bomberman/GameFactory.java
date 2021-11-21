@@ -109,7 +109,7 @@ public class GameFactory implements EntityFactory {
     public Entity newBomb(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.BOMB)
-                .viewWithBBox("bomb.png")
+                .viewWithBBox(new Circle(30, 30, 30, Color.TRANSPARENT))
                 .with(new BombComponent())
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
