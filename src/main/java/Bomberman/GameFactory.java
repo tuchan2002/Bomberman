@@ -74,7 +74,6 @@ public class GameFactory implements EntityFactory {
                 .type(GameType.DOOR)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new CollidableComponent(true))
-                .with(new PhysicsComponent())
                 .build();
     }
 
@@ -117,7 +116,7 @@ public class GameFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("Bomb")
+    @Spawns("bomb")
     public Entity newBomb(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.BOMB)
@@ -129,7 +128,7 @@ public class GameFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("Fire")
+    @Spawns("fire")
     public Entity newFire(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.FIRE)

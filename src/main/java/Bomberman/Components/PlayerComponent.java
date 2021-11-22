@@ -1,6 +1,7 @@
 package Bomberman.Components;
 
 import Bomberman.GameType;
+import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -208,7 +209,7 @@ public class PlayerComponent extends Component {
                 ? entity.getY() + 64 - entity.getY() % 64 + 1
                 : entity.getY() - entity.getY() % 64 + 1);
 
-        Entity bomb = spawn("Bomb", new SpawnData(bombLocationX, bombLocationY));
+        Entity bomb = spawn("bomb", new SpawnData(bombLocationX, bombLocationY));
 
         play("place_bomb.wav");
         FXGL.getGameTimer().runOnceAfter(() -> {

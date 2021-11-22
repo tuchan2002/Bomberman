@@ -20,7 +20,7 @@ public class BombComponent extends Component {
     private ArrayList<Entity> listFire = new ArrayList<Entity>();
 
     public BombComponent() {
-        animation = new AnimationChannel(image("bomb_ani.png"), 3, TILED_SIZE, TILED_SIZE,  Duration.seconds(0.3), 0, 2);
+        animation = new AnimationChannel(image("bomb.png"), 3, TILED_SIZE, TILED_SIZE,  Duration.seconds(0.3), 0, 2);
 
         texture = new AnimatedTexture(animation);
         texture.loop();
@@ -32,12 +32,12 @@ public class BombComponent extends Component {
 
     public void explode(int damageLevel) {
         for (int i = 1; i <= damageLevel; i++) {
-            listFire.add(spawn("Fire", new SpawnData(entity.getX() + FIRE_SIZE * i, entity.getY())));
-            listFire.add(spawn("Fire", new SpawnData(entity.getX() - FIRE_SIZE * i, entity.getY())));
-            listFire.add(spawn("Fire", new SpawnData(entity.getX(), entity.getY() + FIRE_SIZE * i)));
-            listFire.add(spawn("Fire", new SpawnData(entity.getX(), entity.getY() - FIRE_SIZE * i)));
+            listFire.add(spawn("fire", new SpawnData(entity.getX() + FIRE_SIZE * i, entity.getY())));
+            listFire.add(spawn("fire", new SpawnData(entity.getX() - FIRE_SIZE * i, entity.getY())));
+            listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY() + FIRE_SIZE * i)));
+            listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY() - FIRE_SIZE * i)));
         }
-        listFire.add(spawn("Fire", new SpawnData(entity.getX(), entity.getY())));
+        listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY())));
 
         getGameTimer().runOnceAfter(() -> {
             for (int i = 0; i < listFire.size(); i++) {

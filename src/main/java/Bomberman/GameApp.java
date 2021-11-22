@@ -5,7 +5,6 @@ import Bomberman.Menu.BombermanMenu;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
-import com.almasb.fxgl.app.scene.GameView;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
@@ -20,7 +19,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static Bomberman.Constants.Constanst.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -36,6 +37,8 @@ public class GameApp extends GameApplication {
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
 
+//        gameSettings.setFullScreenAllowed(true);
+//        gameSettings.setFullScreenFromStart(true);
         gameSettings.setIntroEnabled(false);
         gameSettings.setMainMenuEnabled(true);
         gameSettings.setGameMenuEnabled(true);
@@ -130,22 +133,15 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.DOOR) {
             @Override
             protected void onCollisionBegin(Entity player, Entity door) {
-                door.removeFromWorld();
-                var texture = texture("openDoor.png").brighter();
-                texture.setTranslateX(door.getX());
-                texture.setTranslateY(door.getY() - 12);
-
-                var gameView = new GameView(texture, 1);
-
-                getGameScene().addGameView(gameView);
-                runOnce(() -> getGameScene().removeGameView(gameView), Duration.seconds(1.5));
-
-                play("next_level.wav");
-                getGameTimer().runOnceAfter(() -> {
+                var entityGroup = getGameWorld().getGroup(GameType.ENEMY1, GameType.ENEMY2);
+                if (entityGroup.getSize() == 0) {
+                    play("next_level.wav");
                     getGameScene().getViewport().fade(() -> {
                         nextLevel();
                     });
-                }, Duration.seconds(0.6));
+
+                }
+
             }
         });
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY1) {
@@ -259,6 +255,7 @@ public class GameApp extends GameApplication {
         viewport.setBounds(0, 0, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
         viewport.bindToEntity(getPlayer(), getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
+        set("levelTime", TIME_LEVEL);
     }
 
     private void nextLevel() {
