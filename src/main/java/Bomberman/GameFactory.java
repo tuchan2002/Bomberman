@@ -3,6 +3,7 @@ package Bomberman;
 import Bomberman.Components.Enemy.Enemy1;
 import Bomberman.Components.Enemy.Enemy2;
 import Bomberman.Components.FlameComponent;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.EntityFactory;
 import com.almasb.fxgl.entity.SpawnData;
@@ -29,9 +30,19 @@ public class GameFactory implements EntityFactory {
     @Spawns("background")
     public Entity newBackground(SpawnData data) {
         return entityBuilder()
-                .view(new Rectangle(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, Color.rgb(72, 136, 98)))
+                .view(new Rectangle(GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT, Color.rgb(0, 125, 0)))
                 .zIndex(-100)
                 .with(new IrremovableComponent())
+                .build();
+    }
+
+    @Spawns("wall")
+    public Entity newWall(SpawnData data) {
+        return entityBuilder(data)
+                .type(GameType.WALL)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
                 .build();
     }
 
@@ -39,20 +50,21 @@ public class GameFactory implements EntityFactory {
     public Entity newBrick(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.BRICK)
+                .view("brick.png")
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
                 .build();
     }
 
-    @Spawns("wood")
-    public Entity newWood(SpawnData data) {
-        return entityBuilder(data)
-                .type(GameType.WOOD)
-                .view("wood.png")
-                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
-                .with(new PhysicsComponent())
-                .with(new CollidableComponent(true))
+    @Spawns("brick_break")
+    public Entity newBrickBreak(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(GameType.BRICK_BREAK)
+                .with(new Bomberman.Components.BrickBreakComponent())
+                .viewWithBBox(new Rectangle(TILED_SIZE - 4, TILED_SIZE - 4, Color.TRANSPARENT))
+                .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
+                .zIndex(1)
                 .build();
     }
 
@@ -77,7 +89,7 @@ public class GameFactory implements EntityFactory {
 
         return entityBuilder(data)
                 .type(GameType.PLAYER)
-                .viewWithBBox(new Circle(32, 32, 30, Color.rgb(92, 156, 118)))
+                .viewWithBBox(new Rectangle(60, 60, Color.TRANSPARENT))
                 .with(physics)
                 .with(new PlayerComponent())
                 .with(new CollidableComponent(true))
@@ -121,7 +133,7 @@ public class GameFactory implements EntityFactory {
     public Entity newFire(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.FIRE)
-                .viewWithBBox(new Rectangle(60, 60, Color.BLACK))
+                .viewWithBBox(new Rectangle(TILED_SIZE - 4, TILED_SIZE - 4, Color.TRANSPARENT))
                 .with(new FlameComponent())
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
@@ -157,6 +169,17 @@ public class GameFactory implements EntityFactory {
                 .type(GameType.POWERUP_SPEED)
                 .view("powerup_speed.png")
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("powerup_flamepass")
+    public Entity newFlamePassItem(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(GameType.POWERUP_FLAMEPASS)
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .view("powerup_flamepass.png")
                 .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
                 .build();

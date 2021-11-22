@@ -127,7 +127,6 @@ public class GameApp extends GameApplication {
         PhysicsWorld physics = getPhysicsWorld();
         physics.setGravity(0, 0);
 
-
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.DOOR) {
             @Override
             protected void onCollisionBegin(Entity player, Entity door) {
@@ -167,7 +166,9 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.FIRE) {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
-                onPlayerDied();
+                if (getPlayer().getComponent(PlayerComponent.class).getPlayerSkin() == PlayerSkin.NORMAL) {
+                    onPlayerDied();
+                }
             }
         });
 
@@ -178,7 +179,7 @@ public class GameApp extends GameApplication {
     protected void onPreInit() {
         getSettings().setGlobalSoundVolume(sound_enabled ? 0.3 : 0.0);
         getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
-        loopBGM("title_screen.mp3");
+        loopBGM("stage_theme.mp3");
 
     }
 
@@ -261,9 +262,8 @@ public class GameApp extends GameApplication {
     }
 
     private void nextLevel() {
-        loopBGM("stage_theme.mp3");
         if (geti("level") == MAX_LEVEL) {
-            showMessage("Bạn đã thắng !!!");
+            showMessage("Win !!!");
             return;
         }
         inc("level", +1);

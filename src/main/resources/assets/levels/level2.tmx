@@ -1,82 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="21" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="73">
- <tileset firstgid="1" name="tiles_spritesheet" tilewidth="64" tileheight="64" spacing="2" tilecount="144" columns="12">
-  <image source="tiles_spritesheet.png" width="835" height="855"/>
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="21" height="11" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="77">
+ <tileset firstgid="1" name="classic" tilewidth="64" tileheight="64" tilecount="256" columns="16">
+  <image source="classic.png" width="1024" height="1024"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="21" height="11">
   <data encoding="csv">
-44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,
-44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,
-44,0,8,0,8,0,8,0,8,0,8,0,8,0,8,0,8,82,8,0,44,
-44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,
-44,0,8,0,8,0,8,0,8,0,8,0,8,0,8,0,8,0,8,0,44,
-44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,
-44,0,8,0,8,0,8,0,8,0,8,0,8,0,8,0,8,0,8,0,44,
-44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,
-44,0,8,0,8,0,8,0,8,0,8,0,8,0,8,0,8,0,8,0,44,
-44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,
-44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44,44
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,5,6,0,6,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,0,6,
+6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,
+6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="1" type="brick" x="0" y="0" width="1340" height="64"/>
-  <object id="2" type="brick" x="0" y="640" width="1344" height="64"/>
-  <object id="3" type="brick" x="0" y="64" width="64" height="576"/>
-  <object id="5" type="brick" x="1280" y="64" width="64" height="576"/>
-  <object id="6" type="brick" x="128" y="128" width="64" height="64"/>
-  <object id="7" type="brick" x="128" y="256" width="64" height="64"/>
-  <object id="8" type="brick" x="256" y="256" width="64" height="64"/>
-  <object id="9" type="brick" x="256" y="128" width="64" height="64"/>
-  <object id="10" type="brick" x="128" y="384" width="64" height="64"/>
-  <object id="11" type="brick" x="256" y="384" width="64" height="64"/>
-  <object id="12" type="brick" x="256" y="512" width="64" height="64"/>
-  <object id="13" type="brick" x="128" y="512" width="64" height="64"/>
-  <object id="14" type="wood" x="192" y="128" width="64" height="64"/>
-  <object id="15" type="brick" x="384" y="256" width="64" height="64"/>
-  <object id="16" type="brick" x="384" y="384" width="64" height="64"/>
-  <object id="17" type="brick" x="384" y="512" width="64" height="64"/>
-  <object id="18" type="brick" x="384" y="128" width="64" height="64"/>
-  <object id="19" type="wood" x="192" y="192" width="64" height="64"/>
-  <object id="20" type="wood" x="192" y="256" width="64" height="64"/>
-  <object id="21" type="wood" x="256" y="192" width="64" height="64"/>
-  <object id="23" type="wood" x="320" y="384" width="64" height="64"/>
-  <object id="25" type="wood" x="192" y="512" width="64" height="64"/>
-  <object id="27" type="wood" x="256" y="448" width="64" height="64"/>
-  <object id="30" type="brick" x="512" y="256" width="64" height="64"/>
-  <object id="31" type="brick" x="512" y="384" width="64" height="64"/>
-  <object id="32" type="brick" x="512" y="512" width="64" height="64"/>
+  <object id="1" type="wall" x="0" y="0" width="1340" height="64"/>
+  <object id="2" type="wall" x="0" y="640" width="1344" height="64"/>
+  <object id="3" type="wall" x="0" y="64" width="64" height="576"/>
+  <object id="5" type="wall" x="1280" y="64" width="64" height="576"/>
+  <object id="6" type="wall" x="128" y="128" width="64" height="64"/>
+  <object id="7" type="wall" x="128" y="256" width="64" height="64"/>
+  <object id="8" type="wall" x="256" y="256" width="64" height="64"/>
+  <object id="9" type="wall" x="256" y="128" width="64" height="64"/>
+  <object id="10" type="wall" x="128" y="384" width="64" height="64"/>
+  <object id="11" type="wall" x="256" y="384" width="64" height="64"/>
+  <object id="12" type="wall" x="256" y="512" width="64" height="64"/>
+  <object id="13" type="wall" x="128" y="512" width="64" height="64"/>
+  <object id="14" type="brick" x="192" y="128" width="64" height="64"/>
+  <object id="15" type="wall" x="384" y="256" width="64" height="64"/>
+  <object id="16" type="wall" x="384" y="384" width="64" height="64"/>
+  <object id="17" type="wall" x="384" y="512" width="64" height="64"/>
+  <object id="18" type="wall" x="384" y="128" width="64" height="64"/>
+  <object id="19" type="brick" x="192" y="192" width="64" height="64"/>
+  <object id="20" type="brick" x="192" y="256" width="64" height="64"/>
+  <object id="21" type="brick" x="256" y="192" width="64" height="64"/>
+  <object id="23" type="brick" x="320" y="384" width="64" height="64"/>
+  <object id="25" type="brick" x="192" y="512" width="64" height="64"/>
+  <object id="27" type="brick" x="256" y="448" width="64" height="64"/>
+  <object id="30" type="wall" x="512" y="256" width="64" height="64"/>
+  <object id="31" type="wall" x="512" y="384" width="64" height="64"/>
+  <object id="32" type="wall" x="512" y="512" width="64" height="64"/>
   <object id="33" type="powerup_bombs" x="648.534" y="71.3111" width="50" height="50"/>
-  <object id="34" type="brick" x="640" y="384" width="64" height="64"/>
-  <object id="35" type="brick" x="640" y="512" width="64" height="64"/>
-  <object id="36" type="brick" x="640" y="256" width="64" height="64"/>
-  <object id="37" type="brick" x="640" y="128" width="64" height="64"/>
-  <object id="38" type="brick" x="768" y="256" width="64" height="64.5578"/>
-  <object id="40" type="brick" x="768" y="384" width="64" height="64"/>
-  <object id="41" type="brick" x="768" y="512" width="64" height="64"/>
-  <object id="42" type="brick" x="896" y="128" width="64" height="64"/>
-  <object id="43" type="brick" x="896" y="256" width="64" height="64"/>
-  <object id="44" type="brick" x="896" y="384" width="64" height="64"/>
-  <object id="45" type="brick" x="896" y="512" width="64" height="64"/>
+  <object id="34" type="wall" x="640" y="384" width="64" height="64"/>
+  <object id="35" type="wall" x="640" y="512" width="64" height="64"/>
+  <object id="36" type="wall" x="640" y="256" width="64" height="64"/>
+  <object id="37" type="wall" x="640" y="128" width="64" height="64"/>
+  <object id="38" type="wall" x="768" y="256" width="64" height="64.5578"/>
+  <object id="40" type="wall" x="768" y="384" width="64" height="64"/>
+  <object id="41" type="wall" x="768" y="512" width="64" height="64"/>
+  <object id="42" type="wall" x="896" y="128" width="64" height="64"/>
+  <object id="43" type="wall" x="896" y="256" width="64" height="64"/>
+  <object id="44" type="wall" x="896" y="384" width="64" height="64"/>
+  <object id="45" type="wall" x="896" y="512" width="64" height="64"/>
   <object id="47" type="door" x="1088" y="140" width="64" height="40"/>
   <object id="48" type="player" x="65" y="65" width="58" height="58"/>
   <object id="50" type="enemy1" x="645" y="453.379" width="54" height="54"/>
-  <object id="52" type="brick" x="512" y="128" width="64" height="64"/>
+  <object id="52" type="wall" x="512" y="128" width="64" height="64"/>
   <object id="55" type="enemy2" x="583.379" y="133.379" width="54" height="54"/>
   <object id="56" type="enemy1" x="839.154" y="259.925" width="54" height="54"/>
-  <object id="57" type="brick" x="1024" y="256" width="64" height="64"/>
-  <object id="58" type="brick" x="1024" y="128" width="60" height="64"/>
-  <object id="59" type="brick" x="1156" y="128" width="60" height="64"/>
-  <object id="60" type="brick" x="1024" y="384" width="64" height="64"/>
-  <object id="61" type="brick" x="1152" y="384" width="64" height="64"/>
-  <object id="62" type="brick" x="1024" y="512" width="64" height="64"/>
-  <object id="63" type="brick" x="1149.2" y="512" width="64" height="64"/>
+  <object id="57" type="wall" x="1024" y="256" width="64" height="64"/>
+  <object id="58" type="wall" x="1024" y="128" width="60" height="64"/>
+  <object id="59" type="wall" x="1156" y="128" width="60" height="64"/>
+  <object id="60" type="wall" x="1024" y="384" width="64" height="64"/>
+  <object id="61" type="wall" x="1152" y="384" width="64" height="64"/>
+  <object id="62" type="wall" x="1024" y="512" width="64" height="64"/>
+  <object id="63" type="wall" x="1149.2" y="512" width="64" height="64"/>
   <object id="64" type="enemy2" x="1221.64" y="132.483" width="54" height="54"/>
-  <object id="66" type="powerup_speed" x="966.645" y="262.925" width="50" height="50"/>
-  <object id="67" type="brick" x="1152" y="256" width="64" height="64"/>
-  <object id="68" type="brick" x="768" y="128" width="64" height="64"/>
-  <object id="69" type="wood" x="448" y="128" width="64" height="64"/>
-  <object id="70" type="wood" x="704" y="128" width="64" height="64"/>
-  <object id="71" type="wood" x="768" y="320" width="64" height="64"/>
-  <object id="72" type="wood" x="704" y="384" width="64" height="64"/>
+  <object id="66" type="powerup_speed" x="518.345" y="455.536" width="50" height="50"/>
+  <object id="67" type="wall" x="1152" y="256" width="64" height="64"/>
+  <object id="68" type="wall" x="768" y="128" width="64" height="64"/>
+  <object id="69" type="brick" x="448" y="128" width="64" height="64"/>
+  <object id="70" type="brick" x="704" y="128" width="64" height="64"/>
+  <object id="71" type="brick" x="768" y="320" width="64" height="64"/>
+  <object id="72" type="brick" x="704" y="384" width="64" height="64"/>
+  <object id="73" type="brick" x="640" y="64" width="64" height="64"/>
+  <object id="74" type="brick" x="512" y="448" width="64" height="64"/>
+  <object id="75" type="powerup_flamepass" x="72.9953" y="262.228" width="50" height="50"/>
+  <object id="76" type="brick" x="64" y="256" width="64" height="64"/>
  </objectgroup>
 </map>

@@ -12,14 +12,18 @@ import com.almasb.fxgl.physics.PhysicsWorld;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
+
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static Bomberman.Constants.Constanst.*;
+
 public class PlayerComponent extends Component {
     private MoveDirection currentMoveDir = MoveDirection.STOP;
     private PhysicsComponent physics;
 
     private int bombsPlaced = 0;
     private int speed = SPEED;
+    private final int FRAME_SIZE = 60;
+    private PlayerSkin playerSkin;
 
     private AnimatedTexture texture;
     private AnimationChannel animIdleDown, animIdleRight, animIdleUp, animIdleLeft;
@@ -57,24 +61,54 @@ public class PlayerComponent extends Component {
             }
         });
 
-        animDie = new AnimationChannel(image("playerDie.png"), 6, 64, 64, Duration.seconds(1.8), 0, 0+6-1);
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_FLAMEPASS) {
 
-        animIdleDown = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 10, 9 * 10);
-        animIdleRight = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 11, 9 * 11);
-        animIdleUp = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 8, 9 * 8);
-        animIdleLeft = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 9, 9 * 9);
+            @Override
+            protected void onCollisionBegin(Entity player, Entity powerup) {
+                powerup.removeFromWorld();
+                play("powerup.wav");
+                getGameWorld().getSingleton(GameType.PLAYER)
+                        .getComponent(PlayerComponent.class)
+                        .setSkin(PlayerSkin.FLAME_PASS);
+            }
+        });
 
-        animWalkDown = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 10, 9 * 10 + 9 - 1);
-        animWalkRight = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 11, 9 * 11 + 9 - 1);
-        animWalkUp = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 8, 9 * 8 + 9 - 1);
-        animWalkLeft = new AnimationChannel(image("player.png"), 9, 64, 64, Duration.seconds(1), 9 * 9, 9 * 9 + 9 - 1);
-
+        setSkin(PlayerSkin.NORMAL);
         texture = new AnimatedTexture(animIdleDown);
     }
 
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
+    }
+
+    private void setSkin(PlayerSkin skin) {
+        playerSkin = skin;
+        if(playerSkin == PlayerSkin.NORMAL) {
+            animDie = new AnimationChannel(image("player_die.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1.8), 0, 2);
+
+            animIdleDown = new AnimationChannel(image("player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
+            animIdleRight = new AnimationChannel(image("player_right.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
+            animIdleUp = new AnimationChannel(image("player_up.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
+            animIdleLeft = new AnimationChannel(image("player_left.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
+
+            animWalkDown = new AnimationChannel(image("player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
+            animWalkRight = new AnimationChannel(image("player_right.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
+            animWalkUp = new AnimationChannel(image("player_up.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
+            animWalkLeft = new AnimationChannel(image("player_left.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
+        } else if(playerSkin == PlayerSkin.FLAME_PASS) {
+            animDie = new AnimationChannel(image("player_die.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1.8), 0, 2);
+
+            animIdleDown = new AnimationChannel(image("gold_player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
+            animIdleRight = new AnimationChannel(image("gold_player_right.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
+            animIdleUp = new AnimationChannel(image("gold_player_up.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
+            animIdleLeft = new AnimationChannel(image("gold_player_left.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
+
+            animWalkDown = new AnimationChannel(image("gold_player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
+            animWalkRight = new AnimationChannel(image("gold_player_right.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
+            animWalkUp = new AnimationChannel(image("gold_player_up.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
+            animWalkLeft = new AnimationChannel(image("gold_player_left.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
+        }
     }
 
     @Override
@@ -128,35 +162,35 @@ public class PlayerComponent extends Component {
     }
 
     public void up() {
-        if(currentMoveDir != MoveDirection.DIE) {
+        if (currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.UP;
             physics.setVelocityY(-speed);
         }
     }
 
     public void down() {
-        if(currentMoveDir != MoveDirection.DIE) {
+        if (currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.DOWN;
             physics.setVelocityY(speed);
         }
     }
 
     public void left() {
-        if(currentMoveDir != MoveDirection.DIE) {
+        if (currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.LEFT;
             physics.setVelocityX(-speed);
         }
     }
 
     public void right() {
-        if(currentMoveDir != MoveDirection.DIE) {
+        if (currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.RIGHT;
             physics.setVelocityX(speed);
         }
     }
 
     public void stop() {
-        if(currentMoveDir != MoveDirection.DIE) {
+        if (currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.STOP;
         }
     }
@@ -183,6 +217,7 @@ public class PlayerComponent extends Component {
             bombsPlaced--;
         }, Duration.seconds(2.1));
     }
+
     public void powerupSpeed() {
         speed = SPEED + 100;
         getGameTimer().runOnceAfter(() -> {
@@ -190,9 +225,12 @@ public class PlayerComponent extends Component {
             inc("speed", -INC_SPEED);
         }, Duration.seconds(8));
     }
+
     public void die() {
         currentMoveDir = MoveDirection.DIE;
     }
 
-
+    public PlayerSkin getPlayerSkin() {
+        return playerSkin;
+    }
 }

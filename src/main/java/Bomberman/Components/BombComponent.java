@@ -20,7 +20,7 @@ public class BombComponent extends Component {
     private ArrayList<Entity> listFire = new ArrayList<Entity>();
 
     public BombComponent() {
-        animation = new AnimationChannel(image("magicBall.png"), 10, 64, 64,  Duration.seconds(0.7), 0, 9);
+        animation = new AnimationChannel(image("bomb_ani.png"), 3, TILED_SIZE, TILED_SIZE,  Duration.seconds(0.3), 0, 2);
 
         texture = new AnimatedTexture(animation);
         texture.loop();

@@ -30,9 +30,9 @@ public class Enemy1 extends Component {
                 enemy1.getComponent(Enemy1.class).turn();
             }
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.WOOD) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.WALL) {
             @Override
-            protected void onCollisionBegin(Entity enemy1, Entity wood) {
+            protected void onCollisionBegin(Entity enemy1, Entity wall) {
                 enemy1.getComponent(Enemy1.class).turn();
             }
         });

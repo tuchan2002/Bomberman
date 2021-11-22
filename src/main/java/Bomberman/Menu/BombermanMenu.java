@@ -37,7 +37,7 @@ public class BombermanMenu extends FXGLMenu {
         var menuBox = new VBox(
                 new MenuButton("New Game", () -> fireNewGame()),
                 new MenuButton("Control", () -> instructions()),
-                new MenuButton("Sounds", () -> setSoundEnabled()),
+                new MenuButton("Sound", () -> setSoundEnabled()),
                 new MenuButton("Exit", () -> fireExit())
         );
 
