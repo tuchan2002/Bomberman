@@ -62,7 +62,7 @@ public class GameFactory implements EntityFactory {
         return FXGL.entityBuilder(data)
                 .type(GameType.BRICK_BREAK)
                 .with(new Bomberman.Components.BrickBreakComponent())
-                .viewWithBBox(new Rectangle(TILED_SIZE - 4, TILED_SIZE - 4, Color.TRANSPARENT))
+                .viewWithBBox(new Rectangle(TILED_SIZE, TILED_SIZE, Color.TRANSPARENT))
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .zIndex(1)
                 .build();
@@ -88,7 +88,7 @@ public class GameFactory implements EntityFactory {
 
         return entityBuilder(data)
                 .type(GameType.PLAYER)
-                .viewWithBBox(new Rectangle(60, 60, Color.TRANSPARENT))
+                .viewWithBBox(new Circle(22.5, 22.5, 21, Color.TRANSPARENT))
                 .with(physics)
                 .with(new PlayerComponent())
                 .with(new CollidableComponent(true))
@@ -100,7 +100,7 @@ public class GameFactory implements EntityFactory {
     public Entity newEnemy1(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.ENEMY1)
-                .viewWithBBox(new Circle(32, 32, 29, Color.TRANSPARENT))
+                .viewWithBBox(new Circle(24, 24, 21, Color.TRANSPARENT))
                 .with(new Enemy1())
                 .with(new CollidableComponent(true))
                 .build();
@@ -110,7 +110,7 @@ public class GameFactory implements EntityFactory {
     public Entity newEnemy2(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.ENEMY2)
-                .viewWithBBox(new Circle(32, 32, 29, Color.TRANSPARENT))
+                .viewWithBBox(new Circle(24, 24, 21, Color.TRANSPARENT))
                 .with(new Enemy2())
                 .with(new CollidableComponent(true))
                 .build();
@@ -120,7 +120,7 @@ public class GameFactory implements EntityFactory {
     public Entity newBomb(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.BOMB)
-                .viewWithBBox(new Circle(30, 30, 30, Color.TRANSPARENT))
+                .viewWithBBox(new Circle(24, 24, 24, Color.TRANSPARENT))
                 .with(new BombComponent())
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
@@ -132,7 +132,7 @@ public class GameFactory implements EntityFactory {
     public Entity newFire(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.FIRE)
-                .viewWithBBox(new Rectangle(TILED_SIZE - 4, TILED_SIZE - 4, Color.TRANSPARENT))
+                .viewWithBBox(new Rectangle(TILED_SIZE - 3, TILED_SIZE - 3, Color.TRANSPARENT))
                 .with(new FlameComponent())
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
@@ -148,6 +148,7 @@ public class GameFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
+                .zIndex(-1)
                 .build();
     }
 
@@ -159,6 +160,7 @@ public class GameFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
+                .zIndex(-1)
                 .build();
     }
 
@@ -170,6 +172,7 @@ public class GameFactory implements EntityFactory {
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
                 .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
+                .zIndex(-1)
                 .build();
     }
 
@@ -181,6 +184,7 @@ public class GameFactory implements EntityFactory {
                 .view("powerup_flamepass.png")
                 .with(new PhysicsComponent())
                 .with(new CollidableComponent(true))
+                .zIndex(-1)
                 .build();
     }
 

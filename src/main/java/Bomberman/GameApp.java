@@ -4,6 +4,7 @@ import Bomberman.Menu.BombermanGameMenu;
 import Bomberman.Menu.BombermanMenu;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.app.scene.Viewport;
@@ -19,9 +20,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import java.util.List;
+import java.util.EnumSet;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import static Bomberman.Constants.Constanst.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -36,12 +36,12 @@ public class GameApp extends GameApplication {
         gameSettings.setHeight(SCENE_HEIGHT);
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
+        gameSettings.setFullScreenAllowed(true);
+        gameSettings.setFullScreenFromStart(true);
 
-//        gameSettings.setFullScreenAllowed(true);
-//        gameSettings.setFullScreenFromStart(true);
         gameSettings.setIntroEnabled(false);
-        gameSettings.setMainMenuEnabled(true);
-        gameSettings.setGameMenuEnabled(true);
+//        gameSettings.setMainMenuEnabled(true);
+//        gameSettings.setGameMenuEnabled(true);
         gameSettings.setFontUI("Quinquefive-Ea6d4.ttf");
         gameSettings.setSceneFactory(new SceneFactory() {
             @Override
@@ -53,6 +53,7 @@ public class GameApp extends GameApplication {
             public FXGLMenu newGameMenu() {
                 return new BombermanGameMenu();
             }
+
         });
     }
 
@@ -206,37 +207,37 @@ public class GameApp extends GameApplication {
         score.setTextFill(Color.BLACK);
         score.setFont(Font.font(20));
         score.textProperty().bind(getip("score").asString("Score: %d"));
-        addUINode(score, 76, 16);
+        addUINode(score, 20, 10);
 
         Label level = new Label();
         level.setTextFill(Color.BLACK);
         level.setFont(Font.font(20));
         level.textProperty().bind(getip("level").asString("Level: %d"));
-        addUINode(level, 200, 16);
+        addUINode(level, 150, 10);
 
         Label flame = new Label();
         flame.setTextFill(Color.BLACK);
         flame.setFont(Font.font(20));
         flame.textProperty().bind(getip("flame").asString("Flame: %d"));
-        addUINode(flame, 330, 16);
+        addUINode(flame, 260, 10);
 
         Label speed = new Label();
         speed.setTextFill(Color.BLACK);
         speed.setFont(Font.font(20));
         speed.textProperty().bind(getip("speed").asString("Speed: %d"));
-        addUINode(speed, 480, 16);
+        addUINode(speed, 380, 10);
 
         Label bomb = new Label();
         bomb.setTextFill(Color.BLACK);
         bomb.setFont(Font.font(20));
         bomb.textProperty().bind(getip("bomb").asString("Bomb: %d"));
-        addUINode(bomb, 650, 16);
+        addUINode(bomb, 500, 10);
 
         Label timeLabel = new Label();
         timeLabel.setTextFill(Color.BLACK);
         timeLabel.setFont(Font.font(20.0));
         timeLabel.textProperty().bind(FXGL.getdp("levelTime").asString("Time: %.0f"));
-        FXGL.addUINode(timeLabel, 780, 16);
+        FXGL.addUINode(timeLabel, 680, 10);
     }
 
     public void onPlayerDied() {

@@ -43,7 +43,7 @@ public class FlameComponent extends Component {
         });
 
 
-        animationFlame = new AnimationChannel(image("bomb_exploded_1.png"), 3, TILED_SIZE, TILED_SIZE,  Duration.seconds(0.4), 0, 2);
+        animationFlame = new AnimationChannel(image("bomb_exploded.png"), 3, TILED_SIZE, TILED_SIZE,  Duration.seconds(0.4), 0, 2);
 
         texture = new AnimatedTexture(animationFlame);
         texture.loop();

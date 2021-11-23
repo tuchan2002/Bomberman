@@ -32,10 +32,10 @@ public class BombComponent extends Component {
 
     public void explode(int damageLevel) {
         for (int i = 1; i <= damageLevel; i++) {
-            listFire.add(spawn("fire", new SpawnData(entity.getX() + FIRE_SIZE * i, entity.getY())));
-            listFire.add(spawn("fire", new SpawnData(entity.getX() - FIRE_SIZE * i, entity.getY())));
-            listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY() + FIRE_SIZE * i)));
-            listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY() - FIRE_SIZE * i)));
+            listFire.add(spawn("fire", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY())));
+            listFire.add(spawn("fire", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY())));
+            listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i)));
+            listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY() - TILED_SIZE * i)));
         }
         listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY())));
 

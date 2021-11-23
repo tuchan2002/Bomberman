@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import static Bomberman.Constants.Constanst.*;
+import static Bomberman.Menu.BombermanMenu.setSoundEnabled;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGL.centerTextBind;
 
@@ -27,8 +28,8 @@ public class BombermanGameMenu extends FXGLMenu {
         // UI background
         ImageView iv1 = new ImageView();
         iv1.setImage(new Image("assets/textures/background_demo_1.png"));
-        iv1.setX(100);
-        iv1.setY(100);
+        iv1.setX(140);
+        iv1.setY(60);
         iv1.setEffect(new DropShadow(5, 3.5, 3.5, Color.WHITE));
         iv1.setEffect(new Lighting());
 
@@ -37,12 +38,12 @@ public class BombermanGameMenu extends FXGLMenu {
         title.setStroke(Color.WHITESMOKE);
         title.setStrokeWidth(1.5);
         title.setEffect(new Bloom(0.6));
-        centerTextBind(title, getAppWidth() / 2.0, 250);
+        centerTextBind(title, getAppWidth() / 2.0, 180);
 
 
         // UI game version
         var version = getUIFactoryService().newText(getSettings().getVersion(), Color.WHITE, 20);
-        centerTextBind(version, getAppWidth() / 2.0, 280);
+        centerTextBind(version, getAppWidth() / 2.0, 230);
 
         // UI Button
         var menuBox = new VBox(
@@ -55,22 +56,12 @@ public class BombermanGameMenu extends FXGLMenu {
         // set pos menu button
         menuBox.setAlignment(Pos.CENTER_LEFT);
         menuBox.setTranslateX(getAppWidth() / 2.0 - 70);
-        menuBox.setTranslateY(getAppHeight() / 2.0 + 70);
+        menuBox.setTranslateY(getAppHeight() / 2.0);
         menuBox.setSpacing(20);
 
         getContentRoot().getChildren().addAll(shape, iv1, title, version, menuBox);
     }
 
-    public static void setSoundEnabled() {
-        GameApp.sound_enabled = !GameApp.sound_enabled;
-        getSettings().setGlobalMusicVolume(GameApp.sound_enabled ? 0.3 : 0.0);
-        getSettings().setGlobalSoundVolume(GameApp.sound_enabled ? 0.3 : 0.0);
-        if (GameApp.sound_enabled) {
-            showMessage("Sound enabled!");
-        } else {
-            showMessage("Sound disabled!");
-        }
-    }
 
 
 }

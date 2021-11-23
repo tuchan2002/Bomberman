@@ -23,7 +23,7 @@ public class PlayerComponent extends Component {
 
     private int bombsPlaced = 0;
     private int speed = SPEED;
-    private final int FRAME_SIZE = 60;
+    private final int FRAME_SIZE = 45;
     private PlayerSkin playerSkin;
 
     private AnimatedTexture texture;
@@ -202,12 +202,12 @@ public class PlayerComponent extends Component {
         }
         bombsPlaced++;
 
-        int bombLocationX = (int) (entity.getX() % 64 > 32
-                ? entity.getX() + 64 - entity.getX() % 64 + 1
-                : entity.getX() - entity.getX() % 64 + 1);
-        int bombLocationY = (int) (entity.getY() % 64 > 32
-                ? entity.getY() + 64 - entity.getY() % 64 + 1
-                : entity.getY() - entity.getY() % 64 + 1);
+        int bombLocationX = (int) (entity.getX() % TILED_SIZE > TILED_SIZE/2
+                ? entity.getX() + TILED_SIZE - entity.getX() % TILED_SIZE + 1
+                : entity.getX() - entity.getX() % TILED_SIZE + 1);
+        int bombLocationY = (int) (entity.getY() % TILED_SIZE > TILED_SIZE/2
+                ? entity.getY() + TILED_SIZE - entity.getY() % TILED_SIZE + 1
+                : entity.getY() - entity.getY() % TILED_SIZE + 1);
 
         Entity bomb = spawn("bomb", new SpawnData(bombLocationX, bombLocationY));
 
@@ -220,7 +220,7 @@ public class PlayerComponent extends Component {
     }
 
     public void powerupSpeed() {
-        speed = SPEED + 100;
+        speed = SPEED + INC_SPEED;
         getGameTimer().runOnceAfter(() -> {
             speed = SPEED;
             inc("speed", -INC_SPEED);

@@ -1,5 +1,6 @@
 package Bomberman.Menu;
 
+import Bomberman.GameApp;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.input.view.KeyView;
@@ -10,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-import static Bomberman.Menu.BombermanGameMenu.setSoundEnabled;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static javafx.scene.input.KeyCode.*;
 
@@ -60,5 +60,16 @@ public class BombermanMenu extends FXGLMenu {
                 new KeyView(SPACE));
 
         getDialogService().showBox("How to Play", pane, getUIFactoryService().newButton("OK"));
+    }
+
+    public static void setSoundEnabled() {
+        GameApp.sound_enabled = !GameApp.sound_enabled;
+        getSettings().setGlobalMusicVolume(GameApp.sound_enabled ? 0.3 : 0.0);
+        getSettings().setGlobalSoundVolume(GameApp.sound_enabled ? 0.3 : 0.0);
+        if (GameApp.sound_enabled) {
+            showMessage("Sound enabled!");
+        } else {
+            showMessage("Sound disabled!");
+        }
     }
 }

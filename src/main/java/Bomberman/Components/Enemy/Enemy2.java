@@ -14,6 +14,7 @@ import static Bomberman.Constants.Constanst.*;
 import static com.almasb.fxgl.dsl.FXGL.image;
 
 public class Enemy2 extends Component {
+    private final int FRAME_SIZE = 48;
     private double dx = -ENEMY_SPEED;
     private double dy = 0;
 
@@ -32,7 +33,7 @@ public class Enemy2 extends Component {
         });
         physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.WALL) {
             @Override
-            protected void onCollisionBegin(Entity enemy2, Entity wall) {
+            protected void onCollisionBegin(Entity enemy2, Entity FRAME_SIZE) {
                 enemy2.getComponent(Enemy2.class).turn();
             }
         });
@@ -60,12 +61,12 @@ public class Enemy2 extends Component {
             }
         });
 
-        animDie = new AnimationChannel(image("skeleton2Die.png"), 6, 64, 64, Duration.seconds(1.5), 0, 0 + 6 - 1);
+        animDie = new AnimationChannel(image("skeleton2Die.png"), 6, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1.5), 0, 0 + 6 - 1);
 
-        animWalkDown = new AnimationChannel(image("skeleton2.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 10, 9 * 10 + 9 - 1);
-        animWalkRight = new AnimationChannel(image("skeleton2.png"), 9, 64, 64, Duration.seconds(0.8), 9 * 11, 9 * 11 + 9 - 1);
-        animWalkUp = new AnimationChannel(image("skeleton2.png"), 9, 64, 64, Duration.seconds(1), 9 * 8, 9 * 8 + 9 - 1);
-        animWalkLeft = new AnimationChannel(image("skeleton2.png"), 9, 64, 64, Duration.seconds(1), 9 * 9, 9 * 9 + 9 - 1);
+        animWalkDown = new AnimationChannel(image("skeleton2.png"), 9, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.8), 9 * 10, 9 * 10 + 9 - 1);
+        animWalkRight = new AnimationChannel(image("skeleton2.png"), 9, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.8), 9 * 11, 9 * 11 + 9 - 1);
+        animWalkUp = new AnimationChannel(image("skeleton2.png"), 9, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1), 9 * 8, 9 * 8 + 9 - 1);
+        animWalkLeft = new AnimationChannel(image("skeleton2.png"), 9, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1), 9 * 9, 9 * 9 + 9 - 1);
 
         texture = new AnimatedTexture(animWalkLeft);
         texture.loop();
