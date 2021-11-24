@@ -1,7 +1,6 @@
 package Bomberman.Components;
 
 import Bomberman.GameType;
-import com.almasb.fxgl.audio.Sound;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -85,7 +84,7 @@ public class PlayerComponent extends Component {
 
     private void setSkin(PlayerSkin skin) {
         playerSkin = skin;
-        if(playerSkin == PlayerSkin.NORMAL) {
+        if (playerSkin == PlayerSkin.NORMAL) {
             animDie = new AnimationChannel(image("player_die.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1.8), 0, 2);
 
             animIdleDown = new AnimationChannel(image("player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
@@ -97,7 +96,7 @@ public class PlayerComponent extends Component {
             animWalkRight = new AnimationChannel(image("player_right.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
             animWalkUp = new AnimationChannel(image("player_up.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
             animWalkLeft = new AnimationChannel(image("player_left.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
-        } else if(playerSkin == PlayerSkin.FLAME_PASS) {
+        } else if (playerSkin == PlayerSkin.FLAME_PASS) {
             animDie = new AnimationChannel(image("player_die.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1.8), 0, 2);
 
             animIdleDown = new AnimationChannel(image("gold_player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
@@ -202,10 +201,10 @@ public class PlayerComponent extends Component {
         }
         bombsPlaced++;
 
-        int bombLocationX = (int) (entity.getX() % TILED_SIZE > TILED_SIZE/2
+        int bombLocationX = (int) (entity.getX() % TILED_SIZE > TILED_SIZE / 2
                 ? entity.getX() + TILED_SIZE - entity.getX() % TILED_SIZE + 1
                 : entity.getX() - entity.getX() % TILED_SIZE + 1);
-        int bombLocationY = (int) (entity.getY() % TILED_SIZE > TILED_SIZE/2
+        int bombLocationY = (int) (entity.getY() % TILED_SIZE > TILED_SIZE / 2
                 ? entity.getY() + TILED_SIZE - entity.getY() % TILED_SIZE + 1
                 : entity.getY() - entity.getY() % TILED_SIZE + 1);
 
@@ -233,5 +232,9 @@ public class PlayerComponent extends Component {
 
     public PlayerSkin getPlayerSkin() {
         return playerSkin;
+    }
+
+    public MoveDirection getCurrentMoveDir() {
+        return currentMoveDir;
     }
 }

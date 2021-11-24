@@ -1,10 +1,11 @@
 package Bomberman;
 
+import Bomberman.Components.Enemy.Enemy1;
+import Bomberman.Components.Enemy.Enemy2;
 import Bomberman.Menu.BombermanGameMenu;
 import Bomberman.Menu.BombermanMenu;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.app.MenuItem;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.app.scene.Viewport;
@@ -20,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import java.util.EnumSet;
 import java.util.Map;
 
 import static Bomberman.Constants.Constanst.*;
@@ -40,8 +40,8 @@ public class GameApp extends GameApplication {
         gameSettings.setFullScreenFromStart(true);
 
         gameSettings.setIntroEnabled(false);
-//        gameSettings.setMainMenuEnabled(true);
-//        gameSettings.setGameMenuEnabled(true);
+        gameSettings.setGameMenuEnabled(true);
+        gameSettings.setMainMenuEnabled(true);
         gameSettings.setFontUI("Quinquefive-Ea6d4.ttf");
         gameSettings.setSceneFactory(new SceneFactory() {
             @Override
@@ -55,6 +55,7 @@ public class GameApp extends GameApplication {
             }
 
         });
+        gameSettings.setDeveloperMenuEnabled(true);
     }
 
     @Override
@@ -148,22 +149,29 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY1) {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
-                play("slash.wav");
-                onPlayerDied();
+                if (enemy.getComponent(Enemy1.class).getCurrentMoveDir() != MoveDirection.DIE
+                        || player.getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
+                    play("slash.wav");
+                    onPlayerDied();
+                }
             }
         });
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY2) {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
-                play("slash.wav");
-                onPlayerDied();
+                if (enemy.getComponent(Enemy2.class).getCurrentMoveDir() != MoveDirection.DIE
+                        || player.getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
+                    play("slash.wav");
+                    onPlayerDied();
+                }
             }
         });
 
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.FIRE) {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
-                if (getPlayer().getComponent(PlayerComponent.class).getPlayerSkin() == PlayerSkin.NORMAL) {
+                if (getPlayer().getComponent(PlayerComponent.class).getPlayerSkin() == PlayerSkin.NORMAL
+                        || player.getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
                     onPlayerDied();
                 }
             }
@@ -203,41 +211,42 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        Label score = new Label();
-        score.setTextFill(Color.BLACK);
-        score.setFont(Font.font(20));
-        score.textProperty().bind(getip("score").asString("Score: %d"));
-        addUINode(score, 20, 10);
-
         Label level = new Label();
         level.setTextFill(Color.BLACK);
-        level.setFont(Font.font(20));
+        level.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
         level.textProperty().bind(getip("level").asString("Level: %d"));
-        addUINode(level, 150, 10);
+        addUINode(level, 20, 20);
+
+        Label score = new Label();
+        score.setTextFill(Color.BLACK);
+        score.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
+        score.textProperty().bind(getip("score").asString("Score: %d"));
+        addUINode(score, 200, 20);
+
 
         Label flame = new Label();
         flame.setTextFill(Color.BLACK);
-        flame.setFont(Font.font(20));
+        flame.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
         flame.textProperty().bind(getip("flame").asString("Flame: %d"));
-        addUINode(flame, 260, 10);
+        addUINode(flame, 460, 20);
 
         Label speed = new Label();
         speed.setTextFill(Color.BLACK);
-        speed.setFont(Font.font(20));
+        speed.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
         speed.textProperty().bind(getip("speed").asString("Speed: %d"));
-        addUINode(speed, 380, 10);
+        addUINode(speed, 640, 20);
 
         Label bomb = new Label();
         bomb.setTextFill(Color.BLACK);
-        bomb.setFont(Font.font(20));
+        bomb.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
         bomb.textProperty().bind(getip("bomb").asString("Bomb: %d"));
-        addUINode(bomb, 500, 10);
+        addUINode(bomb, 870, 20);
 
         Label timeLabel = new Label();
         timeLabel.setTextFill(Color.BLACK);
-        timeLabel.setFont(Font.font(20.0));
+        timeLabel.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
         timeLabel.textProperty().bind(FXGL.getdp("levelTime").asString("Time: %.0f"));
-        FXGL.addUINode(timeLabel, 680, 10);
+        FXGL.addUINode(timeLabel, 1070, 20);
     }
 
     public void onPlayerDied() {
@@ -257,6 +266,14 @@ public class GameApp extends GameApplication {
         viewport.bindToEntity(getPlayer(), getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
         set("levelTime", TIME_LEVEL);
+
+        var bombGroup = getGameWorld().getEntitiesByType(GameType.BOMB);
+        if (bombGroup.size() > 0) {
+            for (int i = 0; i < bombGroup.size(); i++) {
+                bombGroup.get(i).removeFromWorld();
+            }
+        }
+
     }
 
     private void nextLevel() {

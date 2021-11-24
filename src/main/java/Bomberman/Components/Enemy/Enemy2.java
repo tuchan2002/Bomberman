@@ -13,17 +13,12 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 import static Bomberman.Constants.Constanst.*;
 import static com.almasb.fxgl.dsl.FXGL.image;
 
-public class Enemy2 extends Component {
-    private final int FRAME_SIZE = 48;
+public class Enemy2 extends Enemy {
     private double dx = -ENEMY_SPEED;
     private double dy = 0;
 
-    private MoveDirection currentMoveDir = MoveDirection.LEFT;
-    private AnimatedTexture texture;
-    private AnimationChannel animDie;
-    private AnimationChannel animWalkDown, animWalkRight, animWalkUp, animWalkLeft;
-
     public Enemy2() {
+        super("enemy2.png");
         PhysicsWorld physics = getPhysicsWorld();
         physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.BRICK) {
             @Override
@@ -54,27 +49,12 @@ public class Enemy2 extends Component {
             @Override
             protected void onCollisionBegin(Entity fire, Entity enemy2) {
                 enemy2.getComponent(Enemy2.class).die();
-                play("skeleton.wav");
                 getGameTimer().runOnceAfter(() -> {
                     enemy2.removeFromWorld();
                 }, Duration.seconds(1.5));
             }
         });
 
-        animDie = new AnimationChannel(image("skeleton2Die.png"), 6, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1.5), 0, 0 + 6 - 1);
-
-        animWalkDown = new AnimationChannel(image("skeleton2.png"), 9, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.8), 9 * 10, 9 * 10 + 9 - 1);
-        animWalkRight = new AnimationChannel(image("skeleton2.png"), 9, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.8), 9 * 11, 9 * 11 + 9 - 1);
-        animWalkUp = new AnimationChannel(image("skeleton2.png"), 9, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1), 9 * 8, 9 * 8 + 9 - 1);
-        animWalkLeft = new AnimationChannel(image("skeleton2.png"), 9, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1), 9 * 9, 9 * 9 + 9 - 1);
-
-        texture = new AnimatedTexture(animWalkLeft);
-        texture.loop();
-    }
-
-    @Override
-    public void onAdded() {
-        entity.getViewComponent().addChild(texture);
     }
 
     @Override
@@ -82,23 +62,7 @@ public class Enemy2 extends Component {
         entity.translateX(dx * tpf);
         entity.translateY(dy * tpf);
 
-        switch (currentMoveDir) {
-            case UP:
-                texture.loopNoOverride(animWalkUp);
-                break;
-            case RIGHT:
-                texture.loopNoOverride(animWalkRight);
-                break;
-            case DOWN:
-                texture.loopNoOverride(animWalkDown);
-                break;
-            case LEFT:
-                texture.loopNoOverride(animWalkLeft);
-                break;
-            case DIE:
-                texture.loopNoOverride(animDie);
-                break;
-        }
+        super.onUpdate(tpf);
     }
 
     public void turn() {
@@ -143,15 +107,16 @@ public class Enemy2 extends Component {
     }
 
     private double getRandomSpeed() {
-        double x = Math.random() > 0.5 ? 1 : 1.8;
+        double x = Math.random() > 0.5 ? 1 : 1.6;
         double speed = Math.random() > 0.5 ? ENEMY_SPEED * x : -ENEMY_SPEED * x;
 
         return speed;
     }
 
-    private void die() {
+    public void die() {
         dx = 0;
         dy = 0;
         currentMoveDir = MoveDirection.DIE;
     }
+
 }

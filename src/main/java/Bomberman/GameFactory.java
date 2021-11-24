@@ -85,10 +85,9 @@ public class GameFactory implements EntityFactory {
         bd.setFixedRotation(true);
         bd.setType(BodyType.DYNAMIC);
         physics.setBodyDef(bd);
-
         return entityBuilder(data)
                 .type(GameType.PLAYER)
-                .viewWithBBox(new Circle(22.5, 22.5, 21, Color.TRANSPARENT))
+                .viewWithBBox(new Rectangle(40, 40, Color.TRANSPARENT))
                 .with(physics)
                 .with(new PlayerComponent())
                 .with(new CollidableComponent(true))
