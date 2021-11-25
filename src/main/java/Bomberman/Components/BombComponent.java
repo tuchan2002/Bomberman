@@ -30,8 +30,8 @@ public class BombComponent extends Component {
         entity.getViewComponent().addChild(texture);
     }
 
-    public void explode(int damageLevel) {
-        for (int i = 1; i <= damageLevel; i++) {
+    public void explode(int flames) {
+        for (int i = 1; i <= flames; i++) {
             listFire.add(spawn("fire", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY())));
             listFire.add(spawn("fire", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY())));
             listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i)));

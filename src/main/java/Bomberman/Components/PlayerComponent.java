@@ -21,7 +21,6 @@ public class PlayerComponent extends Component {
     private PhysicsComponent physics;
 
     private int bombsPlaced = 0;
-    private int speed = SPEED;
     private final int FRAME_SIZE = 45;
     private PlayerSkin playerSkin;
 
@@ -164,28 +163,28 @@ public class PlayerComponent extends Component {
     public void up() {
         if (currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.UP;
-            physics.setVelocityY(-speed);
+            physics.setVelocityY(-geti("speed"));
         }
     }
 
     public void down() {
         if (currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.DOWN;
-            physics.setVelocityY(speed);
+            physics.setVelocityY(geti("speed"));
         }
     }
 
     public void left() {
         if (currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.LEFT;
-            physics.setVelocityX(-speed);
+            physics.setVelocityX(-geti("speed"));
         }
     }
 
     public void right() {
         if (currentMoveDir != MoveDirection.DIE) {
             currentMoveDir = MoveDirection.RIGHT;
-            physics.setVelocityX(speed);
+            physics.setVelocityX(geti("speed"));
         }
     }
 
@@ -195,7 +194,7 @@ public class PlayerComponent extends Component {
         }
     }
 
-    public void placeBomb(int damageLevel) {
+    public void placeBomb(int flames) {
         if (bombsPlaced == geti("bomb")) {
             return;
         }
@@ -212,23 +211,18 @@ public class PlayerComponent extends Component {
 
         play("place_bomb.wav");
         FXGL.getGameTimer().runOnceAfter(() -> {
-            bomb.getComponent(BombComponent.class).explode(damageLevel);
+            bomb.getComponent(BombComponent.class).explode(flames);
             play("buzz.wav");
             bombsPlaced--;
         }, Duration.seconds(2.1));
     }
 
     public void powerupSpeed() {
-        speed = SPEED + INC_SPEED;
         getGameTimer().runOnceAfter(() -> {
-            speed = SPEED;
             inc("speed", -INC_SPEED);
         }, Duration.seconds(8));
     }
 
-    public void die() {
-        currentMoveDir = MoveDirection.DIE;
-    }
 
     public PlayerSkin getPlayerSkin() {
         return playerSkin;
@@ -236,5 +230,9 @@ public class PlayerComponent extends Component {
 
     public MoveDirection getCurrentMoveDir() {
         return currentMoveDir;
+    }
+
+    public void setCurrentMoveDir(MoveDirection currentMoveDir) {
+        this.currentMoveDir = currentMoveDir;
     }
 }

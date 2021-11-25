@@ -21,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static Bomberman.Constants.Constanst.*;
@@ -29,6 +30,7 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class GameApp extends GameApplication {
     public static boolean sound_enabled = true;
+    public Map temp = new HashMap();
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -150,7 +152,7 @@ public class GameApp extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
                 if (enemy.getComponent(Enemy1.class).getCurrentMoveDir() != MoveDirection.DIE
-                        || player.getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
+                        && getPlayer().getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
                     play("slash.wav");
                     onPlayerDied();
                 }
@@ -160,7 +162,7 @@ public class GameApp extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
                 if (enemy.getComponent(Enemy2.class).getCurrentMoveDir() != MoveDirection.DIE
-                        || player.getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
+                        && getPlayer().getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
                     play("slash.wav");
                     onPlayerDied();
                 }
@@ -171,7 +173,8 @@ public class GameApp extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
                 if (getPlayer().getComponent(PlayerComponent.class).getPlayerSkin() == PlayerSkin.NORMAL
-                        || player.getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
+                        && getPlayer().getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
+                    System.out.println("die");
                     onPlayerDied();
                 }
             }
@@ -251,7 +254,7 @@ public class GameApp extends GameApplication {
 
     public void onPlayerDied() {
         play("playerDie.wav");
-        getPlayer().getComponent(PlayerComponent.class).die();
+        getPlayer().getComponent(PlayerComponent.class).setCurrentMoveDir(MoveDirection.DIE);
         getGameTimer().runOnceAfter(() -> {
             getGameScene().getViewport().fade(() -> {
                 setLevel();
@@ -260,20 +263,16 @@ public class GameApp extends GameApplication {
     }
 
     private void setLevel() {
+        set("score", temp.get("score"));
+        set("flame", temp.get("flame"));
+        set("bomb", temp.get("bomb"));
+        set("levelTime", TIME_LEVEL);
+
         setLevelFromMap("level" + geti("level") + ".tmx");
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, 0, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
         viewport.bindToEntity(getPlayer(), getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
-        set("levelTime", TIME_LEVEL);
-
-        var bombGroup = getGameWorld().getEntitiesByType(GameType.BOMB);
-        if (bombGroup.size() > 0) {
-            for (int i = 0; i < bombGroup.size(); i++) {
-                bombGroup.get(i).removeFromWorld();
-            }
-        }
-
     }
 
     private void nextLevel() {
@@ -282,6 +281,10 @@ public class GameApp extends GameApplication {
             return;
         }
         inc("level", +1);
+
+        temp.put("score", geti("score"));
+        temp.put("flame", geti("flame"));
+        temp.put("bomb", geti("bomb"));
         setLevel();
     }
 
