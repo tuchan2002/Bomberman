@@ -15,7 +15,7 @@ public class Constanst {
     public static final int ENEMY_SPEED = 80;
     public static final int TILED_SIZE = 48;
     public static final int INC_SPEED = 100;
-    public static final double TIME_LEVEL = 180.0;
+    public static final double TIME_LEVEL = 200.0;
 
 
     public enum MoveDirection {

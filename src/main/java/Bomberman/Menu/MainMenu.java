@@ -1,6 +1,7 @@
 package Bomberman.Menu;
 
 import Bomberman.GameApp;
+import Bomberman.UI.StageStartScene;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
 import com.almasb.fxgl.input.view.KeyView;
@@ -10,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static javafx.scene.input.KeyCode.*;
@@ -31,7 +33,7 @@ public class MainMenu extends FXGLMenu {
         centerTextBind(version, getAppWidth() / 2.0, 280);
 
         var menuBox = new VBox(
-                new MenuButton("New Game", () -> fireNewGame()),
+                new MenuButton("New Game", () -> newGame()),
                 new MenuButton("Control", () -> instruct()),
                 new MenuButton("Sound", () -> setSoundEnabled()),
                 new MenuButton("Exit", () -> fireExit())
@@ -65,5 +67,15 @@ public class MainMenu extends FXGLMenu {
         } else {
             showMessage("Sound disabled!");
         }
+    }
+
+    public void newGame() {
+        fireNewGame();
+
+        getGameTimer().runOnceAfter(() -> {
+            GameApp.sound_enabled = !GameApp.sound_enabled;
+            getSettings().setGlobalMusicVolume(GameApp.sound_enabled ? 0.3 : 0.0);
+            getSceneService().pushSubScene(new StageStartScene());
+        }, Duration.millis(10));
     }
 }

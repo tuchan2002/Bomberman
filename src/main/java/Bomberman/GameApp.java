@@ -6,6 +6,7 @@ import Bomberman.Components.Enemy.Enemy3;
 import Bomberman.Components.Enemy.Enemy4;
 import Bomberman.Menu.GameMenu;
 import Bomberman.Menu.MainMenu;
+import Bomberman.UI.StageStartScene;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
@@ -41,8 +42,8 @@ public class GameApp extends GameApplication {
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
 
-        gameSettings.setFullScreenAllowed(true);
-        gameSettings.setFullScreenFromStart(true);
+//        gameSettings.setFullScreenAllowed(true);
+//        gameSettings.setFullScreenFromStart(true);
 
         gameSettings.setIntroEnabled(false);
         gameSettings.setGameMenuEnabled(true);
@@ -68,6 +69,7 @@ public class GameApp extends GameApplication {
         getGameWorld().addEntityFactory(new GameFactory());
         nextLevel();
         spawn("background");
+
     }
 
     private Entity getPlayer() {
@@ -136,15 +138,16 @@ public class GameApp extends GameApplication {
             }
         }, KeyCode.SPACE);
 
-//        getInput().addAction(new UserAction("develop") {
-//            @Override
-//            protected void onActionBegin() {
-//                getPlayerComponent().setBombInvalidation(true);
-//                getGameScene().getViewport().fade(() -> {
-//                    nextLevel();
-//                });
-//            }
-//        }, KeyCode.V);
+        getInput().addAction(new UserAction("develop") {
+            @Override
+            protected void onActionBegin() {
+                getPlayerComponent().setBombInvalidation(true);
+                nextLevel();
+                sound_enabled = !sound_enabled;
+                getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
+                getSceneService().pushSubScene(new StageStartScene());
+            }
+        }, KeyCode.V);
     }
 
     @Override
@@ -160,10 +163,11 @@ public class GameApp extends GameApplication {
                 if (entityGroup.getSize() == 0) {
                     play("next_level.wav");
                     getPlayerComponent().setBombInvalidation(true);
-                    getGameScene().getViewport().fade(() -> {
-                        nextLevel();
-                    });
 
+                    nextLevel();
+                    sound_enabled = !sound_enabled;
+                    getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
+                    getSceneService().pushSubScene(new StageStartScene());
                 }
 
             }
