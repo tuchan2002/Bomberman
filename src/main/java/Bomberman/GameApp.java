@@ -2,8 +2,10 @@ package Bomberman;
 
 import Bomberman.Components.Enemy.Enemy1;
 import Bomberman.Components.Enemy.Enemy2;
-import Bomberman.Menu.BombermanGameMenu;
-import Bomberman.Menu.BombermanMenu;
+import Bomberman.Components.Enemy.Enemy3;
+import Bomberman.Components.Enemy.Enemy4;
+import Bomberman.Menu.GameMenu;
+import Bomberman.Menu.MainMenu;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
@@ -38,22 +40,23 @@ public class GameApp extends GameApplication {
         gameSettings.setHeight(SCENE_HEIGHT);
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
+
         gameSettings.setFullScreenAllowed(true);
         gameSettings.setFullScreenFromStart(true);
 
         gameSettings.setIntroEnabled(false);
         gameSettings.setGameMenuEnabled(true);
         gameSettings.setMainMenuEnabled(true);
-        gameSettings.setFontUI("Quinquefive-Ea6d4.ttf");
+        gameSettings.setFontUI("game_font.ttf");
         gameSettings.setSceneFactory(new SceneFactory() {
             @Override
             public FXGLMenu newMainMenu() {
-                return new BombermanMenu();
+                return new MainMenu();
             }
 
             @Override
             public FXGLMenu newGameMenu() {
-                return new BombermanGameMenu();
+                return new GameMenu();
             }
 
         });
@@ -67,66 +70,81 @@ public class GameApp extends GameApplication {
         spawn("background");
     }
 
-    private static Entity getPlayer() {
+    private Entity getPlayer() {
         return getGameWorld().getSingleton(GameType.PLAYER);
     }
+
+    private PlayerComponent getPlayerComponent() {
+        return getPlayer().getComponent(PlayerComponent.class);
+    }
+
 
     @Override
     protected void initInput() {
         getInput().addAction(new UserAction("Move Up") {
             @Override
             protected void onAction() {
-                getPlayer().getComponent(PlayerComponent.class).up();
+                getPlayerComponent().up();
             }
 
             @Override
             protected void onActionEnd() {
-                getPlayer().getComponent(PlayerComponent.class).stop();
+                getPlayerComponent().stop();
             }
         }, KeyCode.W);
 
         getInput().addAction(new UserAction("Move Down") {
             @Override
             protected void onAction() {
-                getPlayer().getComponent(PlayerComponent.class).down();
+                getPlayerComponent().down();
             }
 
             @Override
             protected void onActionEnd() {
-                getPlayer().getComponent(PlayerComponent.class).stop();
+                getPlayerComponent().stop();
             }
         }, KeyCode.S);
 
         getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                getPlayer().getComponent(PlayerComponent.class).left();
+                getPlayerComponent().left();
             }
 
             @Override
             protected void onActionEnd() {
-                getPlayer().getComponent(PlayerComponent.class).stop();
+                getPlayerComponent().stop();
             }
         }, KeyCode.A);
 
         getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                getPlayer().getComponent(PlayerComponent.class).right();
+                getPlayerComponent().right();
             }
 
             @Override
             protected void onActionEnd() {
-                getPlayer().getComponent(PlayerComponent.class).stop();
+                getPlayerComponent().stop();
             }
         }, KeyCode.D);
 
         getInput().addAction(new UserAction("Place Bomb") {
             @Override
             protected void onActionBegin() {
-                getPlayer().getComponent(PlayerComponent.class).placeBomb(geti("flame"));
+                getPlayerComponent().placeBomb(geti("flame"));
             }
         }, KeyCode.SPACE);
+
+//        getInput().addAction(new UserAction("develop") {
+//            @Override
+//            protected void onActionBegin() {
+//                getPlayerComponent().setBombInvalidation(true);
+//                getGameScene().getViewport().fade(() -> {
+//                    nextLevel();
+//                });
+//            }
+//        }, KeyCode.V);
     }
 
     @Override
@@ -137,9 +155,11 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.DOOR) {
             @Override
             protected void onCollisionBegin(Entity player, Entity door) {
-                var entityGroup = getGameWorld().getGroup(GameType.ENEMY1, GameType.ENEMY2);
+                var entityGroup = getGameWorld().getGroup(GameType.ENEMY1,
+                        GameType.ENEMY2, GameType.ENEMY3, GameType.ENEMY4);
                 if (entityGroup.getSize() == 0) {
                     play("next_level.wav");
+                    getPlayerComponent().setBombInvalidation(true);
                     getGameScene().getViewport().fade(() -> {
                         nextLevel();
                     });
@@ -148,11 +168,12 @@ public class GameApp extends GameApplication {
 
             }
         });
+
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY1) {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
                 if (enemy.getComponent(Enemy1.class).getCurrentMoveDir() != MoveDirection.DIE
-                        && getPlayer().getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
+                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
                     play("slash.wav");
                     onPlayerDied();
                 }
@@ -162,19 +183,40 @@ public class GameApp extends GameApplication {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
                 if (enemy.getComponent(Enemy2.class).getCurrentMoveDir() != MoveDirection.DIE
-                        && getPlayer().getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
+                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
                     play("slash.wav");
                     onPlayerDied();
                 }
             }
         });
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.FIRE) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY3) {
             @Override
             protected void onCollisionBegin(Entity player, Entity enemy) {
-                if (getPlayer().getComponent(PlayerComponent.class).getPlayerSkin() == PlayerSkin.NORMAL
-                        && getPlayer().getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
-                    System.out.println("die");
+                if (enemy.getComponent(Enemy3.class).getCurrentMoveDir() != MoveDirection.DIE
+                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
+                    play("slash.wav");
+                    onPlayerDied();
+                }
+            }
+        });
+
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY4) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity enemy) {
+                if (enemy.getComponent(Enemy4.class).getCurrentMoveDir() != MoveDirection.DIE
+                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
+                    play("slash.wav");
+                    onPlayerDied();
+                }
+            }
+        });
+
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.FLAME) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity flame) {
+                if (getPlayerComponent().getPlayerSkin() == PlayerSkin.NORMAL
+                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
                     onPlayerDied();
                 }
             }
@@ -254,12 +296,13 @@ public class GameApp extends GameApplication {
 
     public void onPlayerDied() {
         play("playerDie.wav");
-        getPlayer().getComponent(PlayerComponent.class).setCurrentMoveDir(MoveDirection.DIE);
+        getPlayerComponent().setCurrentMoveDir(MoveDirection.DIE);
+        getPlayerComponent().setBombInvalidation(true);
         getGameTimer().runOnceAfter(() -> {
             getGameScene().getViewport().fade(() -> {
                 setLevel();
             });
-        }, Duration.seconds(0.9));
+        }, Duration.seconds(2));
     }
 
     private void setLevel() {
@@ -285,6 +328,7 @@ public class GameApp extends GameApplication {
         temp.put("score", geti("score"));
         temp.put("flame", geti("flame"));
         temp.put("bomb", geti("bomb"));
+
         setLevel();
     }
 

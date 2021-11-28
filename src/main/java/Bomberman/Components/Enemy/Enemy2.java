@@ -44,14 +44,14 @@ public class Enemy2 extends Enemy {
                 enemy2.getComponent(Enemy2.class).turn();
             }
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.ENEMY2) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.FLAME, GameType.ENEMY2) {
 
             @Override
-            protected void onCollisionBegin(Entity fire, Entity enemy2) {
+            protected void onCollisionBegin(Entity flame, Entity enemy2) {
                 enemy2.getComponent(Enemy2.class).die();
                 getGameTimer().runOnceAfter(() -> {
                     enemy2.removeFromWorld();
-                }, Duration.seconds(1.5));
+                }, Duration.seconds(2.4));
             }
         });
 
@@ -107,12 +107,13 @@ public class Enemy2 extends Enemy {
     }
 
     private double getRandomSpeed() {
-        double x = Math.random() > 0.5 ? 1 : 1.6;
+        double x = Math.random() > 0.5 ? 1 : 2;
         double speed = Math.random() > 0.5 ? ENEMY_SPEED * x : -ENEMY_SPEED * x;
 
         return speed;
     }
 
+    @Override
     public void die() {
         dx = 0;
         dy = 0;

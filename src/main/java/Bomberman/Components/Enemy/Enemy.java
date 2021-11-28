@@ -56,9 +56,13 @@ public abstract class Enemy extends Component {
         }
     }
 
+    public abstract void die();
+
+    public void setCurrentMoveDir(MoveDirection currentMoveDir) {
+        this.currentMoveDir = currentMoveDir;
+    }
+
     public MoveDirection getCurrentMoveDir() {
         return currentMoveDir;
     }
-
-    public abstract void die();
 }

@@ -42,10 +42,10 @@ public class Enemy1 extends Enemy {
             }
         });
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.ENEMY1) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.FLAME, GameType.ENEMY1) {
 
             @Override
-            protected void onCollisionBegin(Entity fire, Entity enemy1) {
+            protected void onCollisionBegin(Entity flame, Entity enemy1) {
                 enemy1.getComponent(Enemy1.class).die();
                 getGameTimer().runOnceAfter(() -> {
                     enemy1.removeFromWorld();
@@ -107,10 +107,15 @@ public class Enemy1 extends Enemy {
         return Math.random() > 0.5 ? ENEMY_SPEED : -ENEMY_SPEED;
     }
 
+    @Override
     public void die() {
         dx = 0;
         dy = 0;
         currentMoveDir = MoveDirection.DIE;
     }
 
+    public void setDxDy(double dx, double dy) {
+        this.dx = dx;
+        this.dy = dy;
+    }
 }

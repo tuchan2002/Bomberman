@@ -2,6 +2,8 @@ package Bomberman;
 
 import Bomberman.Components.Enemy.Enemy1;
 import Bomberman.Components.Enemy.Enemy2;
+import Bomberman.Components.Enemy.Enemy3;
+import Bomberman.Components.Enemy.Enemy4;
 import Bomberman.Components.FlameComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -85,9 +87,10 @@ public class GameFactory implements EntityFactory {
         bd.setFixedRotation(true);
         bd.setType(BodyType.DYNAMIC);
         physics.setBodyDef(bd);
+
         return entityBuilder(data)
                 .type(GameType.PLAYER)
-                .viewWithBBox(new Rectangle(40, 40, Color.TRANSPARENT))
+                .bbox(new HitBox(new Point2D(2, 2), BoundingShape.circle(20)))
                 .with(physics)
                 .with(new PlayerComponent())
                 .with(new CollidableComponent(true))
@@ -99,7 +102,7 @@ public class GameFactory implements EntityFactory {
     public Entity newEnemy1(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.ENEMY1)
-                .viewWithBBox(new Circle(24, 24, 21, Color.TRANSPARENT))
+                .bbox(new HitBox(new Point2D(5, 5), BoundingShape.box(38, 38)))
                 .with(new Enemy1())
                 .with(new CollidableComponent(true))
                 .build();
@@ -109,8 +112,28 @@ public class GameFactory implements EntityFactory {
     public Entity newEnemy2(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.ENEMY2)
-                .viewWithBBox(new Circle(24, 24, 21, Color.TRANSPARENT))
+                .bbox(new HitBox(new Point2D(5, 5), BoundingShape.box(38, 38)))
                 .with(new Enemy2())
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("enemy3")
+    public Entity newEnemy3(SpawnData data) {
+        return entityBuilder(data)
+                .type(GameType.ENEMY3)
+                .bbox(new HitBox(new Point2D(5, 5), BoundingShape.box(38, 38)))
+                .with(new Enemy3())
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("enemy4")
+    public Entity newEnemy4(SpawnData data) {
+        return entityBuilder(data)
+                .type(GameType.ENEMY4)
+                .bbox(new HitBox(new Point2D(5, 5), BoundingShape.box(38, 38)))
+                .with(new Enemy4())
                 .with(new CollidableComponent(true))
                 .build();
     }
@@ -119,18 +142,28 @@ public class GameFactory implements EntityFactory {
     public Entity newBomb(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.BOMB)
-                .viewWithBBox(new Circle(24, 24, 24, Color.TRANSPARENT))
-                .with(new BombComponent())
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
+                .bbox(new HitBox(new Point2D(2, 2), BoundingShape.circle(22)))
+                .with(new BombComponent())
                 .with(new CollidableComponent(true))
                 .zIndex(-1)
                 .build();
     }
 
-    @Spawns("fire")
-    public Entity newFire(SpawnData data) {
+    @Spawns("virtual_bomb")
+    public Entity newVirtualBomb(SpawnData data) {
+        return FXGL.entityBuilder(data)
+                .type(GameType.VIRTUAL_BOMB)
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(48, 48)))
+                .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
+                .with(new PhysicsComponent())
+                .build();
+    }
+
+    @Spawns("flame")
+    public Entity newFlame(SpawnData data) {
         return entityBuilder(data)
-                .type(GameType.FIRE)
+                .type(GameType.FLAME)
                 .viewWithBBox(new Rectangle(TILED_SIZE - 3, TILED_SIZE - 3, Color.TRANSPARENT))
                 .with(new FlameComponent())
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))

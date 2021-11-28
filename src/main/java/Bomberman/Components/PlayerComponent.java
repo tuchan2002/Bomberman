@@ -20,6 +20,7 @@ public class PlayerComponent extends Component {
     private MoveDirection currentMoveDir = MoveDirection.STOP;
     private PhysicsComponent physics;
 
+    private boolean bombInvalidation = false;
     private int bombsPlaced = 0;
     private final int FRAME_SIZE = 45;
     private PlayerSkin playerSkin;
@@ -30,8 +31,8 @@ public class PlayerComponent extends Component {
     private AnimationChannel animDie;
 
     public PlayerComponent() {
-        PhysicsWorld physics = getPhysicsWorld();
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_FLAMES) {
+        PhysicsWorld physicsWorld = getPhysicsWorld();
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_FLAMES) {
 
             @Override
             protected void onCollisionBegin(Entity player, Entity powerup) {
@@ -41,7 +42,7 @@ public class PlayerComponent extends Component {
             }
         });
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_BOMBS) {
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_BOMBS) {
             @Override
             protected void onCollisionBegin(Entity player, Entity powerup) {
                 powerup.removeFromWorld();
@@ -50,7 +51,7 @@ public class PlayerComponent extends Component {
             }
         });
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_SPEED) {
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_SPEED) {
             @Override
             protected void onCollisionBegin(Entity player, Entity powerup) {
                 powerup.removeFromWorld();
@@ -60,8 +61,7 @@ public class PlayerComponent extends Component {
             }
         });
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_FLAMEPASS) {
-
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_FLAMEPASS) {
             @Override
             protected void onCollisionBegin(Entity player, Entity powerup) {
                 powerup.removeFromWorld();
@@ -69,6 +69,13 @@ public class PlayerComponent extends Component {
                 getGameWorld().getSingleton(GameType.PLAYER)
                         .getComponent(PlayerComponent.class)
                         .setSkin(PlayerSkin.FLAME_PASS);
+            }
+        });
+
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.BOMB) {
+            @Override
+            protected void onCollisionEnd(Entity player, Entity bomb) {
+                System.out.println(bomb);
             }
         });
 
@@ -84,7 +91,7 @@ public class PlayerComponent extends Component {
     private void setSkin(PlayerSkin skin) {
         playerSkin = skin;
         if (playerSkin == PlayerSkin.NORMAL) {
-            animDie = new AnimationChannel(image("player_die.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1.8), 0, 2);
+            animDie = new AnimationChannel(image("player_die.png"), 5, FRAME_SIZE, FRAME_SIZE, Duration.seconds(3), 0, 4);
 
             animIdleDown = new AnimationChannel(image("player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
             animIdleRight = new AnimationChannel(image("player_right.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
@@ -96,7 +103,7 @@ public class PlayerComponent extends Component {
             animWalkUp = new AnimationChannel(image("player_up.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
             animWalkLeft = new AnimationChannel(image("player_left.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
         } else if (playerSkin == PlayerSkin.FLAME_PASS) {
-            animDie = new AnimationChannel(image("player_die.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(1.8), 0, 2);
+            animDie = new AnimationChannel(image("player_die.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(3), 0, 2);
 
             animIdleDown = new AnimationChannel(image("gold_player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
             animIdleRight = new AnimationChannel(image("gold_player_right.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
@@ -195,26 +202,31 @@ public class PlayerComponent extends Component {
     }
 
     public void placeBomb(int flames) {
-        if (bombsPlaced == geti("bomb")) {
-            return;
+        if (currentMoveDir != MoveDirection.DIE) {
+            if (bombsPlaced == geti("bomb")) {
+                return;
+            }
+            bombsPlaced++;
+
+            int bombLocationX = (int) (entity.getX() % TILED_SIZE > TILED_SIZE / 2
+                    ? entity.getX() + TILED_SIZE - entity.getX() % TILED_SIZE + 1
+                    : entity.getX() - entity.getX() % TILED_SIZE + 1);
+            int bombLocationY = (int) (entity.getY() % TILED_SIZE > TILED_SIZE / 2
+                    ? entity.getY() + TILED_SIZE - entity.getY() % TILED_SIZE + 1
+                    : entity.getY() - entity.getY() % TILED_SIZE + 1);
+
+            Entity bomb = spawn("bomb", new SpawnData(bombLocationX, bombLocationY));
+            play("place_bomb.wav");
+            FXGL.getGameTimer().runOnceAfter(() -> {
+                if (!bombInvalidation) {
+                    bomb.getComponent(BombComponent.class).explode(flames);
+                    play("buzz.wav");
+                } else {
+                    bomb.removeFromWorld();
+                }
+                bombsPlaced--;
+            }, Duration.seconds(2.1));
         }
-        bombsPlaced++;
-
-        int bombLocationX = (int) (entity.getX() % TILED_SIZE > TILED_SIZE / 2
-                ? entity.getX() + TILED_SIZE - entity.getX() % TILED_SIZE + 1
-                : entity.getX() - entity.getX() % TILED_SIZE + 1);
-        int bombLocationY = (int) (entity.getY() % TILED_SIZE > TILED_SIZE / 2
-                ? entity.getY() + TILED_SIZE - entity.getY() % TILED_SIZE + 1
-                : entity.getY() - entity.getY() % TILED_SIZE + 1);
-
-        Entity bomb = spawn("bomb", new SpawnData(bombLocationX, bombLocationY));
-
-        play("place_bomb.wav");
-        FXGL.getGameTimer().runOnceAfter(() -> {
-            bomb.getComponent(BombComponent.class).explode(flames);
-            play("buzz.wav");
-            bombsPlaced--;
-        }, Duration.seconds(2.1));
     }
 
     public void powerupSpeed() {
@@ -234,5 +246,13 @@ public class PlayerComponent extends Component {
 
     public void setCurrentMoveDir(MoveDirection currentMoveDir) {
         this.currentMoveDir = currentMoveDir;
+    }
+
+    public boolean isBombInvalidation() {
+        return bombInvalidation;
+    }
+
+    public void setBombInvalidation(boolean bombInvalidation) {
+        this.bombInvalidation = bombInvalidation;
     }
 }

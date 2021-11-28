@@ -20,23 +20,23 @@ public class FlameComponent extends Component {
     public FlameComponent() {
         PhysicsWorld physics = getPhysicsWorld();
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.WALL) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.FLAME, GameType.WALL) {
 
             @Override
-            protected void onCollisionBegin(Entity fire, Entity wall) {
-                fire.removeFromWorld();
+            protected void onCollisionBegin(Entity flame, Entity wall) {
+                flame.removeFromWorld();
             }
         });
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.FIRE, GameType.BRICK) {
+        physics.addCollisionHandler(new CollisionHandler(GameType.FLAME, GameType.BRICK) {
 
             @Override
-            protected void onCollisionBegin(Entity fire, Entity brick) {
-                Entity bBreak = spawn("brick_break", new SpawnData(brick.getX(), brick.getY()));
+            protected void onCollisionBegin(Entity flame, Entity brick) {
+                Entity brickBreak = spawn("brick_break", new SpawnData(brick.getX(), brick.getY()));
                 brick.removeFromWorld();
-                fire.removeFromWorld();
+                flame.removeFromWorld();
                 getGameTimer().runOnceAfter(() -> {
-                    bBreak.removeFromWorld();
+                    brickBreak.removeFromWorld();
                 }, Duration.seconds(0.4));
                 inc("score", 10);
             }

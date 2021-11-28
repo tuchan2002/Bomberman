@@ -1,10 +1,12 @@
 package Bomberman.Components;
 
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.CollisionHandler;
 import Bomberman.GameType;
+import com.almasb.fxgl.physics.PhysicsWorld;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
@@ -17,14 +19,25 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 public class BombComponent extends Component {
     private AnimatedTexture texture;
     private AnimationChannel animation;
-    private ArrayList<Entity> listFire = new ArrayList<Entity>();
+    private ArrayList<Entity> listFlame = new ArrayList<Entity>();
+
+    private Entity virtualBomb;
 
     public BombComponent() {
-        animation = new AnimationChannel(image("bomb.png"), 3, TILED_SIZE, TILED_SIZE,  Duration.seconds(0.3), 0, 2);
+        PhysicsWorld physicsWorld = getPhysicsWorld();
+        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.BOMB) {
+            @Override
+            protected void onCollisionEnd(Entity player, Entity bomb) {
+                virtualBomb = spawn("virtual_bomb", new SpawnData(bomb.getX(), bomb.getY()));
+            }
+        });
+
+        animation = new AnimationChannel(image("bomb.png"), 3, TILED_SIZE, TILED_SIZE, Duration.seconds(0.3), 0, 2);
 
         texture = new AnimatedTexture(animation);
         texture.loop();
     }
+
     @Override
     public void onAdded() {
         entity.getViewComponent().addChild(texture);
@@ -32,20 +45,21 @@ public class BombComponent extends Component {
 
     public void explode(int flames) {
         for (int i = 1; i <= flames; i++) {
-            listFire.add(spawn("fire", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY())));
-            listFire.add(spawn("fire", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY())));
-            listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i)));
-            listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY() - TILED_SIZE * i)));
+            listFlame.add(spawn("flame", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY())));
+            listFlame.add(spawn("flame", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY())));
+            listFlame.add(spawn("flame", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i)));
+            listFlame.add(spawn("flame", new SpawnData(entity.getX(), entity.getY() - TILED_SIZE * i)));
         }
-        listFire.add(spawn("fire", new SpawnData(entity.getX(), entity.getY())));
+        listFlame.add(spawn("flame", new SpawnData(entity.getX(), entity.getY())));
 
         getGameTimer().runOnceAfter(() -> {
-            for (int i = 0; i < listFire.size(); i++) {
-                listFire.get(i).removeFromWorld();
+            for (int i = 0; i < listFlame.size(); i++) {
+                listFlame.get(i).removeFromWorld();
             }
-        }, Duration.seconds(0.4));
-
-
+        }, Duration.seconds(0.3));
+        if(virtualBomb != null) {
+            virtualBomb.removeFromWorld();
+        }
         entity.removeFromWorld();
     }
 

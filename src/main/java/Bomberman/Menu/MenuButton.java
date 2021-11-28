@@ -20,7 +20,6 @@ public class MenuButton extends Parent {
         setOnMouseClicked(e -> action.run());
 
         setPickOnBounds(true);
-
         getChildren().add(text);
     }
 }
