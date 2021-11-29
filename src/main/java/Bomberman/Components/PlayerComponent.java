@@ -220,7 +220,7 @@ public class PlayerComponent extends Component {
             FXGL.getGameTimer().runOnceAfter(() -> {
                 if (!bombInvalidation) {
                     bomb.getComponent(BombComponent.class).explode(flames);
-                    play("buzz.wav");
+                    play("explosion.wav");
                 } else {
                     bomb.removeFromWorld();
                 }
@@ -232,7 +232,7 @@ public class PlayerComponent extends Component {
     public void powerupSpeed() {
         getGameTimer().runOnceAfter(() -> {
             inc("speed", -INC_SPEED);
-        }, Duration.seconds(8));
+        }, Duration.seconds(6));
     }
 
 

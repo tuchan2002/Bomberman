@@ -15,26 +15,34 @@ import javafx.util.Duration;
 import static Bomberman.Constants.Constanst.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
-public class StageStartScene extends SubScene {
-    public StageStartScene() {
-        play("stage_start.wav");
+public class CongratulationsScene extends SubScene {
+    public CongratulationsScene() {
+        play("ending.wav");
 
         var background = new Rectangle(SCENE_WIDTH, SCENE_HEIGHT, Color.color(0, 0, 0, 1));
 
-        var title = getUIFactoryService().newText("Stage " + geti("level"), Color.WHITE, 40);
+        var title = getUIFactoryService().newText("CONGRATULATIONS !!!\n\n\n\n    GOOD BYE", Color.WHITE, 40);
         title.setStroke(Color.WHITESMOKE);
         title.setStrokeWidth(1.5);
         title.setEffect(new Bloom(0.6));
-        title.setX(SCENE_WIDTH / 3);
-        title.setY(SCENE_HEIGHT / 2);
+        title.setX(SCENE_WIDTH / 6);
+        title.setY(SCENE_HEIGHT / 3);
         getContentRoot().getChildren().addAll(background, title);
 
         animationBuilder()
-                .onFinished(() -> popSubScene())
-                .duration(Duration.seconds(4))
-                .fade(getContentRoot())
-                .from(1)
-                .to(1)
+                .onFinished(() -> {
+                    animationBuilder()
+                            .onFinished(() -> popSubScene())
+                            .duration(Duration.seconds(7))
+                            .scale(title)
+                            .from(new Point2D(1.05,1.05))
+                            .to(new Point2D(1,1))
+                            .buildAndPlay(this);
+                })
+                .duration(Duration.seconds(7))
+                .scale(title)
+                .from(new Point2D(1,1))
+                .to(new Point2D(1.05,1.05))
                 .buildAndPlay(this);
     }
 
@@ -42,6 +50,6 @@ public class StageStartScene extends SubScene {
         GameApp.sound_enabled = !GameApp.sound_enabled;
         getSettings().setGlobalMusicVolume(GameApp.sound_enabled ? 0.3 : 0.0);
         getSceneService().popSubScene();
+        getGameController().gotoMainMenu();
     }
-
 }

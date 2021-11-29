@@ -19,7 +19,6 @@ import static javafx.scene.input.KeyCode.*;
 public class MainMenu extends FXGLMenu {
     public MainMenu() {
         super(MenuType.MAIN_MENU);
-
         ImageView background = new ImageView();
         background.setImage(new Image("assets/textures/background_demo.png"));
 

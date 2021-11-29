@@ -6,6 +6,7 @@ import Bomberman.Components.Enemy.Enemy3;
 import Bomberman.Components.Enemy.Enemy4;
 import Bomberman.Menu.GameMenu;
 import Bomberman.Menu.MainMenu;
+import Bomberman.UI.CongratulationsScene;
 import Bomberman.UI.StageStartScene;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -16,6 +17,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.CollisionHandler;
+import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import Bomberman.Components.PlayerComponent;
 import javafx.scene.control.Label;
@@ -42,8 +44,8 @@ public class GameApp extends GameApplication {
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
 
-//        gameSettings.setFullScreenAllowed(true);
-//        gameSettings.setFullScreenFromStart(true);
+        gameSettings.setFullScreenAllowed(true);
+        gameSettings.setFullScreenFromStart(true);
 
         gameSettings.setIntroEnabled(false);
         gameSettings.setGameMenuEnabled(true);
@@ -61,7 +63,7 @@ public class GameApp extends GameApplication {
             }
 
         });
-        gameSettings.setDeveloperMenuEnabled(true);
+//        gameSettings.setDeveloperMenuEnabled(true);
     }
 
     @Override
@@ -138,16 +140,20 @@ public class GameApp extends GameApplication {
             }
         }, KeyCode.SPACE);
 
-        getInput().addAction(new UserAction("develop") {
-            @Override
-            protected void onActionBegin() {
-                getPlayerComponent().setBombInvalidation(true);
-                nextLevel();
-                sound_enabled = !sound_enabled;
-                getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
-                getSceneService().pushSubScene(new StageStartScene());
-            }
-        }, KeyCode.V);
+//        getInput().addAction(new UserAction("develop") {
+//            @Override
+//            protected void onActionBegin() {
+//                getPlayerComponent().setBombInvalidation(true);
+//                sound_enabled = !sound_enabled;
+//                getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
+//                play("next_level.wav");
+//                getGameTimer().runOnceAfter(()->{
+//                    sound_enabled = !sound_enabled;
+//                    getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
+//                    nextLevel();
+//                },Duration.seconds(4));
+//            }
+//        }, KeyCode.V);
     }
 
     @Override
@@ -155,21 +161,19 @@ public class GameApp extends GameApplication {
         PhysicsWorld physics = getPhysicsWorld();
         physics.setGravity(0, 0);
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.DOOR) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity door) {
-                var entityGroup = getGameWorld().getGroup(GameType.ENEMY1,
-                        GameType.ENEMY2, GameType.ENEMY3, GameType.ENEMY4);
-                if (entityGroup.getSize() == 0) {
-                    play("next_level.wav");
-                    getPlayerComponent().setBombInvalidation(true);
-
-                    nextLevel();
+        onCollisionOneTimeOnly(GameType.PLAYER, GameType.DOOR, (player,door) -> {
+            var entityGroup = getGameWorld().getGroup(GameType.ENEMY1,
+                    GameType.ENEMY2, GameType.ENEMY3, GameType.ENEMY4);
+            if (entityGroup.getSize() == 0) {
+                getPlayerComponent().setBombInvalidation(true);
+                sound_enabled = !sound_enabled;
+                getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
+                play("next_level.wav");
+                getGameTimer().runOnceAfter(() -> {
                     sound_enabled = !sound_enabled;
                     getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
-                    getSceneService().pushSubScene(new StageStartScene());
-                }
-
+                    nextLevel();
+                }, Duration.seconds(4));
             }
         });
 
@@ -178,7 +182,6 @@ public class GameApp extends GameApplication {
             protected void onCollisionBegin(Entity player, Entity enemy) {
                 if (enemy.getComponent(Enemy1.class).getCurrentMoveDir() != MoveDirection.DIE
                         && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
-                    play("slash.wav");
                     onPlayerDied();
                 }
             }
@@ -188,7 +191,6 @@ public class GameApp extends GameApplication {
             protected void onCollisionBegin(Entity player, Entity enemy) {
                 if (enemy.getComponent(Enemy2.class).getCurrentMoveDir() != MoveDirection.DIE
                         && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
-                    play("slash.wav");
                     onPlayerDied();
                 }
             }
@@ -199,7 +201,6 @@ public class GameApp extends GameApplication {
             protected void onCollisionBegin(Entity player, Entity enemy) {
                 if (enemy.getComponent(Enemy3.class).getCurrentMoveDir() != MoveDirection.DIE
                         && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
-                    play("slash.wav");
                     onPlayerDied();
                 }
             }
@@ -210,7 +211,6 @@ public class GameApp extends GameApplication {
             protected void onCollisionBegin(Entity player, Entity enemy) {
                 if (enemy.getComponent(Enemy4.class).getCurrentMoveDir() != MoveDirection.DIE
                         && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
-                    play("slash.wav");
                     onPlayerDied();
                 }
             }
@@ -242,7 +242,8 @@ public class GameApp extends GameApplication {
         inc("levelTime", -tpf);
 
         if (getd("levelTime") <= 0.0) {
-            showMessage("you lose");
+            showMessage("Time Up !!!");
+            onPlayerDied();
             set("levelTime", TIME_LEVEL);
         }
     }
@@ -299,11 +300,15 @@ public class GameApp extends GameApplication {
     }
 
     public void onPlayerDied() {
-        play("playerDie.wav");
+        sound_enabled = !sound_enabled;
+        getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
+        play("player_die.wav");
         getPlayerComponent().setCurrentMoveDir(MoveDirection.DIE);
         getPlayerComponent().setBombInvalidation(true);
         getGameTimer().runOnceAfter(() -> {
             getGameScene().getViewport().fade(() -> {
+                sound_enabled = !sound_enabled;
+                getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
                 setLevel();
             });
         }, Duration.seconds(2));
@@ -324,16 +329,26 @@ public class GameApp extends GameApplication {
 
     private void nextLevel() {
         if (geti("level") == MAX_LEVEL) {
-            showMessage("Win !!!");
+            sound_enabled = !sound_enabled;
+            getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
+            getSceneService().pushSubScene(new CongratulationsScene());
             return;
         }
         inc("level", +1);
+        if (geti("level") > 1) {
+            System.out.println(geti("level"));
+            sound_enabled = !sound_enabled;
+            getSettings().setGlobalMusicVolume(sound_enabled ? 0.3 : 0.0);
+            getSceneService().pushSubScene(new StageStartScene());
+        }
+
 
         temp.put("score", geti("score"));
         temp.put("flame", geti("flame"));
         temp.put("bomb", geti("bomb"));
 
         setLevel();
+
     }
 
     public static void main(String[] args) {
