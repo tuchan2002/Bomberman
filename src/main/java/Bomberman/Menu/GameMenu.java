@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import static Bomberman.Constants.Constanst.*;
-import static Bomberman.Menu.MainMenu.setSoundEnabled;
+import static Bomberman.Sounds.SoundEffect.setSoundEnabled;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGL.centerTextBind;
 

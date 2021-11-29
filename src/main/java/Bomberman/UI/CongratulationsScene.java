@@ -1,18 +1,14 @@
 package Bomberman.UI;
 
-import Bomberman.GameApp;
-import com.almasb.fxgl.animation.Interpolators;
-import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.scene.SubScene;
 import javafx.geometry.Point2D;
 import javafx.scene.effect.Bloom;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import static Bomberman.Constants.Constanst.*;
+import static Bomberman.Sounds.SoundEffect.turnOnMusic;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class CongratulationsScene extends SubScene {
@@ -47,8 +43,7 @@ public class CongratulationsScene extends SubScene {
     }
 
     public void popSubScene() {
-        GameApp.sound_enabled = !GameApp.sound_enabled;
-        getSettings().setGlobalMusicVolume(GameApp.sound_enabled ? 0.3 : 0.0);
+        turnOnMusic();
         getSceneService().popSubScene();
         getGameController().gotoMainMenu();
     }

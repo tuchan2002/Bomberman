@@ -12,7 +12,7 @@ import static com.almasb.fxgl.dsl.FXGL.getGameTimer;
 import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
 
 public class Enemy4 extends Enemy {
-    private double dx = -ENEMY_SPEED * 2.25;
+    private double dx = -ENEMY_SPEED * 2;
     private double dy = 0;
 
     public Enemy4() {
@@ -105,7 +105,7 @@ public class Enemy4 extends Enemy {
     }
 
     private double getRandomSpeed() {
-        double speed = Math.random() > 0.5 ? ENEMY_SPEED * 2.25 : -ENEMY_SPEED * 2.25;
+        double speed = Math.random() > 0.5 ? ENEMY_SPEED * 2 : -ENEMY_SPEED * 2;
 
         return speed;
     }

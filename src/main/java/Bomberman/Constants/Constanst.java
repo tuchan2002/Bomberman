@@ -16,6 +16,7 @@ public class Constanst {
     public static final int TILED_SIZE = 48;
     public static final int INC_SPEED = 100;
     public static final double TIME_LEVEL = 220.0;
+    public static final double MAX_VOLUME = 0.3;
 
 
     public enum MoveDirection {
