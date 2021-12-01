@@ -14,7 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 import static Bomberman.Constants.Constanst.*;
-import static Bomberman.Sounds.SoundEffect.setSoundEnabled;
+import static Bomberman.Sounds.SoundEffect.setSoundSwitch;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGL.centerTextBind;
 
@@ -43,7 +43,7 @@ public class GameMenu extends FXGLMenu {
         var menuBox = new VBox(
                 new MenuButton("Resume", () -> fireResume()),
                 new MenuButton("Menu", () -> fireExitToMainMenu()),
-                new MenuButton("Sounds", () -> setSoundEnabled()),
+                new MenuButton("Sound", () -> setSoundSwitch()),
                 new MenuButton("Exit", () -> fireExit())
         );
 

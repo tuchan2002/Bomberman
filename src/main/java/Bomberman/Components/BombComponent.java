@@ -28,7 +28,9 @@ public class BombComponent extends Component {
         physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.BOMB) {
             @Override
             protected void onCollisionEnd(Entity player, Entity bomb) {
-                virtualBomb = spawn("virtual_bomb", new SpawnData(bomb.getX(), bomb.getY()));
+                if (entity != null) {
+                    virtualBomb = spawn("virtual_bomb", new SpawnData(bomb.getX(), bomb.getY()));
+                }
             }
         });
 
@@ -57,7 +59,7 @@ public class BombComponent extends Component {
                 listFlame.get(i).removeFromWorld();
             }
         }, Duration.seconds(0.3));
-        if(virtualBomb != null) {
+        if (virtualBomb != null) {
             virtualBomb.removeFromWorld();
         }
         entity.removeFromWorld();

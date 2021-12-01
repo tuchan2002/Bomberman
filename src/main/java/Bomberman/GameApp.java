@@ -62,7 +62,7 @@ public class GameApp extends GameApplication {
             }
 
         });
-//        gameSettings.setDeveloperMenuEnabled(true);
+        gameSettings.setDeveloperMenuEnabled(true);
     }
 
     @Override

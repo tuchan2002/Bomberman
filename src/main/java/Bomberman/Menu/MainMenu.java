@@ -12,7 +12,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import static Bomberman.Sounds.SoundEffect.setSoundEnabled;
+import static Bomberman.Sounds.SoundEffect.setSoundSwitch;
 import static Bomberman.Sounds.SoundEffect.turnOffMusic;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static javafx.scene.input.KeyCode.*;
@@ -35,7 +35,7 @@ public class MainMenu extends FXGLMenu {
         var menuBox = new VBox(
                 new MenuButton("New Game", () -> newGame()),
                 new MenuButton("Control", () -> instruct()),
-                new MenuButton("Sound", () -> setSoundEnabled()),
+                new MenuButton("Sound", () -> setSoundSwitch()),
                 new MenuButton("Exit", () -> fireExit())
         );
 

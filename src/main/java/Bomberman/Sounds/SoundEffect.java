@@ -46,7 +46,7 @@ public class SoundEffect {
         }
     }
 
-    public static void setSoundEnabled() {
+    public static void setSoundSwitch() {
         if (sound_enabled) {
             mute();
             showMessage("Sound disabled!");
