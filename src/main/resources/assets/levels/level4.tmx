@@ -157,7 +157,7 @@
   <object id="149" type="brick" x="672" y="528" width="48" height="48"/>
   <object id="151" type="brick" x="1008" y="432" width="48" height="48"/>
   <object id="152" type="brick" x="528" y="528" width="48" height="48"/>
-  <object id="153" type="enemy3" x="194.25" y="435.75" width="42" height="42"/>
+  <object id="153" type="enemy5" x="194.25" y="435.75" width="42" height="42"/>
   <object id="159" type="enemy1" x="1299" y="241" width="42" height="42"/>
   <object id="160" type="brick" x="1152" y="144" width="48" height="48"/>
   <object id="161" type="brick" x="336" y="480" width="48" height="48"/>
@@ -174,6 +174,6 @@
   <object id="179" type="brick" x="288" y="528" width="48" height="48"/>
   <object id="180" type="enemy2" x="531.5" y="147.5" width="42" height="42"/>
   <object id="181" type="enemy1" x="915.75" y="434.25" width="42" height="42"/>
-  <object id="182" type="powerup_flames" x="724.182" y="627.909" width="40" height="40"/>
+  <object id="182" type="powerup_bombs" x="724.182" y="627.909" width="40" height="40"/>
  </objectgroup>
 </map>

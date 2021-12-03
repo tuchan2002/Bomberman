@@ -52,20 +52,4 @@ public class Enemy1 extends Enemy {
         });
     }
 
-    @Override
-    public void onUpdate(double tpf) {
-        super.onUpdate(tpf);
-    }
-
-    @Override
-    public void die() {
-        dx = 0;
-        dy = 0;
-        currentMoveDir = MoveDirection.DIE;
-    }
-
-    public void setDxDy(double dx, double dy) {
-        this.dx = dx;
-        this.dy = dy;
-    }
 }

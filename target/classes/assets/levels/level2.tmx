@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="3" nextobjectid="164">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="3" nextobjectid="167">
  <tileset firstgid="1" name="classic" tilewidth="48" tileheight="48" tilecount="256" columns="16">
   <image source="classic.png" width="768" height="768"/>
  </tileset>
@@ -154,10 +154,13 @@
   <object id="153" type="brick" x="48" y="240" width="48" height="48"/>
   <object id="154" type="brick" x="144" y="192" width="48" height="48"/>
   <object id="157" type="brick" x="48" y="576" width="48" height="48"/>
-  <object id="158" type="enemy3" x="386.5" y="628" width="42" height="42"/>
+  <object id="158" type="enemy3" x="434.417" y="434.333" width="42" height="42"/>
   <object id="159" type="enemy2" x="435" y="147" width="42" height="42"/>
   <object id="160" type="brick" x="624" y="144" width="48" height="48"/>
   <object id="161" type="enemy3" x="1108" y="385.917" width="42" height="42"/>
   <object id="162" type="brick" x="1104" y="624" width="48" height="48"/>
+  <object id="164" type="enemy2" x="291" y="626.667" width="42" height="42"/>
+  <object id="165" type="brick" x="96" y="432" width="48" height="48"/>
+  <object id="166" type="brick" x="432" y="240" width="48" height="48"/>
  </objectgroup>
 </map>

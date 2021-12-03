@@ -67,9 +67,9 @@ public class Enemy5 extends Enemy {
         int cellY = (int) (player.getY() / TILED_SIZE);
         int enemyCellY = (int) (entity.getY() / TILED_SIZE);
         int enemyCellX = (int) (entity.getX() / TILED_SIZE);
-        if (getEntity().distance(player) < TILED_SIZE * 6) {
+        if (getEntity().distance(player) < TILED_SIZE * 4) {
             if (check == true && player.getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
-                speedFactor = 1.5;
+                speedFactor = 1.25;
                 if (dx == 0) {
                     if (enemyCellY == cellY) {
                         if (player.getX() > entity.getX()) {
@@ -107,13 +107,6 @@ public class Enemy5 extends Enemy {
 
 
         super.onUpdate(tpf);
-    }
-
-    @Override
-    public void die() {
-        dx = 0;
-        dy = 0;
-        currentMoveDir = Constanst.MoveDirection.DIE;
     }
 
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="3" nextobjectid="145">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="3" nextobjectid="150">
  <tileset firstgid="1" name="classic" tilewidth="48" tileheight="48" tilecount="256" columns="16">
   <image source="classic.png" width="768" height="768"/>
  </tileset>
@@ -155,5 +155,10 @@
   <object id="142" type="brick" x="480" y="144" width="48" height="48"/>
   <object id="143" type="brick" x="720" y="480" width="48" height="48"/>
   <object id="144" type="powerup_speed" x="916.25" y="533" width="40" height="40"/>
+  <object id="145" type="brick" x="480" y="240" width="48" height="48"/>
+  <object id="146" type="brick" x="528" y="240" width="48" height="48"/>
+  <object id="147" type="brick" x="432" y="240" width="48" height="48"/>
+  <object id="148" type="brick" x="144" y="480" width="48" height="48"/>
+  <object id="149" type="enemy1" x="434.667" y="435.333" width="42" height="42"/>
  </objectgroup>
 </map>

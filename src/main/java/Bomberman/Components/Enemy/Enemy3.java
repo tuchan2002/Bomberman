@@ -46,26 +46,4 @@ public class Enemy3 extends Enemy {
         physics.addCollisionHandler(new FlameEnemy3Handler());
     }
 
-    @Override
-    public void onUpdate(double tpf) {
-
-        super.onUpdate(tpf);
-    }
-
-
-    @Override
-    public void die() {
-        dx = 0;
-        dy = 0;
-        currentMoveDir = Constanst.MoveDirection.DIE;
-    }
-
-    public double getDx() {
-        return dx;
-    }
-
-    public double getDy() {
-        return dy;
-    }
-
 }

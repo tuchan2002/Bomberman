@@ -56,21 +56,8 @@ public class Enemy2 extends Enemy {
     }
 
     @Override
-    public void onUpdate(double tpf) {
-        super.onUpdate(tpf);
-    }
-
-    @Override
     public void turn() {
         super.turn();
-        speedFactor = Math.random() > 0.5 ? 1 : 2;
+        speedFactor = Math.random() > 0.6 ? 1 : 2;
     }
-
-    @Override
-    public void die() {
-        dx = 0;
-        dy = 0;
-        currentMoveDir = MoveDirection.DIE;
-    }
-
 }

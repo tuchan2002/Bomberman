@@ -111,7 +111,24 @@ public abstract class Enemy extends Component {
         return Math.random() > 0.5 ? ENEMY_SPEED : -ENEMY_SPEED;
     }
 
-    public abstract void die();
+    public void die() {
+        dx = 0;
+        dy = 0;
+        currentMoveDir = MoveDirection.DIE;
+    }
+
+    public void setDxDy(double dx, double dy) {
+        this.dx = dx;
+        this.dy = dy;
+    }
+
+    public double getDx() {
+        return dx;
+    }
+
+    public double getDy() {
+        return dy;
+    }
 
     public void setCurrentMoveDir(MoveDirection currentMoveDir) {
         this.currentMoveDir = currentMoveDir;

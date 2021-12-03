@@ -106,7 +106,7 @@
   <object id="85" type="brick" x="1056" y="240" width="48" height="48"/>
   <object id="86" type="brick" x="1152" y="240" width="48" height="48"/>
   <object id="89" type="powerup_speed" x="388" y="628.666" width="40" height="40"/>
-  <object id="91" type="powerup_bombs" x="772.667" y="340" width="40" height="40"/>
+  <object id="91" type="powerup_flames" x="772.667" y="340" width="40" height="40"/>
   <object id="93" type="wall" x="1248" y="192" width="48" height="48"/>
   <object id="94" type="wall" x="1248" y="288" width="48" height="48"/>
   <object id="95" type="wall" x="1248" y="384" width="48" height="48"/>

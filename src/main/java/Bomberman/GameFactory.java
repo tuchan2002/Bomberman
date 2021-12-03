@@ -142,6 +142,7 @@ public class GameFactory implements EntityFactory {
                 .bbox(new HitBox(new Point2D(5, 5), BoundingShape.box(38, 38)))
                 .with(new Enemy5())
                 .with(new CollidableComponent(true))
+                .zIndex(1)
                 .build();
     }
 
