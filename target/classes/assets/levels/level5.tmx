@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="3" nextobjectid="168">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="3" nextobjectid="170">
  <tileset firstgid="1" name="classic" tilewidth="48" tileheight="48" tilecount="256" columns="16">
   <image source="classic.png" width="768" height="768"/>
  </tileset>
@@ -89,8 +89,8 @@
   <object id="67" type="wall" x="384" y="576" width="48" height="48"/>
   <object id="68" type="wall" x="288" y="576" width="48" height="48"/>
   <object id="69" type="wall" x="192" y="576" width="48" height="48"/>
-  <object id="70" type="enemy2" x="676.333" y="340.333" width="42" height="42"/>
-  <object id="71" type="enemy1" x="627.667" y="580.333" width="42" height="42"/>
+  <object id="70" type="enemy1" x="676.333" y="340.333" width="42" height="42"/>
+  <object id="71" type="enemy2" x="627.667" y="580.333" width="42" height="42"/>
   <object id="72" type="enemy3" x="1204.33" y="386.333" width="42" height="42"/>
   <object id="73" type="brick" x="144" y="192" width="48" height="48"/>
   <object id="74" type="brick" x="192" y="240" width="48" height="48"/>
@@ -98,7 +98,6 @@
   <object id="77" type="brick" x="288" y="240" width="48" height="48"/>
   <object id="78" type="brick" x="288" y="336" width="48" height="48"/>
   <object id="79" type="brick" x="336" y="192" width="48" height="48"/>
-  <object id="80" type="brick" x="336" y="144" width="48" height="48"/>
   <object id="81" type="brick" x="1104" y="192" width="48" height="48"/>
   <object id="82" type="brick" x="768" y="432" width="48" height="48"/>
   <object id="83" type="brick" x="816" y="384" width="48" height="48"/>
@@ -112,7 +111,6 @@
   <object id="95" type="wall" x="1248" y="384" width="48" height="48"/>
   <object id="96" type="wall" x="1248" y="480" width="48" height="48"/>
   <object id="97" type="wall" x="1248" y="576" width="48" height="48"/>
-  <object id="98" type="brick" x="1056" y="432" width="48" height="48"/>
   <object id="99" type="brick" x="960" y="432" width="48" height="48"/>
   <object id="100" type="brick" x="1008" y="336" width="48" height="48"/>
   <object id="101" type="brick" x="912" y="528" width="48" height="48"/>
@@ -128,7 +126,6 @@
   <object id="112" type="brick" x="1296" y="432" width="48" height="48"/>
   <object id="113" type="enemy4" x="1394.67" y="338" width="42" height="42"/>
   <object id="114" type="brick" x="96" y="432" width="48" height="48"/>
-  <object id="115" type="brick" x="48" y="432" width="48" height="48"/>
   <object id="116" type="brick" x="144" y="384" width="48" height="48"/>
   <object id="117" type="brick" x="192" y="528" width="48" height="48"/>
   <object id="118" type="brick" x="240" y="480" width="48" height="48"/>
@@ -141,8 +138,6 @@
   <object id="127" type="brick" x="816" y="144" width="48" height="48"/>
   <object id="128" type="brick" x="816" y="192" width="48" height="48"/>
   <object id="129" type="brick" x="720" y="240" width="48" height="48"/>
-  <object id="130" type="brick" x="1200" y="144" width="48" height="48"/>
-  <object id="131" type="brick" x="1248" y="144" width="48" height="48"/>
   <object id="132" type="brick" x="1104" y="144" width="48" height="48"/>
   <object id="134" type="brick" x="1248" y="528" width="48" height="48"/>
   <object id="137" type="brick" x="1104" y="528" width="48" height="48"/>
@@ -151,8 +146,6 @@
   <object id="141" type="brick" x="576" y="336" width="48" height="48"/>
   <object id="142" type="brick" x="480" y="144" width="48" height="48"/>
   <object id="143" type="brick" x="720" y="480" width="48" height="48"/>
-  <object id="144" type="brick" x="48" y="240" width="48" height="48"/>
-  <object id="146" type="brick" x="48" y="336" width="48" height="48"/>
   <object id="149" type="brick" x="240" y="144" width="48" height="48"/>
   <object id="151" type="brick" x="48" y="624" width="48" height="48"/>
   <object id="152" type="brick" x="384" y="624" width="48" height="48"/>
@@ -163,10 +156,12 @@
   <object id="160" type="brick" x="1104" y="624" width="48" height="48"/>
   <object id="161" type="brick" x="1344" y="624" width="48" height="48"/>
   <object id="162" type="brick" x="1296" y="576" width="48" height="48"/>
-  <object id="163" type="enemy3" x="243.333" y="628" width="42" height="42"/>
-  <object id="164" type="enemy4" x="242.25" y="435" width="42" height="42"/>
+  <object id="163" type="enemy4" x="243.333" y="628" width="42" height="42"/>
+  <object id="164" type="enemy3" x="242.25" y="435" width="42" height="42"/>
   <object id="165" type="powerup_speed" x="1109.33" y="147.333" width="40" height="40"/>
   <object id="166" type="brick" x="1296" y="336" width="48" height="48"/>
   <object id="167" type="enemy2" x="627" y="147.25" width="42" height="42"/>
+  <object id="168" type="brick" x="1200" y="192" width="48" height="48"/>
+  <object id="169" type="enemy5" x="1251" y="147" width="42" height="42"/>
  </objectgroup>
 </map>

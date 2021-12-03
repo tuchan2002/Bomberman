@@ -11,7 +11,7 @@ import static Bomberman.Constants.Constanst.*;
 
 public class Enemy1 extends Enemy {
     public Enemy1() {
-        super(-ENEMY_SPEED, 0, 1, "enemy1.png");
+        super(-ENEMY_SPEED, 0, 1,3, "enemy1.png");
 
         PhysicsWorld physics = getPhysicsWorld();
         physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.BRICK) {

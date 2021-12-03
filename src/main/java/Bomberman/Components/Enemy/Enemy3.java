@@ -15,7 +15,7 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class Enemy3 extends Enemy {
     public Enemy3() {
-        super(-ENEMY_SPEED, 0, 2, "enemy3.png");
+        super(-ENEMY_SPEED, 0, 2,4, "enemy3.png");
         PhysicsWorld physics = getPhysicsWorld();
         physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY3, GameType.BRICK) {
             @Override

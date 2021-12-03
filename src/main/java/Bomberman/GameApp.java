@@ -151,7 +151,7 @@ public class GameApp extends GameApplication {
                 }, Duration.seconds(4));
             }
 
-        }, KeyCode.V);
+        }, KeyCode.P);
 
     }
 
@@ -314,7 +314,7 @@ public class GameApp extends GameApplication {
         set("bomb", temp.get("bomb"));
         set("levelTime", TIME_LEVEL);
 
-        setLevelFromMap("level" + 4 + ".tmx");
+        setLevelFromMap("level" + geti("level") + ".tmx");
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, 0, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
         viewport.bindToEntity(getPlayer(), getAppWidth() / 2, getAppHeight() / 2);

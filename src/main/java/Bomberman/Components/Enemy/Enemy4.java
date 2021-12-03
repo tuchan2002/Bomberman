@@ -1,6 +1,5 @@
 package Bomberman.Components.Enemy;
 
-import Bomberman.Constants.Constanst;
 import Bomberman.GameType;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
@@ -13,7 +12,7 @@ import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
 
 public class Enemy4 extends Enemy {
     public Enemy4() {
-        super(-ENEMY_SPEED, 0,2.25, "enemy4.png");
+        super(-ENEMY_SPEED, 0, 2.25, 4.5, "enemy4.png");
         PhysicsWorld physics = getPhysicsWorld();
         physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY4, GameType.BRICK) {
             @Override
@@ -52,4 +51,9 @@ public class Enemy4 extends Enemy {
 
     }
 
+    @Override
+    public void turn() {
+        speedFactor = Math.random() > 0.8 ? 1 : 2.25;
+        super.turn();
+    }
 }

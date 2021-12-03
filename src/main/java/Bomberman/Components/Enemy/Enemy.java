@@ -15,16 +15,18 @@ public abstract class Enemy extends Component {
     protected double dx;
     protected double dy;
     protected double speedFactor;
+    private double reactionForce;
 
     protected MoveDirection currentMoveDir = Constanst.MoveDirection.LEFT;
     protected AnimatedTexture texture;
     protected AnimationChannel animDie;
     protected AnimationChannel animWalkDown, animWalkRight, animWalkUp, animWalkLeft;
 
-    public Enemy(double dx, double dy, double speedFactor, String assetName) {
+    public Enemy(double dx, double dy, double speedFactor, double reactionForce, String assetName) {
         this.dx = dx;
         this.dy = dy;
         this.speedFactor = speedFactor;
+        this.reactionForce = reactionForce;
 
         animDie = new AnimationChannel(image(assetName), 6, FRAME_SIZE, FRAME_SIZE, Duration.seconds(2.4), 0, 5);
 
@@ -67,48 +69,37 @@ public abstract class Enemy extends Component {
     }
 
     public void turn() {
+        double randomDirection = Math.random();
         if (dx < 0) {
-            entity.translateX(speedFactor * 2);
-            dx = 0;
-            dy = getRandomSpeed();
-            if (dy > 0) {
-                currentMoveDir = Constanst.MoveDirection.DOWN;
+            entity.translateX(reactionForce);
+            if (randomDirection > 0.5) {
+                turnDown();
             } else {
-                currentMoveDir = Constanst.MoveDirection.UP;
+                turnUp();
             }
         } else if (dx > 0) {
-            entity.translateX(-(speedFactor * 2));
-            dx = 0;
-            dy = getRandomSpeed();
-            if (dy > 0) {
-                currentMoveDir = Constanst.MoveDirection.DOWN;
+            entity.translateX(-reactionForce);
+            if (randomDirection > 0.5) {
+                turnDown();
             } else {
-                currentMoveDir = Constanst.MoveDirection.UP;
+                turnUp();
             }
         } else if (dy < 0.0) {
-            entity.translateY(speedFactor * 2);
-            dy = 0;
-            dx = getRandomSpeed();
-            if (dx > 0) {
-                currentMoveDir = Constanst.MoveDirection.RIGHT;
+            entity.translateY(reactionForce);
+            if (randomDirection > 0.5) {
+                turnRight();
             } else {
-                currentMoveDir = Constanst.MoveDirection.LEFT;
+                turnLeft();
             }
         } else {
-            entity.translateY(-(speedFactor * 2));
-            dy = 0;
-            dx = getRandomSpeed();
-            if (dx > 0) {
-                currentMoveDir = Constanst.MoveDirection.RIGHT;
+            entity.translateY(-reactionForce);
+            if (randomDirection > 0.5) {
+                turnRight();
             } else {
-                currentMoveDir = Constanst.MoveDirection.LEFT;
+                turnLeft();
             }
         }
 
-    }
-
-    public double getRandomSpeed() {
-        return Math.random() > 0.5 ? ENEMY_SPEED : -ENEMY_SPEED;
     }
 
     public void die() {
@@ -136,5 +127,29 @@ public abstract class Enemy extends Component {
 
     public MoveDirection getCurrentMoveDir() {
         return currentMoveDir;
+    }
+
+    public void turnLeft() {
+        currentMoveDir = MoveDirection.LEFT;
+        dx = -ENEMY_SPEED;
+        dy = 0;
+    }
+
+    public void turnRight() {
+        currentMoveDir = MoveDirection.RIGHT;
+        dx = ENEMY_SPEED;
+        dy = 0;
+    }
+
+    public void turnUp() {
+        currentMoveDir = MoveDirection.UP;
+        dx = 0;
+        dy = -ENEMY_SPEED;
+    }
+
+    public void turnDown() {
+        currentMoveDir = MoveDirection.DOWN;
+        dx = 0;
+        dy = ENEMY_SPEED;
     }
 }

@@ -1,7 +1,6 @@
 package Bomberman.Components.Enemy;
 
 import Bomberman.Components.PlayerComponent;
-import Bomberman.Constants.Constanst;
 import Bomberman.GameType;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
@@ -16,10 +15,10 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 import static Bomberman.Constants.Constanst.*;
 
 public class Enemy5 extends Enemy {
-    private boolean check = true;
+    private boolean isCatching = true;
 
     public Enemy5() {
-        super(-ENEMY_SPEED, 0, 1, "enemy5.png");
+        super(-ENEMY_SPEED, 0, 1,4, "enemy5.png");
         PhysicsWorld physics = getPhysicsWorld();
         physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY5, GameType.BRICK) {
             @Override
@@ -35,12 +34,7 @@ public class Enemy5 extends Enemy {
                 enemy.getComponent(Enemy5.class).turn();
             }
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY5, GameType.DOOR) {
-            @Override
-            protected void onCollisionBegin(Entity enemy, Entity door) {
-                enemy.getComponent(Enemy5.class).turn();
-            }
-        });
+
         physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY5, GameType.BOMB) {
             @Override
             protected void onCollisionBegin(Entity enemy, Entity door) {
@@ -62,51 +56,67 @@ public class Enemy5 extends Enemy {
 
     @Override
     public void onUpdate(double tpf) {
+        super.onUpdate(tpf);
+
         Entity player = getGameWorld().getSingleton(GameType.PLAYER);
+
+        if (currentMoveDir == MoveDirection.DIE
+                || player
+                .getComponent(PlayerComponent.class)
+                .getCurrentMoveDir() == MoveDirection.DIE) {
+            return;
+        }
+
         int cellX = (int) (player.getX() / TILED_SIZE);
         int cellY = (int) (player.getY() / TILED_SIZE);
         int enemyCellY = (int) (entity.getY() / TILED_SIZE);
         int enemyCellX = (int) (entity.getX() / TILED_SIZE);
-        if (getEntity().distance(player) < TILED_SIZE * 4) {
-            if (check == true && player.getComponent(PlayerComponent.class).getCurrentMoveDir() != MoveDirection.DIE) {
-                speedFactor = 1.25;
+        if (getEntity().distance(player) < TILED_SIZE * 5) {
+            if (isCatching == true) {
                 if (dx == 0) {
+                    if ((entity.getY() - player.getY()) * dy < 0) {
+                        speedFactor = 1.5;
+                    } else {
+                        speedFactor = 1;
+                    }
+
                     if (enemyCellY == cellY) {
                         if (player.getX() > entity.getX()) {
-                            currentMoveDir = MoveDirection.RIGHT;
-                            dx = ENEMY_SPEED;
-                            dy = 0;
+                            turnRight();
                         } else {
-                            currentMoveDir = MoveDirection.LEFT;
-                            dx = -ENEMY_SPEED;
-                            dy = 0;
+                            turnLeft();
                         }
                     }
-                } else {
+                } else if (dy == 0) {
+                    if ((entity.getX() - player.getX()) * dx < 0) {
+                        speedFactor = 1.5;
+                    } else {
+                        speedFactor = 1;
+                    }
+
                     if (enemyCellX == cellX) {
                         if (player.getY() > entity.getY()) {
-                            currentMoveDir = MoveDirection.DOWN;
-                            dx = 0;
-                            dy = ENEMY_SPEED;
+                            turnDown();
                         } else {
-                            currentMoveDir = MoveDirection.UP;
-                            dx = 0;
-                            dy = -ENEMY_SPEED;
+                            turnUp();
                         }
                     }
                 }
             } else if (dx == 0 && ((int) entity.getY() % TILED_SIZE <= 5 && (int) entity.getY() % TILED_SIZE > 0)) {
-                check = true;
+                isCatching = true;
             } else if (dy == 0 && ((int) entity.getX() % TILED_SIZE <= 5 && (int) entity.getY() % TILED_SIZE > 0)) {
-                check = true;
+                isCatching = true;
             }
         } else {
             speedFactor = 1;
-            check = true;
+            isCatching = true;
         }
 
-
-        super.onUpdate(tpf);
     }
 
+    @Override
+    public void turn() {
+        isCatching = false;
+        super.turn();
+    }
 }

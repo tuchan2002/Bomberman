@@ -155,7 +155,7 @@
   <object id="154" type="brick" x="144" y="192" width="48" height="48"/>
   <object id="157" type="brick" x="48" y="576" width="48" height="48"/>
   <object id="158" type="enemy3" x="434.417" y="434.333" width="42" height="42"/>
-  <object id="159" type="enemy2" x="435" y="147" width="42" height="42"/>
+  <object id="159" type="enemy1" x="435" y="147" width="42" height="42"/>
   <object id="160" type="brick" x="624" y="144" width="48" height="48"/>
   <object id="161" type="enemy3" x="1108" y="385.917" width="42" height="42"/>
   <object id="162" type="brick" x="1104" y="624" width="48" height="48"/>

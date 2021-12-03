@@ -131,11 +131,10 @@
   <object id="180" type="brick" x="1296" y="480" width="48" height="48"/>
   <object id="181" type="brick" x="1152" y="432" width="48" height="48"/>
   <object id="182" type="brick" x="1200" y="624" width="48" height="48"/>
-  <object id="184" type="brick" x="1056" y="336" width="48" height="48"/>
   <object id="185" type="brick" x="1056" y="432" width="48" height="48"/>
   <object id="187" type="brick" x="1344" y="528" width="48" height="48"/>
   <object id="188" type="brick" x="1392" y="576" width="48" height="48"/>
-  <object id="189" type="enemy2" x="194.25" y="627.25" width="42" height="42"/>
+  <object id="189" type="enemy5" x="194.25" y="627.25" width="42" height="42"/>
   <object id="190" type="enemy4" x="483.333" y="434.5" width="42" height="42"/>
   <object id="191" type="enemy3" x="1202.66" y="386.334" width="42" height="42"/>
   <object id="192" type="enemy4" x="1395.73" y="386.151" width="42" height="42"/>
@@ -149,7 +148,7 @@
   <object id="201" type="brick" x="528" y="576" width="48" height="48"/>
   <object id="202" type="enemy4" x="723.667" y="531" width="42" height="42"/>
   <object id="204" type="enemy3" x="914.5" y="386.333" width="42" height="42"/>
-  <object id="205" type="enemy2" x="1298.5" y="242.5" width="42" height="42"/>
+  <object id="205" type="enemy5" x="1298.5" y="242.5" width="42" height="42"/>
   <object id="207" type="enemy1" x="1251.5" y="146" width="42" height="42"/>
   <object id="208" type="brick" x="144" y="576" width="48" height="48"/>
   <object id="209" type="enemy3" x="243.333" y="531.667" width="42" height="42"/>

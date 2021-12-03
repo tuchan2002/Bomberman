@@ -162,7 +162,7 @@ public class GameFactory implements EntityFactory {
     public Entity newVirtualBomb(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(GameType.VIRTUAL_BOMB)
-                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(48, 48)))
+                .bbox(new HitBox(new Point2D(0, 0), BoundingShape.box(TILED_SIZE, TILED_SIZE)))
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new PhysicsComponent())
                 .build();
