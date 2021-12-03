@@ -12,11 +12,8 @@ import static com.almasb.fxgl.dsl.FXGL.getGameTimer;
 import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
 
 public class Enemy4 extends Enemy {
-    private double dx = -ENEMY_SPEED * 2;
-    private double dy = 0;
-
     public Enemy4() {
-        super("enemy4.png");
+        super(-ENEMY_SPEED, 0,2.25, "enemy4.png");
         PhysicsWorld physics = getPhysicsWorld();
         physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY4, GameType.BRICK) {
             @Override
@@ -57,58 +54,10 @@ public class Enemy4 extends Enemy {
 
     @Override
     public void onUpdate(double tpf) {
-        entity.translateX(dx * tpf);
-        entity.translateY(dy * tpf);
 
         super.onUpdate(tpf);
     }
 
-    public void turn() {
-        if (dx < 0) {
-            entity.translateX(4);
-            dx = 0;
-            dy = getRandomSpeed();
-            if (dy > 0) {
-                currentMoveDir = Constanst.MoveDirection.DOWN;
-            } else {
-                currentMoveDir = Constanst.MoveDirection.UP;
-            }
-        } else if (dx > 0) {
-            entity.translateX(-4);
-            dx = 0;
-            dy = getRandomSpeed();
-            if (dy > 0) {
-                currentMoveDir = Constanst.MoveDirection.DOWN;
-            } else {
-                currentMoveDir = Constanst.MoveDirection.UP;
-            }
-        } else if (dy < 0.0) {
-            entity.translateY(4);
-            dy = 0;
-            dx = getRandomSpeed();
-            if (dx > 0) {
-                currentMoveDir = Constanst.MoveDirection.RIGHT;
-            } else {
-                currentMoveDir = Constanst.MoveDirection.LEFT;
-            }
-        } else {
-            entity.translateY(-4);
-            dy = 0;
-            dx = getRandomSpeed();
-            if (dx > 0) {
-                currentMoveDir = Constanst.MoveDirection.RIGHT;
-            } else {
-                currentMoveDir = Constanst.MoveDirection.LEFT;
-            }
-        }
-
-    }
-
-    private double getRandomSpeed() {
-        double speed = Math.random() > 0.5 ? ENEMY_SPEED * 2 : -ENEMY_SPEED * 2;
-
-        return speed;
-    }
 
     @Override
     public void die() {

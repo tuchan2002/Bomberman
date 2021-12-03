@@ -90,7 +90,7 @@
   <object id="68" type="wall" x="288" y="576" width="48" height="48"/>
   <object id="69" type="wall" x="192" y="576" width="48" height="48"/>
   <object id="70" type="enemy1" x="674.583" y="146.333" width="42" height="42"/>
-  <object id="71" type="enemy1" x="627.167" y="530.833" width="42" height="42"/>
+  <object id="71" type="enemy2" x="627.167" y="530.833" width="42" height="42"/>
   <object id="72" type="enemy2" x="1204.33" y="386.333" width="42" height="42"/>
   <object id="73" type="brick" x="144" y="192" width="48" height="48"/>
   <object id="74" type="brick" x="192" y="240" width="48" height="48"/>

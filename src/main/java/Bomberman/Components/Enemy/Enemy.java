@@ -12,13 +12,20 @@ import static com.almasb.fxgl.dsl.FXGL.image;
 
 public abstract class Enemy extends Component {
     private final int FRAME_SIZE = 48;
+    protected double dx;
+    protected double dy;
+    protected double speedFactor;
 
     protected MoveDirection currentMoveDir = Constanst.MoveDirection.LEFT;
     protected AnimatedTexture texture;
     protected AnimationChannel animDie;
     protected AnimationChannel animWalkDown, animWalkRight, animWalkUp, animWalkLeft;
 
-    public Enemy(String assetName) {
+    public Enemy(double dx, double dy, double speedFactor, String assetName) {
+        this.dx = dx;
+        this.dy = dy;
+        this.speedFactor = speedFactor;
+
         animDie = new AnimationChannel(image(assetName), 6, FRAME_SIZE, FRAME_SIZE, Duration.seconds(2.4), 0, 5);
 
         animWalkDown = new AnimationChannel(image(assetName), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 3, 5);
@@ -37,6 +44,9 @@ public abstract class Enemy extends Component {
 
     @Override
     public void onUpdate(double tpf) {
+        entity.translateX((dx * speedFactor) * tpf);
+        entity.translateY((dy * speedFactor) * tpf);
+
         switch (currentMoveDir) {
             case UP:
                 texture.loopNoOverride(animWalkUp);
@@ -54,6 +64,51 @@ public abstract class Enemy extends Component {
                 texture.loopNoOverride(animDie);
                 break;
         }
+    }
+
+    public void turn() {
+        if (dx < 0) {
+            entity.translateX(speedFactor * 2);
+            dx = 0;
+            dy = getRandomSpeed();
+            if (dy > 0) {
+                currentMoveDir = Constanst.MoveDirection.DOWN;
+            } else {
+                currentMoveDir = Constanst.MoveDirection.UP;
+            }
+        } else if (dx > 0) {
+            entity.translateX(-(speedFactor * 2));
+            dx = 0;
+            dy = getRandomSpeed();
+            if (dy > 0) {
+                currentMoveDir = Constanst.MoveDirection.DOWN;
+            } else {
+                currentMoveDir = Constanst.MoveDirection.UP;
+            }
+        } else if (dy < 0.0) {
+            entity.translateY(speedFactor * 2);
+            dy = 0;
+            dx = getRandomSpeed();
+            if (dx > 0) {
+                currentMoveDir = Constanst.MoveDirection.RIGHT;
+            } else {
+                currentMoveDir = Constanst.MoveDirection.LEFT;
+            }
+        } else {
+            entity.translateY(-(speedFactor * 2));
+            dy = 0;
+            dx = getRandomSpeed();
+            if (dx > 0) {
+                currentMoveDir = Constanst.MoveDirection.RIGHT;
+            } else {
+                currentMoveDir = Constanst.MoveDirection.LEFT;
+            }
+        }
+
+    }
+
+    public double getRandomSpeed() {
+        return Math.random() > 0.5 ? ENEMY_SPEED : -ENEMY_SPEED;
     }
 
     public abstract void die();

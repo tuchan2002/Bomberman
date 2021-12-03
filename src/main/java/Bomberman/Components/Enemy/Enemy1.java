@@ -10,11 +10,9 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 import static Bomberman.Constants.Constanst.*;
 
 public class Enemy1 extends Enemy {
-    private double dx = -ENEMY_SPEED;
-    private double dy = 0;
-
     public Enemy1() {
-        super("enemy1.png");
+        super(-ENEMY_SPEED, 0, 1, "enemy1.png");
+
         PhysicsWorld physics = getPhysicsWorld();
         physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY1, GameType.BRICK) {
             @Override
@@ -56,55 +54,7 @@ public class Enemy1 extends Enemy {
 
     @Override
     public void onUpdate(double tpf) {
-        entity.translateX(dx * tpf);
-        entity.translateY(dy * tpf);
-
         super.onUpdate(tpf);
-    }
-
-    public void turn() {
-        if (dx < 0) {
-            entity.translateX(2);
-            dx = 0;
-            dy = getRandomSpeed();
-            if (dy > 0) {
-                currentMoveDir = MoveDirection.DOWN;
-            } else {
-                currentMoveDir = MoveDirection.UP;
-            }
-        } else if (dx > 0) {
-            entity.translateX(-2);
-            dx = 0;
-            dy = getRandomSpeed();
-            if (dy > 0) {
-                currentMoveDir = MoveDirection.DOWN;
-            } else {
-                currentMoveDir = MoveDirection.UP;
-            }
-        } else if (dy < 0.0) {
-            entity.translateY(2);
-            dy = 0;
-            dx = getRandomSpeed();
-            if (dx > 0) {
-                currentMoveDir = MoveDirection.RIGHT;
-            } else {
-                currentMoveDir = MoveDirection.LEFT;
-            }
-        } else {
-            entity.translateY(-2);
-            dy = 0;
-            dx = getRandomSpeed();
-            if (dx > 0) {
-                currentMoveDir = MoveDirection.RIGHT;
-            } else {
-                currentMoveDir = MoveDirection.LEFT;
-            }
-        }
-
-    }
-
-    private double getRandomSpeed() {
-        return Math.random() > 0.5 ? ENEMY_SPEED : -ENEMY_SPEED;
     }
 
     @Override

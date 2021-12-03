@@ -14,11 +14,9 @@ import static Bomberman.Constants.Constanst.*;
 import static com.almasb.fxgl.dsl.FXGL.image;
 
 public class Enemy2 extends Enemy {
-    private double dx = -ENEMY_SPEED;
-    private double dy = 0;
 
     public Enemy2() {
-        super("enemy2.png");
+        super(-ENEMY_SPEED, 0, 1, "enemy2.png");
         PhysicsWorld physics = getPhysicsWorld();
         physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.BRICK) {
             @Override
@@ -59,58 +57,13 @@ public class Enemy2 extends Enemy {
 
     @Override
     public void onUpdate(double tpf) {
-        entity.translateX(dx * tpf);
-        entity.translateY(dy * tpf);
-
         super.onUpdate(tpf);
     }
 
+    @Override
     public void turn() {
-        if (dx < 0) {
-            entity.translateX(4);
-            dx = 0;
-            dy = getRandomSpeed();
-            if (dy > 0) {
-                currentMoveDir = MoveDirection.DOWN;
-            } else {
-                currentMoveDir = MoveDirection.UP;
-            }
-        } else if (dx > 0) {
-            entity.translateX(-4);
-            dx = 0;
-            dy = getRandomSpeed();
-            if (dy > 0) {
-                currentMoveDir = MoveDirection.DOWN;
-            } else {
-                currentMoveDir = MoveDirection.UP;
-            }
-        } else if (dy < 0.0) {
-            entity.translateY(4);
-            dy = 0;
-            dx = getRandomSpeed();
-            if (dx > 0) {
-                currentMoveDir = MoveDirection.RIGHT;
-            } else {
-                currentMoveDir = MoveDirection.LEFT;
-            }
-        } else {
-            entity.translateY(-4);
-            dy = 0;
-            dx = getRandomSpeed();
-            if (dx > 0) {
-                currentMoveDir = MoveDirection.RIGHT;
-            } else {
-                currentMoveDir = MoveDirection.LEFT;
-            }
-        }
-
-    }
-
-    private double getRandomSpeed() {
-        double x = Math.random() > 0.5 ? 1 : 2;
-        double speed = Math.random() > 0.5 ? ENEMY_SPEED * x : -ENEMY_SPEED * x;
-
-        return speed;
+        super.turn();
+        speedFactor = Math.random() > 0.5 ? 1 : 2;
     }
 
     @Override

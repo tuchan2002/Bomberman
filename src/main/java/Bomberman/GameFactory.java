@@ -1,9 +1,6 @@
 package Bomberman;
 
-import Bomberman.Components.Enemy.Enemy1;
-import Bomberman.Components.Enemy.Enemy2;
-import Bomberman.Components.Enemy.Enemy3;
-import Bomberman.Components.Enemy.Enemy4;
+import Bomberman.Components.Enemy.*;
 import Bomberman.Components.FlameComponent;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
@@ -134,6 +131,16 @@ public class GameFactory implements EntityFactory {
                 .type(GameType.ENEMY4)
                 .bbox(new HitBox(new Point2D(5, 5), BoundingShape.box(38, 38)))
                 .with(new Enemy4())
+                .with(new CollidableComponent(true))
+                .build();
+    }
+
+    @Spawns("enemy5")
+    public Entity newEnemy5(SpawnData data) {
+        return entityBuilder(data)
+                .type(GameType.ENEMY5)
+                .bbox(new HitBox(new Point2D(5, 5), BoundingShape.box(38, 38)))
+                .with(new Enemy5())
                 .with(new CollidableComponent(true))
                 .build();
     }
