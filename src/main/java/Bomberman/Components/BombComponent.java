@@ -28,7 +28,7 @@ public class BombComponent extends Component {
         physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.BOMB) {
             @Override
             protected void onCollisionEnd(Entity player, Entity bomb) {
-                if (entity != null) {
+                if (entity != null && virtualBomb == null) {
                     virtualBomb = spawn("virtual_bomb", new SpawnData(bomb.getX(), bomb.getY()));
                 }
             }

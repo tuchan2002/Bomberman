@@ -1,9 +1,6 @@
 package Bomberman;
 
-import Bomberman.Components.Enemy.Enemy1;
-import Bomberman.Components.Enemy.Enemy2;
-import Bomberman.Components.Enemy.Enemy3;
-import Bomberman.Components.Enemy.Enemy4;
+import Bomberman.Components.Enemy.*;
 import Bomberman.Menu.GameMenu;
 import Bomberman.Menu.MainMenu;
 import Bomberman.UI.CongratulationsScene;
@@ -213,6 +210,15 @@ public class GameApp extends GameApplication {
             }
         });
 
+        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY5) {
+            @Override
+            protected void onCollisionBegin(Entity player, Entity enemy) {
+                if (enemy.getComponent(Enemy5.class).getCurrentMoveDir() != MoveDirection.DIE
+                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
+                    onPlayerDied();
+                }
+            }
+        });
         physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.FLAME) {
             @Override
             protected void onCollisionBegin(Entity player, Entity flame) {
