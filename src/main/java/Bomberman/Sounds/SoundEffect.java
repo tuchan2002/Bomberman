@@ -1,53 +1,52 @@
 package Bomberman.Sounds;
-
-import static Bomberman.Constants.Constanst.MAX_VOLUME;
 import static com.almasb.fxgl.dsl.FXGL.getSettings;
 import static com.almasb.fxgl.dsl.FXGL.showMessage;
 
 public class SoundEffect {
-    public static boolean sound_enabled = true;
-    public static boolean music_enabled = true;
+    public static final double MAX_VOLUME = 0.3;
+    public static boolean isSoundEnabled = true;
+    public static boolean isMusicEnabled = true;
 
     public static void turnOffMusic() {
-        if (!sound_enabled) {
+        if (!isSoundEnabled) {
             return;
         }
-        if (music_enabled) {
+        if (isMusicEnabled) {
             getSettings().setGlobalMusicVolume(0.0);
-            music_enabled = false;
+            isMusicEnabled = false;
         }
     }
 
     public static void turnOnMusic() {
-        if (!sound_enabled) {
+        if (!isSoundEnabled) {
             return;
         }
-        if (!music_enabled) {
+        if (!isMusicEnabled) {
             getSettings().setGlobalMusicVolume(MAX_VOLUME);
-            music_enabled = true;
+            isMusicEnabled = true;
         }
     }
 
     public static void mute() {
-        if (sound_enabled) {
+        if (isSoundEnabled) {
             getSettings().setGlobalSoundVolume(0.0);
             getSettings().setGlobalMusicVolume(0.0);
-            sound_enabled = false;
-            music_enabled = false;
+            isSoundEnabled = false;
+            isMusicEnabled = false;
         }
     }
 
     public static void unmute() {
-        if (!sound_enabled) {
+        if (!isSoundEnabled) {
             getSettings().setGlobalSoundVolume(MAX_VOLUME);
             getSettings().setGlobalMusicVolume(MAX_VOLUME);
-            sound_enabled = true;
-            music_enabled = true;
+            isSoundEnabled = true;
+            isMusicEnabled = true;
         }
     }
 
     public static void setSoundSwitch() {
-        if (sound_enabled) {
+        if (isSoundEnabled) {
             mute();
             showMessage("Sound disabled!");
         } else {

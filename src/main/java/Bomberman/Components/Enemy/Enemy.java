@@ -1,23 +1,23 @@
 package Bomberman.Components.Enemy;
 
-import Bomberman.Constants.Constanst;
+import Bomberman.DynamicEntityState.State;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
 
-import static Bomberman.Constants.Constanst.*;
-
+import static Bomberman.DynamicEntityState.State.*;
 import static com.almasb.fxgl.dsl.FXGL.image;
 
 public abstract class Enemy extends Component {
+    public static final int ENEMY_SPEED = 80;
     private final int FRAME_SIZE = 48;
     protected double dx;
     protected double dy;
     protected double speedFactor;
     private double reactionForce;
 
-    protected MoveDirection currentMoveDir = Constanst.MoveDirection.LEFT;
+    protected State state = LEFT;
     protected AnimatedTexture texture;
     protected AnimationChannel animDie;
     protected AnimationChannel animWalkDown, animWalkRight, animWalkUp, animWalkLeft;
@@ -49,7 +49,7 @@ public abstract class Enemy extends Component {
         entity.translateX((dx * speedFactor) * tpf);
         entity.translateY((dy * speedFactor) * tpf);
 
-        switch (currentMoveDir) {
+        switch (state) {
             case UP:
                 texture.loopNoOverride(animWalkUp);
                 break;
@@ -102,10 +102,34 @@ public abstract class Enemy extends Component {
 
     }
 
-    public void die() {
+    public void turnLeft() {
+        state = LEFT;
+        dx = -ENEMY_SPEED;
+        dy = 0;
+    }
+
+    public void turnRight() {
+        state = RIGHT;
+        dx = ENEMY_SPEED;
+        dy = 0;
+    }
+
+    public void turnUp() {
+        state = UP;
+        dx = 0;
+        dy = -ENEMY_SPEED;
+    }
+
+    public void turnDown() {
+        state = DOWN;
+        dx = 0;
+        dy = ENEMY_SPEED;
+    }
+
+    public void setStateDie() {
         dx = 0;
         dy = 0;
-        currentMoveDir = MoveDirection.DIE;
+        state = DIE;
     }
 
     public void setDxDy(double dx, double dy) {
@@ -121,35 +145,11 @@ public abstract class Enemy extends Component {
         return dy;
     }
 
-    public void setCurrentMoveDir(MoveDirection currentMoveDir) {
-        this.currentMoveDir = currentMoveDir;
+    public State getState() {
+        return state;
     }
 
-    public MoveDirection getCurrentMoveDir() {
-        return currentMoveDir;
-    }
-
-    public void turnLeft() {
-        currentMoveDir = MoveDirection.LEFT;
-        dx = -ENEMY_SPEED;
-        dy = 0;
-    }
-
-    public void turnRight() {
-        currentMoveDir = MoveDirection.RIGHT;
-        dx = ENEMY_SPEED;
-        dy = 0;
-    }
-
-    public void turnUp() {
-        currentMoveDir = MoveDirection.UP;
-        dx = 0;
-        dy = -ENEMY_SPEED;
-    }
-
-    public void turnDown() {
-        currentMoveDir = MoveDirection.DOWN;
-        dx = 0;
-        dy = ENEMY_SPEED;
+    public void setState(State state) {
+        this.state = state;
     }
 }

@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-import static Bomberman.Constants.Constanst.*;
+import static Bomberman.GameApp.*;
 import static Bomberman.Sounds.SoundEffect.setSoundSwitch;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGL.centerTextBind;
@@ -25,7 +25,7 @@ public class GameMenu extends FXGLMenu {
         shape.setOpacity(0.5);
 
         ImageView background = new ImageView();
-        background.setImage(new Image("assets/textures/background_demo_1.png"));
+        background.setImage(new Image("assets/textures/esc_background.png"));
         background.setX(200);
         background.setY(120);
         background.setEffect(new DropShadow(5, 3.5, 3.5, Color.WHITE));

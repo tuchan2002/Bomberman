@@ -1,52 +1,31 @@
 package Bomberman.Components.Enemy;
 
 import Bomberman.GameType;
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.PhysicsWorld;
 import javafx.util.Duration;
 
-import static Bomberman.Constants.Constanst.ENEMY_SPEED;
-import static com.almasb.fxgl.dsl.FXGL.getGameTimer;
-import static com.almasb.fxgl.dsl.FXGL.getPhysicsWorld;
+import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.almasb.fxgl.dsl.FXGL.onCollisionBegin;
 
 public class Enemy4 extends Enemy {
     public Enemy4() {
         super(-ENEMY_SPEED, 0, 2.25, 4.5, "enemy4.png");
-        PhysicsWorld physics = getPhysicsWorld();
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY4, GameType.BRICK) {
-            @Override
-            protected void onCollisionBegin(Entity enemy, Entity brick) {
-                enemy.getComponent(Enemy4.class).turn();
-            }
+        onCollisionBegin(GameType.ENEMY4, GameType.BRICK, (enemy4, brick) -> {
+            enemy4.getComponent(Enemy4.class).turn();
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY4, GameType.WALL) {
-            @Override
-            protected void onCollisionBegin(Entity enemy, Entity FRAME_SIZE) {
-                enemy.getComponent(Enemy4.class).turn();
-            }
+        onCollisionBegin(GameType.ENEMY4, GameType.WALL, (enemy4, wall) -> {
+            enemy4.getComponent(Enemy4.class).turn();
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY4, GameType.DOOR) {
-            @Override
-            protected void onCollisionBegin(Entity enemy, Entity door) {
-                enemy.getComponent(Enemy4.class).turn();
-            }
+        onCollisionBegin(GameType.ENEMY4, GameType.DOOR, (enemy4, door) -> {
+            enemy4.getComponent(Enemy4.class).turn();
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY4, GameType.BOMB) {
-            @Override
-            protected void onCollisionBegin(Entity enemy, Entity door) {
-                enemy.getComponent(Enemy4.class).turn();
-            }
+        onCollisionBegin(GameType.ENEMY4, GameType.BOMB, (enemy4, bomb) -> {
+            enemy4.getComponent(Enemy4.class).turn();
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.FLAME, GameType.ENEMY4) {
-
-            @Override
-            protected void onCollisionBegin(Entity flame, Entity enemy) {
-                enemy.getComponent(Enemy4.class).die();
-                getGameTimer().runOnceAfter(() -> {
-                    enemy.removeFromWorld();
-                }, Duration.seconds(2.4));
-            }
+        onCollisionBegin(GameType.ENEMY4, GameType.FLAME, (enemy4, flame) -> {
+            enemy4.getComponent(Enemy4.class).setStateDie();
+            getGameTimer().runOnceAfter(() -> {
+                enemy4.removeFromWorld();
+            }, Duration.seconds(2.4));
         });
 
     }

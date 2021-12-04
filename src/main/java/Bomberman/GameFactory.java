@@ -22,7 +22,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-import static Bomberman.Constants.Constanst.*;
+import static Bomberman.GameApp.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class GameFactory implements EntityFactory {

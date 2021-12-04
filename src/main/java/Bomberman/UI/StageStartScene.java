@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import static Bomberman.Constants.Constanst.*;
+import static Bomberman.GameApp.*;
 import static Bomberman.Sounds.SoundEffect.turnOnMusic;
 import static com.almasb.fxgl.dsl.FXGL.*;
 

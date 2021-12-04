@@ -21,7 +21,7 @@ public class MainMenu extends FXGLMenu {
     public MainMenu() {
         super(MenuType.MAIN_MENU);
         ImageView background = new ImageView();
-        background.setImage(new Image("assets/textures/background_demo.png"));
+        background.setImage(new Image("assets/textures/main_background.png"));
 
         var title = getUIFactoryService().newText(getSettings().getTitle(), Color.WHITE, 50);
         title.setStroke(Color.WHITESMOKE);

@@ -1,6 +1,6 @@
 package Bomberman.Components;
 
-import com.almasb.fxgl.dsl.FXGL;
+import Bomberman.Components.Enemy.Enemy5;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
@@ -13,29 +13,24 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-import static Bomberman.Constants.Constanst.*;
+import static Bomberman.GameApp.TILED_SIZE;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class BombComponent extends Component {
     private AnimatedTexture texture;
     private AnimationChannel animation;
-    private ArrayList<Entity> listFlame = new ArrayList<Entity>();
+    private ArrayList<Entity> listFlame = new ArrayList<>();
 
     private Entity virtualBomb;
 
     public BombComponent() {
-        PhysicsWorld physicsWorld = getPhysicsWorld();
-        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.BOMB) {
-            @Override
-            protected void onCollisionEnd(Entity player, Entity bomb) {
-                if (entity != null && virtualBomb == null) {
-                    virtualBomb = spawn("virtual_bomb", new SpawnData(bomb.getX(), bomb.getY()));
-                }
+        onCollisionEnd(GameType.PLAYER, GameType.BOMB, (player, bomb) -> {
+            if (entity != null && virtualBomb == null) {
+                virtualBomb = spawn("virtual_bomb", new SpawnData(bomb.getX(), bomb.getY()));
             }
         });
 
         animation = new AnimationChannel(image("bomb.png"), 3, TILED_SIZE, TILED_SIZE, Duration.seconds(0.3), 0, 2);
-
         texture = new AnimatedTexture(animation);
         texture.loop();
     }
@@ -59,10 +54,10 @@ public class BombComponent extends Component {
                 listFlame.get(i).removeFromWorld();
             }
         }, Duration.seconds(0.3));
+        entity.removeFromWorld();
         if (virtualBomb != null) {
             virtualBomb.removeFromWorld();
         }
-        entity.removeFromWorld();
     }
 
 }

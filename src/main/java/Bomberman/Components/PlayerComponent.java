@@ -1,27 +1,33 @@
 package Bomberman.Components;
 
+import Bomberman.DynamicEntityState.State;
 import Bomberman.GameType;
 import com.almasb.fxgl.core.math.FXGLMath;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.PhysicsWorld;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
 
+import static Bomberman.DynamicEntityState.State.*;
+import static Bomberman.GameApp.TILED_SIZE;
 import static com.almasb.fxgl.dsl.FXGL.*;
-import static Bomberman.Constants.Constanst.*;
 
 public class PlayerComponent extends Component {
-    private MoveDirection currentMoveDir = MoveDirection.STOP;
+    public static final int PLAYER_SPEED = 160;
+    public static final int BONUS_SPEED = 100;
+
+    public enum PlayerSkin {
+        NORMAL, GOLD
+    }
+
+    private State state = STOP;
     private PhysicsComponent physics;
 
     private boolean bombInvalidation = false;
-    private int bombsPlaced = 0;
+    private int bombCounter = 0;
     private final int FRAME_SIZE = 45;
     private PlayerSkin playerSkin;
 
@@ -31,52 +37,26 @@ public class PlayerComponent extends Component {
     private AnimationChannel animDie;
 
     public PlayerComponent() {
-        PhysicsWorld physicsWorld = getPhysicsWorld();
-        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_FLAMES) {
-
-            @Override
-            protected void onCollisionBegin(Entity player, Entity powerup) {
-                powerup.removeFromWorld();
-                play("powerup.wav");
-                inc("flame", 1);
-            }
+        onCollisionBegin(GameType.PLAYER, GameType.POWERUP_FLAMES, (player, powerup) -> {
+            powerup.removeFromWorld();
+            play("powerup.wav");
+            inc("flame", 1);
         });
-
-        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_BOMBS) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity powerup) {
-                powerup.removeFromWorld();
-                play("powerup.wav");
-                inc("bomb", 1);
-            }
+        onCollisionBegin(GameType.PLAYER, GameType.POWERUP_BOMBS, (player, powerup) -> {
+            powerup.removeFromWorld();
+            play("powerup.wav");
+            inc("bomb", 1);
         });
-
-        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_SPEED) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity powerup) {
-                powerup.removeFromWorld();
-                play("powerup.wav");
-                inc("speed", INC_SPEED);
-                powerupSpeed();
-            }
+        onCollisionBegin(GameType.PLAYER, GameType.POWERUP_SPEED, (player, powerup) -> {
+            powerup.removeFromWorld();
+            handlePowerUpSpeed();
         });
-
-        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.POWERUP_FLAMEPASS) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity powerup) {
-                powerup.removeFromWorld();
-                play("powerup.wav");
-                getGameWorld().getSingleton(GameType.PLAYER)
-                        .getComponent(PlayerComponent.class)
-                        .setSkin(PlayerSkin.FLAME_PASS);
-            }
-        });
-
-        physicsWorld.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.BOMB) {
-            @Override
-            protected void onCollisionEnd(Entity player, Entity bomb) {
-                System.out.println(bomb);
-            }
+        onCollisionBegin(GameType.PLAYER, GameType.POWERUP_FLAMEPASS, (player, powerup) -> {
+            powerup.removeFromWorld();
+            play("powerup.wav");
+            getGameWorld().getSingleton(GameType.PLAYER)
+                    .getComponent(PlayerComponent.class)
+                    .setSkin(PlayerSkin.GOLD);
         });
 
         setSkin(PlayerSkin.NORMAL);
@@ -102,7 +82,7 @@ public class PlayerComponent extends Component {
             animWalkRight = new AnimationChannel(image("player_right.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
             animWalkUp = new AnimationChannel(image("player_up.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
             animWalkLeft = new AnimationChannel(image("player_left.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
-        } else if (playerSkin == PlayerSkin.FLAME_PASS) {
+        } else if (playerSkin == PlayerSkin.GOLD) {
             animDie = new AnimationChannel(image("player_die.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(3), 0, 2);
 
             animIdleDown = new AnimationChannel(image("gold_player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
@@ -137,7 +117,7 @@ public class PlayerComponent extends Component {
             }
         }
 
-        switch (currentMoveDir) {
+        switch (state) {
             case UP:
                 texture.loopNoOverride(animWalkUp);
                 break;
@@ -168,45 +148,45 @@ public class PlayerComponent extends Component {
     }
 
     public void up() {
-        if (currentMoveDir != MoveDirection.DIE) {
-            currentMoveDir = MoveDirection.UP;
+        if (state != DIE) {
+            state = UP;
             physics.setVelocityY(-geti("speed"));
         }
     }
 
     public void down() {
-        if (currentMoveDir != MoveDirection.DIE) {
-            currentMoveDir = MoveDirection.DOWN;
+        if (state != DIE) {
+            state = DOWN;
             physics.setVelocityY(geti("speed"));
         }
     }
 
     public void left() {
-        if (currentMoveDir != MoveDirection.DIE) {
-            currentMoveDir = MoveDirection.LEFT;
+        if (state != DIE) {
+            state = LEFT;
             physics.setVelocityX(-geti("speed"));
         }
     }
 
     public void right() {
-        if (currentMoveDir != MoveDirection.DIE) {
-            currentMoveDir = MoveDirection.RIGHT;
+        if (state != DIE) {
+            state = RIGHT;
             physics.setVelocityX(geti("speed"));
         }
     }
 
     public void stop() {
-        if (currentMoveDir != MoveDirection.DIE) {
-            currentMoveDir = MoveDirection.STOP;
+        if (state != DIE) {
+            state = STOP;
         }
     }
 
     public void placeBomb(int flames) {
-        if (currentMoveDir != MoveDirection.DIE) {
-            if (bombsPlaced == geti("bomb")) {
+        if (state != DIE) {
+            if (bombCounter == geti("bomb")) {
                 return;
             }
-            bombsPlaced++;
+            bombCounter++;
 
             int bombLocationX = (int) (entity.getX() % TILED_SIZE > TILED_SIZE / 2
                     ? entity.getX() + TILED_SIZE - entity.getX() % TILED_SIZE + 1
@@ -217,39 +197,36 @@ public class PlayerComponent extends Component {
 
             Entity bomb = spawn("bomb", new SpawnData(bombLocationX, bombLocationY));
             play("place_bomb.wav");
-            FXGL.getGameTimer().runOnceAfter(() -> {
+            getGameTimer().runOnceAfter(() -> {
                 if (!bombInvalidation) {
                     bomb.getComponent(BombComponent.class).explode(flames);
                     play("explosion.wav");
                 } else {
                     bomb.removeFromWorld();
                 }
-                bombsPlaced--;
+                bombCounter--;
             }, Duration.seconds(2.1));
         }
     }
 
-    public void powerupSpeed() {
+    public void handlePowerUpSpeed() {
+        play("powerup.wav");
+        inc("speed", BONUS_SPEED);
         getGameTimer().runOnceAfter(() -> {
-            inc("speed", -INC_SPEED);
+            inc("speed", -BONUS_SPEED);
         }, Duration.seconds(6));
     }
-
 
     public PlayerSkin getPlayerSkin() {
         return playerSkin;
     }
 
-    public MoveDirection getCurrentMoveDir() {
-        return currentMoveDir;
+    public State getState() {
+        return state;
     }
 
-    public void setCurrentMoveDir(MoveDirection currentMoveDir) {
-        this.currentMoveDir = currentMoveDir;
-    }
-
-    public boolean isBombInvalidation() {
-        return bombInvalidation;
+    public void setState(State state) {
+        this.state = state;
     }
 
     public void setBombInvalidation(boolean bombInvalidation) {

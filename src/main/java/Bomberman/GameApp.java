@@ -13,7 +13,6 @@ import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.physics.CollisionHandler;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import Bomberman.Components.PlayerComponent;
 import javafx.scene.control.Label;
@@ -25,13 +24,27 @@ import javafx.util.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-import static Bomberman.Constants.Constanst.*;
+import static Bomberman.Components.PlayerComponent.*;
+import static Bomberman.DynamicEntityState.State.*;
 import static Bomberman.Sounds.SoundEffect.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 
 public class GameApp extends GameApplication {
-    public Map temp = new HashMap();
+    public static final int SCENE_WIDTH = 1280;
+    public static final int SCENE_HEIGHT = 720;
+    public static final int GAME_WORLD_WIDTH = 1488;
+    public static final int GAME_WORLD_HEIGHT = 720;
+    public static final String GAME_TITLE = "BOMBERMAN";
+    public static final String GAME_VERSION = "1.0";
+    public static final Double UI_FONT_SIZE = 33.0;
+    public static final int MAX_LEVEL = 6;
+    public static final int STARTING_LEVEL = 0;
+    public static final int TILED_SIZE = 48;
+    public static final double TIME_LEVEL = 280.0;
+
+    private Map temp = new HashMap();
+    private boolean isLoading;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -40,8 +53,8 @@ public class GameApp extends GameApplication {
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
 
-//        gameSettings.setFullScreenAllowed(true);
-//        gameSettings.setFullScreenFromStart(true);
+        gameSettings.setFullScreenAllowed(true);
+        gameSettings.setFullScreenFromStart(true);
 
         gameSettings.setIntroEnabled(false);
         gameSettings.setGameMenuEnabled(true);
@@ -59,7 +72,7 @@ public class GameApp extends GameApplication {
             }
 
         });
-        gameSettings.setDeveloperMenuEnabled(true);
+//        gameSettings.setDeveloperMenuEnabled(true);
     }
 
     @Override
@@ -67,7 +80,6 @@ public class GameApp extends GameApplication {
         getGameWorld().addEntityFactory(new GameFactory());
         nextLevel();
         spawn("background");
-
     }
 
     private Entity getPlayer() {
@@ -139,6 +151,7 @@ public class GameApp extends GameApplication {
         getInput().addAction(new UserAction("test") {
             @Override
             protected void onActionBegin() {
+                isLoading = true;
                 getPlayerComponent().setBombInvalidation(true);
                 turnOffMusic();
                 play("next_level.wav");
@@ -149,7 +162,6 @@ public class GameApp extends GameApplication {
             }
 
         }, KeyCode.P);
-
     }
 
     @Override
@@ -158,8 +170,9 @@ public class GameApp extends GameApplication {
         physics.setGravity(0, 0);
 
         onCollisionOneTimeOnly(GameType.PLAYER, GameType.DOOR, (player, door) -> {
+            isLoading = true;
             var entityGroup = getGameWorld().getGroup(GameType.ENEMY1,
-                    GameType.ENEMY2, GameType.ENEMY3, GameType.ENEMY4);
+                    GameType.ENEMY2, GameType.ENEMY3, GameType.ENEMY4, GameType.ENEMY5);
             if (entityGroup.getSize() == 0) {
                 getPlayerComponent().setBombInvalidation(true);
                 turnOffMusic();
@@ -171,76 +184,55 @@ public class GameApp extends GameApplication {
             }
         });
 
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY1) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity enemy) {
-                if (enemy.getComponent(Enemy1.class).getCurrentMoveDir() != MoveDirection.DIE
-                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
-                    onPlayerDied();
-                }
+        onCollisionBegin(GameType.PLAYER, GameType.ENEMY1, (player, enemy) -> {
+            if (enemy.getComponent(Enemy1.class).getState() != DIE
+                    && getPlayerComponent().getState() != DIE) {
+                onPlayerDied();
             }
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY2) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity enemy) {
-                if (enemy.getComponent(Enemy2.class).getCurrentMoveDir() != MoveDirection.DIE
-                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
-                    onPlayerDied();
-                }
+        onCollisionBegin(GameType.PLAYER, GameType.ENEMY2, (player, enemy) -> {
+            if (enemy.getComponent(Enemy2.class).getState() != DIE
+                    && getPlayerComponent().getState() != DIE) {
+                onPlayerDied();
             }
         });
-
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY3) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity enemy) {
-                if (enemy.getComponent(Enemy3.class).getCurrentMoveDir() != MoveDirection.DIE
-                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
-                    onPlayerDied();
-                }
+        onCollisionBegin(GameType.PLAYER, GameType.ENEMY3, (player, enemy) -> {
+            if (enemy.getComponent(Enemy3.class).getState() != DIE
+                    && getPlayerComponent().getState() != DIE) {
+                onPlayerDied();
             }
         });
-
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY4) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity enemy) {
-                if (enemy.getComponent(Enemy4.class).getCurrentMoveDir() != MoveDirection.DIE
-                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
-                    onPlayerDied();
-                }
+        onCollisionBegin(GameType.PLAYER, GameType.ENEMY4, (player, enemy) -> {
+            if (enemy.getComponent(Enemy4.class).getState() != DIE
+                    && getPlayerComponent().getState() != DIE) {
+                onPlayerDied();
             }
         });
-
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.ENEMY5) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity enemy) {
-                if (enemy.getComponent(Enemy5.class).getCurrentMoveDir() != MoveDirection.DIE
-                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
-                    onPlayerDied();
-                }
+        onCollisionBegin(GameType.PLAYER, GameType.ENEMY5, (player, enemy) -> {
+            if (enemy.getComponent(Enemy5.class).getState() != DIE
+                    && getPlayerComponent().getState() != DIE) {
+                onPlayerDied();
             }
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.PLAYER, GameType.FLAME) {
-            @Override
-            protected void onCollisionBegin(Entity player, Entity flame) {
-                if (getPlayerComponent().getPlayerSkin() == PlayerSkin.NORMAL
-                        && getPlayerComponent().getCurrentMoveDir() != MoveDirection.DIE) {
-                    onPlayerDied();
-                }
+        onCollisionBegin(GameType.PLAYER, GameType.FLAME, (player, flame) -> {
+            if (getPlayerComponent().getPlayerSkin() == PlayerSkin.NORMAL
+                    && getPlayerComponent().getState() != DIE) {
+                onPlayerDied();
             }
         });
-
-
     }
 
     @Override
     protected void onPreInit() {
         unmute();
         loopBGM("stage_theme.mp3");
-
     }
 
     @Override
     protected void onUpdate(double tpf) {
+        if (isLoading) {
+            return;
+        }
         inc("levelTime", -tpf);
 
         if (getd("levelTime") <= 0.0) {
@@ -255,10 +247,9 @@ public class GameApp extends GameApplication {
         vars.put("level", STARTING_LEVEL);
         vars.put("score", 0);
         vars.put("flame", 1);
-        vars.put("speed", SPEED);
+        vars.put("speed", PLAYER_SPEED);
         vars.put("bomb", 1);
         vars.put("levelTime", TIME_LEVEL);
-
     }
 
     @Override
@@ -304,7 +295,8 @@ public class GameApp extends GameApplication {
     public void onPlayerDied() {
         turnOffMusic();
         play("player_die.wav");
-        getPlayerComponent().setCurrentMoveDir(MoveDirection.DIE);
+        isLoading = true;
+        getPlayerComponent().setState(DIE);
         getPlayerComponent().setBombInvalidation(true);
         getGameTimer().runOnceAfter(() -> {
             getGameScene().getViewport().fade(() -> {
@@ -320,6 +312,7 @@ public class GameApp extends GameApplication {
         set("bomb", temp.get("bomb"));
         set("levelTime", TIME_LEVEL);
 
+        isLoading = false;
         setLevelFromMap("level" + geti("level") + ".tmx");
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, 0, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
@@ -339,13 +332,11 @@ public class GameApp extends GameApplication {
             getSceneService().pushSubScene(new StageStartScene());
         }
 
-
         temp.put("score", geti("score"));
         temp.put("flame", geti("flame"));
         temp.put("bomb", geti("bomb"));
 
         setLevel();
-
     }
 
 

@@ -3,56 +3,34 @@ package Bomberman.Components.Enemy;
 import Bomberman.Components.PlayerComponent;
 import Bomberman.GameType;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.PhysicsWorld;
-import com.almasb.fxgl.texture.AnimatedTexture;
-import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
 
+import static Bomberman.DynamicEntityState.State.DIE;
+import static Bomberman.GameApp.TILED_SIZE;
 import static com.almasb.fxgl.dsl.FXGL.*;
-import static Bomberman.Constants.Constanst.*;
-import static com.almasb.fxgl.dsl.FXGL.image;
 
 public class Enemy2 extends Enemy {
     private boolean isCatching = true;
 
     public Enemy2() {
-        super(-ENEMY_SPEED, 0, 1,3, "enemy2.png");
-        PhysicsWorld physics = getPhysicsWorld();
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.BRICK) {
-            @Override
-            protected void onCollisionBegin(Entity enemy2, Entity brick) {
-                enemy2.getComponent(Enemy2.class).turn();
-            }
+        super(-ENEMY_SPEED, 0, 1, 3, "enemy2.png");
+        onCollisionBegin(GameType.ENEMY2, GameType.BRICK, (enemy2, brick) -> {
+            enemy2.getComponent(Enemy2.class).turn();
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.WALL) {
-            @Override
-            protected void onCollisionBegin(Entity enemy2, Entity FRAME_SIZE) {
-                enemy2.getComponent(Enemy2.class).turn();
-            }
+        onCollisionBegin(GameType.ENEMY2, GameType.WALL, (enemy2, wall) -> {
+            enemy2.getComponent(Enemy2.class).turn();
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.DOOR) {
-            @Override
-            protected void onCollisionBegin(Entity enemy2, Entity door) {
-                enemy2.getComponent(Enemy2.class).turn();
-            }
+        onCollisionBegin(GameType.ENEMY2, GameType.DOOR, (enemy2, door) -> {
+            enemy2.getComponent(Enemy2.class).turn();
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.ENEMY2, GameType.BOMB) {
-            @Override
-            protected void onCollisionBegin(Entity enemy2, Entity door) {
-                enemy2.getComponent(Enemy2.class).turn();
-            }
+        onCollisionBegin(GameType.ENEMY2, GameType.BOMB, (enemy2, bomb) -> {
+            enemy2.getComponent(Enemy2.class).turn();
         });
-        physics.addCollisionHandler(new CollisionHandler(GameType.FLAME, GameType.ENEMY2) {
-
-            @Override
-            protected void onCollisionBegin(Entity flame, Entity enemy2) {
-                enemy2.getComponent(Enemy2.class).die();
-                getGameTimer().runOnceAfter(() -> {
-                    enemy2.removeFromWorld();
-                }, Duration.seconds(2.4));
-            }
+        onCollisionBegin(GameType.ENEMY2, GameType.FLAME, (enemy2, flame) -> {
+            enemy2.getComponent(Enemy2.class).setStateDie();
+            getGameTimer().runOnceAfter(() -> {
+                enemy2.removeFromWorld();
+            }, Duration.seconds(2.4));
         });
 
     }
@@ -63,15 +41,14 @@ public class Enemy2 extends Enemy {
 
         Entity player = getGameWorld().getSingleton(GameType.PLAYER);
 
-        if (currentMoveDir == MoveDirection.DIE
-                || player
+        if (state == DIE || player
                 .getComponent(PlayerComponent.class)
-                .getCurrentMoveDir() == MoveDirection.DIE) {
+                .getState() == DIE) {
             return;
         }
 
-        int cellX = (int) (player.getX() / TILED_SIZE);
-        int cellY = (int) (player.getY() / TILED_SIZE);
+        int playerCellX = (int) (player.getX() / TILED_SIZE);
+        int playerCellY = (int) (player.getY() / TILED_SIZE);
         int enemyCellY = (int) (entity.getY() / TILED_SIZE);
         int enemyCellX = (int) (entity.getX() / TILED_SIZE);
         if (getEntity().distance(player) < TILED_SIZE * 3) {
@@ -83,7 +60,7 @@ public class Enemy2 extends Enemy {
                         speedFactor = 1;
                     }
 
-                    if (enemyCellY == cellY) {
+                    if (enemyCellY == playerCellY) {
                         if (player.getX() > entity.getX()) {
                             turnRight();
                         } else {
@@ -97,7 +74,7 @@ public class Enemy2 extends Enemy {
                         speedFactor = 1;
                     }
 
-                    if (enemyCellX == cellX) {
+                    if (enemyCellX == playerCellX) {
                         if (player.getY() > entity.getY()) {
                             turnDown();
                         } else {
