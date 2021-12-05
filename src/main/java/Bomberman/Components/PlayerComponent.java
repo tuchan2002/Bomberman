@@ -71,7 +71,7 @@ public class PlayerComponent extends Component {
     private void setSkin(PlayerSkin skin) {
         playerSkin = skin;
         if (playerSkin == PlayerSkin.NORMAL) {
-            animDie = new AnimationChannel(image("player_die.png"), 5, FRAME_SIZE, FRAME_SIZE, Duration.seconds(3), 0, 4);
+            animDie = new AnimationChannel(image("player_die.png"), 5, FRAME_SIZE, FRAME_SIZE, Duration.seconds(3.5), 0, 4);
 
             animIdleDown = new AnimationChannel(image("player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
             animIdleRight = new AnimationChannel(image("player_right.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
@@ -83,7 +83,7 @@ public class PlayerComponent extends Component {
             animWalkUp = new AnimationChannel(image("player_up.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
             animWalkLeft = new AnimationChannel(image("player_left.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 2);
         } else if (playerSkin == PlayerSkin.GOLD) {
-            animDie = new AnimationChannel(image("player_die.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(3), 0, 2);
+            animDie = new AnimationChannel(image("player_die.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(3.5), 0, 4);
 
             animIdleDown = new AnimationChannel(image("gold_player_down.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);
             animIdleRight = new AnimationChannel(image("gold_player_right.png"), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 0, 0);

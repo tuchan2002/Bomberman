@@ -53,8 +53,8 @@ public class GameApp extends GameApplication {
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
 
-        gameSettings.setFullScreenAllowed(true);
-        gameSettings.setFullScreenFromStart(true);
+//        gameSettings.setFullScreenAllowed(true);
+//        gameSettings.setFullScreenFromStart(true);
 
         gameSettings.setIntroEnabled(false);
         gameSettings.setGameMenuEnabled(true);
@@ -303,7 +303,7 @@ public class GameApp extends GameApplication {
                 turnOnMusic();
                 setLevel();
             });
-        }, Duration.seconds(2));
+        }, Duration.seconds(2.1));
     }
 
     private void setLevel() {

@@ -14,7 +14,7 @@ public class FlameComponent extends Component {
     private AnimatedTexture texture;
     private AnimationChannel animationFlame;
 
-    public FlameComponent() {
+    public FlameComponent(String assetName) {
         onCollisionBegin(GameType.FLAME, GameType.WALL, (flame, wall) -> {
             flame.removeFromWorld();
         });
@@ -28,7 +28,7 @@ public class FlameComponent extends Component {
             inc("score", 10);
         });
 
-        animationFlame = new AnimationChannel(image("bomb_exploded.png"), 3, TILED_SIZE, TILED_SIZE,  Duration.seconds(0.4), 0, 2);
+        animationFlame = new AnimationChannel(image(assetName), 3, TILED_SIZE, TILED_SIZE,  Duration.seconds(0.4), 0, 2);
 
         texture = new AnimatedTexture(animationFlame);
         texture.loop();

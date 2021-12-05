@@ -42,18 +42,26 @@ public class BombComponent extends Component {
 
     public void explode(int flames) {
         for (int i = 1; i <= flames; i++) {
-            listFlame.add(spawn("flame", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY())));
-            listFlame.add(spawn("flame", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY())));
-            listFlame.add(spawn("flame", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i)));
-            listFlame.add(spawn("flame", new SpawnData(entity.getX(), entity.getY() - TILED_SIZE * i)));
+            if (i != flames) {
+                listFlame.add(spawn("horizontal_flame", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY())));
+                listFlame.add(spawn("horizontal_flame", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY())));
+                listFlame.add(spawn("vertical_flame", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i)));
+                listFlame.add(spawn("vertical_flame", new SpawnData(entity.getX(), entity.getY() - TILED_SIZE * i)));
+            } else {
+                listFlame.add(spawn("top_right_flame", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY())));
+                listFlame.add(spawn("top_left_flame", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY())));
+                listFlame.add(spawn("top_down_flame", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i)));
+                listFlame.add(spawn("top_up_flame", new SpawnData(entity.getX(), entity.getY() - TILED_SIZE * i)));
+            }
         }
-        listFlame.add(spawn("flame", new SpawnData(entity.getX(), entity.getY())));
+        listFlame.add(spawn("central_flame", new SpawnData(entity.getX(), entity.getY())));
 
         getGameTimer().runOnceAfter(() -> {
             for (int i = 0; i < listFlame.size(); i++) {
                 listFlame.get(i).removeFromWorld();
             }
-        }, Duration.seconds(0.3));
+        }, Duration.seconds(0.4));
+
         entity.removeFromWorld();
         if (virtualBomb != null) {
             virtualBomb.removeFromWorld();
