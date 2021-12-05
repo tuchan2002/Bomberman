@@ -53,8 +53,8 @@ public class GameApp extends GameApplication {
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
 
-//        gameSettings.setFullScreenAllowed(true);
-//        gameSettings.setFullScreenFromStart(true);
+        gameSettings.setFullScreenAllowed(true);
+        gameSettings.setFullScreenFromStart(true);
 
         gameSettings.setIntroEnabled(false);
         gameSettings.setGameMenuEnabled(true);
@@ -148,20 +148,20 @@ public class GameApp extends GameApplication {
             }
         }, KeyCode.SPACE);
 
-        getInput().addAction(new UserAction("test") {
-            @Override
-            protected void onActionBegin() {
-                isLoading = true;
-                getPlayerComponent().setBombInvalidation(true);
-                turnOffMusic();
-                play("next_level.wav");
-                getGameTimer().runOnceAfter(() -> {
-                    turnOnMusic();
-                    nextLevel();
-                }, Duration.seconds(4));
-            }
-
-        }, KeyCode.P);
+//        getInput().addAction(new UserAction("test") {
+//            @Override
+//            protected void onActionBegin() {
+//                isLoading = true;
+//                getPlayerComponent().setBombInvalidation(true);
+//                turnOffMusic();
+//                play("next_level.wav");
+//                getGameTimer().runOnceAfter(() -> {
+//                    turnOnMusic();
+//                    nextLevel();
+//                }, Duration.seconds(4));
+//            }
+//
+//        }, KeyCode.P);
     }
 
     @Override

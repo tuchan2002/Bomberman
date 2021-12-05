@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="3" nextobjectid="150">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="31" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="3" nextobjectid="151">
  <tileset firstgid="1" name="classic" tilewidth="48" tileheight="48" tilecount="256" columns="16">
   <image source="classic.png" width="768" height="768"/>
  </tileset>
@@ -89,8 +89,8 @@
   <object id="67" type="wall" x="384" y="576" width="48" height="48"/>
   <object id="68" type="wall" x="288" y="576" width="48" height="48"/>
   <object id="69" type="wall" x="192" y="576" width="48" height="48"/>
-  <object id="70" type="enemy1" x="674.583" y="146.333" width="42" height="42"/>
-  <object id="71" type="enemy2" x="627.167" y="530.833" width="42" height="42"/>
+  <object id="70" type="enemy1" x="627.583" y="530.666" width="42" height="42"/>
+  <object id="71" type="enemy2" x="674.985" y="146.47" width="42" height="42"/>
   <object id="72" type="enemy2" x="1204.33" y="386.333" width="42" height="42"/>
   <object id="73" type="brick" x="144" y="192" width="48" height="48"/>
   <object id="74" type="brick" x="192" y="240" width="48" height="48"/>
@@ -152,10 +152,8 @@
   <object id="138" type="brick" x="720" y="336" width="48" height="48"/>
   <object id="140" type="brick" x="720" y="288" width="48" height="48"/>
   <object id="141" type="brick" x="576" y="336" width="48" height="48"/>
-  <object id="142" type="brick" x="480" y="144" width="48" height="48"/>
   <object id="143" type="brick" x="720" y="480" width="48" height="48"/>
   <object id="144" type="powerup_speed" x="916.25" y="533" width="40" height="40"/>
-  <object id="145" type="brick" x="480" y="240" width="48" height="48"/>
   <object id="146" type="brick" x="528" y="240" width="48" height="48"/>
   <object id="147" type="brick" x="432" y="240" width="48" height="48"/>
   <object id="148" type="brick" x="144" y="480" width="48" height="48"/>

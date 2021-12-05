@@ -55,7 +55,7 @@ public class Enemy2 extends Enemy {
             if (isCatching == true) {
                 if (dx == 0) {
                     if ((entity.getY() - player.getY()) * dy < 0) {
-                        speedFactor = 1.5;
+                        speedFactor = 1.3;
                     } else {
                         speedFactor = 1;
                     }
@@ -69,7 +69,7 @@ public class Enemy2 extends Enemy {
                     }
                 } else if (dy == 0) {
                     if ((entity.getX() - player.getX()) * dx < 0) {
-                        speedFactor = 1.5;
+                        speedFactor = 1.3;
                     } else {
                         speedFactor = 1;
                     }
