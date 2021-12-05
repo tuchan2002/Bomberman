@@ -148,20 +148,20 @@ public class GameApp extends GameApplication {
             }
         }, KeyCode.SPACE);
 
-//        getInput().addAction(new UserAction("test") {
-//            @Override
-//            protected void onActionBegin() {
-//                isLoading = true;
-//                getPlayerComponent().setBombInvalidation(true);
-//                turnOffMusic();
-//                play("next_level.wav");
-//                getGameTimer().runOnceAfter(() -> {
-//                    turnOnMusic();
-//                    nextLevel();
-//                }, Duration.seconds(4));
-//            }
-//
-//        }, KeyCode.P);
+        getInput().addAction(new UserAction("test") {
+            @Override
+            protected void onActionBegin() {
+                isLoading = true;
+                getPlayerComponent().setBombInvalidation(true);
+                turnOffMusic();
+                play("next_level.wav");
+                getGameTimer().runOnceAfter(() -> {
+                    turnOnMusic();
+                    nextLevel();
+                }, Duration.seconds(4));
+            }
+
+        }, KeyCode.P);
     }
 
     @Override

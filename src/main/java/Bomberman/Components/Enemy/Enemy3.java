@@ -11,7 +11,6 @@ public class Enemy3 extends Enemy {
     public Enemy3() {
         super(-ENEMY_SPEED, 0, 2,4, "enemy3.png");
         PhysicsWorld physics = getPhysicsWorld();
-        physics.addCollisionHandler(new FlameEnemy3Handler());
 
         onCollisionBegin(GameType.ENEMY3, GameType.BRICK, (enemy3, brick) -> {
             enemy3.getComponent(Enemy3.class).turn();
@@ -25,12 +24,8 @@ public class Enemy3 extends Enemy {
         onCollisionBegin(GameType.ENEMY3, GameType.BOMB, (enemy3, bomb) -> {
             enemy3.getComponent(Enemy3.class).turn();
         });
-        onCollisionBegin(GameType.ENEMY3, GameType.FLAME, (enemy3, flame) -> {
-            enemy3.getComponent(Enemy3.class).setStateDie();
-            getGameTimer().runOnceAfter(() -> {
-                enemy3.removeFromWorld();
-            }, Duration.seconds(2.4));
-        });
+
+        physics.addCollisionHandler(new FlameEnemy3Handler());
     }
 
 }
