@@ -58,6 +58,11 @@ public class PlayerComponent extends Component {
                     .getComponent(PlayerComponent.class)
                     .setSkin(PlayerSkin.GOLD);
         });
+        onCollisionBegin(GameType.PLAYER, GameType.POWERUP_LIFE, (player, powerup) -> {
+            powerup.removeFromWorld();
+            play("powerup.wav");
+            inc("life",1);
+        });
 
         setSkin(PlayerSkin.NORMAL);
         texture = new AnimatedTexture(animIdleDown);

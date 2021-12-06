@@ -3,7 +3,7 @@ package Bomberman;
 import Bomberman.Components.Enemy.*;
 import Bomberman.Menu.GameMenu;
 import Bomberman.Menu.MainMenu;
-import Bomberman.UI.CongratulationsScene;
+import Bomberman.UI.EndingScene;
 import Bomberman.UI.StageStartScene;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
@@ -15,6 +15,8 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import Bomberman.Components.PlayerComponent;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -26,6 +28,7 @@ import java.util.Map;
 
 import static Bomberman.Components.PlayerComponent.*;
 import static Bomberman.DynamicEntityState.State.*;
+import static Bomberman.GameType.*;
 import static Bomberman.Sounds.SoundEffect.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -37,7 +40,7 @@ public class GameApp extends GameApplication {
     public static final int GAME_WORLD_HEIGHT = 720;
     public static final String GAME_TITLE = "BOMBERMAN";
     public static final String GAME_VERSION = "1.0";
-    public static final Double UI_FONT_SIZE = 33.0;
+    public static final Double UI_FONT_SIZE = 36.0;
     public static final int MAX_LEVEL = 6;
     public static final int STARTING_LEVEL = 0;
     public static final int TILED_SIZE = 48;
@@ -53,8 +56,8 @@ public class GameApp extends GameApplication {
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
 
-        gameSettings.setFullScreenAllowed(true);
-        gameSettings.setFullScreenFromStart(true);
+//        gameSettings.setFullScreenAllowed(true);
+//        gameSettings.setFullScreenFromStart(true);
 
         gameSettings.setIntroEnabled(false);
         gameSettings.setGameMenuEnabled(true);
@@ -171,8 +174,8 @@ public class GameApp extends GameApplication {
 
         onCollisionOneTimeOnly(GameType.PLAYER, GameType.DOOR, (player, door) -> {
             isLoading = true;
-            var entityGroup = getGameWorld().getGroup(GameType.ENEMY1,
-                    GameType.ENEMY2, GameType.ENEMY3, GameType.ENEMY4, GameType.ENEMY5);
+            var entityGroup = getGameWorld().getGroup(ENEMY1,
+                    ENEMY2, ENEMY3, ENEMY4, ENEMY5);
             if (entityGroup.getSize() == 0) {
                 getPlayerComponent().setBombInvalidation(true);
                 turnOffMusic();
@@ -184,7 +187,7 @@ public class GameApp extends GameApplication {
             }
         });
 
-        onCollisionBegin(GameType.PLAYER, GameType.ENEMY1, (player, enemy) -> {
+        onCollisionBegin(GameType.PLAYER, ENEMY1, (player, enemy) -> {
             if (enemy.getComponent(Enemy1.class).getState() != DIE
                     && getPlayerComponent().getState() != DIE) {
                 onPlayerDied();
@@ -245,6 +248,7 @@ public class GameApp extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("level", STARTING_LEVEL);
+        vars.put("life", 3);
         vars.put("score", 0);
         vars.put("flame", 1);
         vars.put("speed", PLAYER_SPEED);
@@ -254,42 +258,48 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        Label level = new Label();
-        level.setTextFill(Color.BLACK);
-        level.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        level.textProperty().bind(getip("level").asString("Level: %d"));
-        addUINode(level, 20, 20);
+        Label life = new Label();
+        life.setTextFill(Color.BLACK);
+        life.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
+        life.textProperty().bind(getip("life").asString("💜 %d"));
+        addUINode(life, 35, 25);
 
         Label score = new Label();
         score.setTextFill(Color.BLACK);
         score.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        score.textProperty().bind(getip("score").asString("Score: %d"));
-        addUINode(score, 200, 20);
-
+        score.textProperty().bind(getip("score").asString("💵  %d"));
+        addUINode(score, 180, 25);
 
         Label flame = new Label();
         flame.setTextFill(Color.BLACK);
         flame.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        flame.textProperty().bind(getip("flame").asString("Flame: %d"));
-        addUINode(flame, 460, 20);
+        flame.textProperty().bind(getip("flame").asString("🔥 %d"));
+        addUINode(flame, 450, 25);
 
         Label speed = new Label();
         speed.setTextFill(Color.BLACK);
         speed.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        speed.textProperty().bind(getip("speed").asString("Speed: %d"));
-        addUINode(speed, 640, 20);
+        speed.textProperty().bind(getip("speed").asString("👟  %d"));
+        addUINode(speed, 570, 25);
 
         Label bomb = new Label();
         bomb.setTextFill(Color.BLACK);
         bomb.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        bomb.textProperty().bind(getip("bomb").asString("Bomb: %d"));
-        addUINode(bomb, 870, 20);
+        bomb.textProperty().bind(getip("bomb").asString("💣 %d"));
+        addUINode(bomb, 750, 25);
+
+
+        Label enemies = new Label();
+        enemies.setTextFill(Color.BLACK);
+        enemies.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
+        enemies.textProperty().bind(getip("bomb").asString("👻 %d"));
+        FXGL.addUINode(enemies, 930, 25);
 
         Label timeLabel = new Label();
         timeLabel.setTextFill(Color.BLACK);
         timeLabel.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        timeLabel.textProperty().bind(FXGL.getdp("levelTime").asString("Time: %.0f"));
-        FXGL.addUINode(timeLabel, 1070, 20);
+        timeLabel.textProperty().bind(getdp("levelTime").asString("⏰ %.0f"));
+        FXGL.addUINode(timeLabel, 1100, 25);
     }
 
     public void onPlayerDied() {
@@ -301,7 +311,13 @@ public class GameApp extends GameApplication {
         getGameTimer().runOnceAfter(() -> {
             getGameScene().getViewport().fade(() -> {
                 turnOnMusic();
-                setLevel();
+                inc("life", -1);
+                if (geti("life") > 0) {
+                    setLevel();
+                } else {
+                    turnOffMusic();
+                    getSceneService().pushSubScene(new EndingScene("   GAME OVER !!!\n\n\n\n  DO YOUR BEST"));
+                }
             });
         }, Duration.seconds(2.1));
     }
@@ -323,7 +339,7 @@ public class GameApp extends GameApplication {
     private void nextLevel() {
         if (geti("level") == MAX_LEVEL) {
             turnOffMusic();
-            getSceneService().pushSubScene(new CongratulationsScene());
+            getSceneService().pushSubScene(new EndingScene("CONGRATULATIONS !!!\n\n\n\n    GOOD BYE"));
             return;
         }
         inc("level", +1);

@@ -11,34 +11,34 @@ import static Bomberman.GameApp.*;
 import static Bomberman.Sounds.SoundEffect.turnOnMusic;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
-public class CongratulationsScene extends SubScene {
-    public CongratulationsScene() {
+public class EndingScene extends SubScene {
+    public EndingScene(String title) {
         play("ending.wav");
 
         var background = new Rectangle(SCENE_WIDTH, SCENE_HEIGHT, Color.color(0, 0, 0, 1));
 
-        var title = getUIFactoryService().newText("CONGRATULATIONS !!!\n\n\n\n    GOOD BYE", Color.WHITE, 40);
-        title.setStroke(Color.WHITESMOKE);
-        title.setStrokeWidth(1.5);
-        title.setEffect(new Bloom(0.6));
-        title.setX(SCENE_WIDTH / 6);
-        title.setY(SCENE_HEIGHT / 3);
-        getContentRoot().getChildren().addAll(background, title);
+        var titleText = getUIFactoryService().newText(title, Color.WHITE, 40);
+        titleText.setStroke(Color.WHITESMOKE);
+        titleText.setStrokeWidth(1.5);
+        titleText.setEffect(new Bloom(0.6));
+        titleText.setX(SCENE_WIDTH / 6);
+        titleText.setY(SCENE_HEIGHT / 3);
+        getContentRoot().getChildren().addAll(background, titleText);
 
         animationBuilder()
                 .onFinished(() -> {
                     animationBuilder()
                             .onFinished(() -> popSubScene())
                             .duration(Duration.seconds(7))
-                            .scale(title)
-                            .from(new Point2D(1.05,1.05))
+                            .scale(titleText)
+                            .from(new Point2D(1.1,1.1))
                             .to(new Point2D(1,1))
                             .buildAndPlay(this);
                 })
                 .duration(Duration.seconds(7))
-                .scale(title)
+                .scale(titleText)
                 .from(new Point2D(1,1))
-                .to(new Point2D(1.05,1.05))
+                .to(new Point2D(1.1,1.1))
                 .buildAndPlay(this);
     }
 

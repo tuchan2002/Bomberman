@@ -172,18 +172,19 @@ public class GameFactory implements EntityFactory {
     public Entity newCFlame(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.FLAME)
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE-3, TILED_SIZE-3)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE - 3, TILED_SIZE - 3)))
                 .with(new FlameComponent("central_flame.png"))
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
                 .zIndex(-1)
                 .build();
     }
+
     @Spawns("top_down_flame")
     public Entity newDFlame(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.FLAME)
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE-3, TILED_SIZE-3)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE - 3, TILED_SIZE - 3)))
                 .with(new FlameComponent("top_down_flame.png"))
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
@@ -195,7 +196,7 @@ public class GameFactory implements EntityFactory {
     public Entity newUFlame(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.FLAME)
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE-3, TILED_SIZE-3)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE - 3, TILED_SIZE - 3)))
                 .with(new FlameComponent("top_up_flame.png"))
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
@@ -207,40 +208,43 @@ public class GameFactory implements EntityFactory {
     public Entity newRFlame(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.FLAME)
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE-3, TILED_SIZE-3)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE - 3, TILED_SIZE - 3)))
                 .with(new FlameComponent("top_right_flame.png"))
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
                 .zIndex(-1)
                 .build();
     }
+
     @Spawns("top_left_flame")
     public Entity newLFlame(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.FLAME)
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE-3, TILED_SIZE-3)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE - 3, TILED_SIZE - 3)))
                 .with(new FlameComponent("top_left_flame.png"))
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
                 .zIndex(-1)
                 .build();
     }
+
     @Spawns("horizontal_flame")
     public Entity newHFlame(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.FLAME)
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE-3, TILED_SIZE-3)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE - 3, TILED_SIZE - 3)))
                 .with(new FlameComponent("horizontal_flame.png"))
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
                 .zIndex(-1)
                 .build();
     }
+
     @Spawns("vertical_flame")
     public Entity newVFlame(SpawnData data) {
         return entityBuilder(data)
                 .type(GameType.FLAME)
-                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE-3, TILED_SIZE-3)))
+                .bbox(new HitBox(new Point2D(1, 1), BoundingShape.box(TILED_SIZE - 3, TILED_SIZE - 3)))
                 .with(new FlameComponent("vertical_flame.png"))
                 .atAnchored(new Point2D(0, 0), new Point2D(data.getX(), data.getY()))
                 .with(new CollidableComponent(true))
@@ -286,7 +290,7 @@ public class GameFactory implements EntityFactory {
     }
 
     @Spawns("powerup_flamepass")
-    public Entity newFlamePassItem(SpawnData data) {
+    public Entity newItem4(SpawnData data) {
         return FXGL.entityBuilder(data)
                 .type(GameType.POWERUP_FLAMEPASS)
                 .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
@@ -297,5 +301,16 @@ public class GameFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("powerup_life")
+    public Entity newItem5(SpawnData data) {
+        return entityBuilder(data)
+                .type(GameType.POWERUP_LIFE)
+                .view("powerup_life.png")
+                .bbox(new HitBox(BoundingShape.box(data.<Integer>get("width"), data.<Integer>get("height"))))
+                .with(new PhysicsComponent())
+                .with(new CollidableComponent(true))
+                .zIndex(-1)
+                .build();
+    }
 
 }
