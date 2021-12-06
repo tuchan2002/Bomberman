@@ -1,7 +1,6 @@
 package Bomberman.Components;
 
 import Bomberman.DynamicEntityState.State;
-import Bomberman.GameType;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
@@ -11,6 +10,7 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
 
+import static Bomberman.GameType.*;
 import static Bomberman.DynamicEntityState.State.*;
 import static Bomberman.GameApp.TILED_SIZE;
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -37,28 +37,28 @@ public class PlayerComponent extends Component {
     private AnimationChannel animDie;
 
     public PlayerComponent() {
-        onCollisionBegin(GameType.PLAYER, GameType.POWERUP_FLAMES, (player, powerup) -> {
+        onCollisionBegin(PLAYER, POWERUP_FLAMES, (player, powerup) -> {
             powerup.removeFromWorld();
             play("powerup.wav");
             inc("flame", 1);
         });
-        onCollisionBegin(GameType.PLAYER, GameType.POWERUP_BOMBS, (player, powerup) -> {
+        onCollisionBegin(PLAYER, POWERUP_BOMBS, (player, powerup) -> {
             powerup.removeFromWorld();
             play("powerup.wav");
             inc("bomb", 1);
         });
-        onCollisionBegin(GameType.PLAYER, GameType.POWERUP_SPEED, (player, powerup) -> {
+        onCollisionBegin(PLAYER, POWERUP_SPEED, (player, powerup) -> {
             powerup.removeFromWorld();
             handlePowerUpSpeed();
         });
-        onCollisionBegin(GameType.PLAYER, GameType.POWERUP_FLAMEPASS, (player, powerup) -> {
+        onCollisionBegin(PLAYER, POWERUP_FLAMEPASS, (player, powerup) -> {
             powerup.removeFromWorld();
             play("powerup.wav");
-            getGameWorld().getSingleton(GameType.PLAYER)
+            getGameWorld().getSingleton(PLAYER)
                     .getComponent(PlayerComponent.class)
                     .setSkin(PlayerSkin.GOLD);
         });
-        onCollisionBegin(GameType.PLAYER, GameType.POWERUP_LIFE, (player, powerup) -> {
+        onCollisionBegin(PLAYER, POWERUP_LIFE, (player, powerup) -> {
             powerup.removeFromWorld();
             play("powerup.wav");
             inc("life",1);

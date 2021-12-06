@@ -84,7 +84,7 @@ public class GameApp extends GameApplication {
     }
 
     private Entity getPlayer() {
-        return getGameWorld().getSingleton(GameType.PLAYER);
+        return getGameWorld().getSingleton(PLAYER);
     }
 
     private PlayerComponent getPlayerComponent() {
@@ -149,20 +149,20 @@ public class GameApp extends GameApplication {
             }
         }, KeyCode.SPACE);
 
-        getInput().addAction(new UserAction("test") {
-            @Override
-            protected void onActionBegin() {
-                isLoading = true;
-                getPlayerComponent().setBombInvalidation(true);
-                turnOffMusic();
-                play("next_level.wav");
-                getGameTimer().runOnceAfter(() -> {
-                    turnOnMusic();
-                    nextLevel();
-                }, Duration.seconds(4));
-            }
-
-        }, KeyCode.P);
+//        getInput().addAction(new UserAction("test") {
+//            @Override
+//            protected void onActionBegin() {
+//                isLoading = true;
+//                getPlayerComponent().setBombInvalidation(true);
+//                turnOffMusic();
+//                play("next_level.wav");
+//                getGameTimer().runOnceAfter(() -> {
+//                    turnOnMusic();
+//                    nextLevel();
+//                }, Duration.seconds(4));
+//            }
+//
+//        }, KeyCode.P);
     }
 
     @Override
@@ -170,7 +170,7 @@ public class GameApp extends GameApplication {
         PhysicsWorld physics = getPhysicsWorld();
         physics.setGravity(0, 0);
 
-        onCollisionOneTimeOnly(GameType.PLAYER, GameType.DOOR, (player, door) -> {
+        onCollisionOneTimeOnly(PLAYER, DOOR, (player, door) -> {
             isLoading = true;
             if (geti("enemies") == 0) {
                 getPlayerComponent().setBombInvalidation(true);
@@ -183,37 +183,37 @@ public class GameApp extends GameApplication {
             }
         });
 
-        onCollisionBegin(GameType.PLAYER, ENEMY1, (player, enemy) -> {
+        onCollisionBegin(PLAYER, ENEMY1, (player, enemy) -> {
             if (enemy.getComponent(Enemy1.class).getState() != DIE
                     && getPlayerComponent().getState() != DIE) {
                 onPlayerDied();
             }
         });
-        onCollisionBegin(GameType.PLAYER, GameType.ENEMY2, (player, enemy) -> {
+        onCollisionBegin(PLAYER, ENEMY2, (player, enemy) -> {
             if (enemy.getComponent(Enemy2.class).getState() != DIE
                     && getPlayerComponent().getState() != DIE) {
                 onPlayerDied();
             }
         });
-        onCollisionBegin(GameType.PLAYER, GameType.ENEMY3, (player, enemy) -> {
+        onCollisionBegin(PLAYER, ENEMY3, (player, enemy) -> {
             if (enemy.getComponent(Enemy3.class).getState() != DIE
                     && getPlayerComponent().getState() != DIE) {
                 onPlayerDied();
             }
         });
-        onCollisionBegin(GameType.PLAYER, GameType.ENEMY4, (player, enemy) -> {
+        onCollisionBegin(PLAYER, ENEMY4, (player, enemy) -> {
             if (enemy.getComponent(Enemy4.class).getState() != DIE
                     && getPlayerComponent().getState() != DIE) {
                 onPlayerDied();
             }
         });
-        onCollisionBegin(GameType.PLAYER, GameType.ENEMY5, (player, enemy) -> {
+        onCollisionBegin(PLAYER, ENEMY5, (player, enemy) -> {
             if (enemy.getComponent(Enemy5.class).getState() != DIE
                     && getPlayerComponent().getState() != DIE) {
                 onPlayerDied();
             }
         });
-        onCollisionBegin(GameType.PLAYER, GameType.FLAME, (player, flame) -> {
+        onCollisionBegin(PLAYER, FLAME, (player, flame) -> {
             if (getPlayerComponent().getPlayerSkin() == PlayerSkin.NORMAL
                     && getPlayerComponent().getState() != DIE) {
                 onPlayerDied();
@@ -255,48 +255,27 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        Label life = new Label();
-        life.setTextFill(Color.BLACK);
-        life.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        life.textProperty().bind(getip("life").asString("💜 %d"));
-        addUINode(life, 35, 25);
-
-        Label score = new Label();
-        score.setTextFill(Color.BLACK);
-        score.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        score.textProperty().bind(getip("score").asString("💵  %d"));
-        addUINode(score, 180, 25);
-
-        Label flame = new Label();
-        flame.setTextFill(Color.BLACK);
-        flame.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        flame.textProperty().bind(getip("flame").asString("🔥 %d"));
-        addUINode(flame, 450, 25);
-
-        Label speed = new Label();
-        speed.setTextFill(Color.BLACK);
-        speed.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        speed.textProperty().bind(getip("speed").asString("👟  %d"));
-        addUINode(speed, 570, 25);
-
-        Label bomb = new Label();
-        bomb.setTextFill(Color.BLACK);
-        bomb.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        bomb.textProperty().bind(getip("bomb").asString("💣 %d"));
-        addUINode(bomb, 750, 25);
-
-
-        Label enemies = new Label();
-        enemies.setTextFill(Color.BLACK);
-        enemies.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        enemies.textProperty().bind(getip("enemies").asString("👻 %d"));
-        FXGL.addUINode(enemies, 930, 25);
+        addLabelUI("level", "🚩 %d", 35, 25);
+        addLabelUI("life", "💜 %d", 160, 25);
+        addLabelUI("score", "💵  %d", 300, 25);
+        addLabelUI("flame", "🔥 %d", 560, 25);
+        addLabelUI("speed", "👟  %d", 670, 25);
+        addLabelUI("bomb", "💣 %d", 840, 25);
+        addLabelUI("enemies", "👻 %d", 1010, 25);
 
         Label timeLabel = new Label();
         timeLabel.setTextFill(Color.BLACK);
         timeLabel.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
         timeLabel.textProperty().bind(getdp("levelTime").asString("⏰ %.0f"));
-        FXGL.addUINode(timeLabel, 1100, 25);
+        FXGL.addUINode(timeLabel, 1140, 25);
+    }
+
+    public void addLabelUI(String varName, String title, double x, double y) {
+        Label text = new Label();
+        text.setTextFill(Color.BLACK);
+        text.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
+        text.textProperty().bind(getip(varName).asString(title));
+        addUINode(text, x, y);
     }
 
     public void onPlayerDied() {

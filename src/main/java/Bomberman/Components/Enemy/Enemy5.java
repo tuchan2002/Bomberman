@@ -1,7 +1,6 @@
 package Bomberman.Components.Enemy;
 
 import Bomberman.Components.PlayerComponent;
-import Bomberman.GameType;
 import com.almasb.fxgl.entity.Entity;
 import javafx.util.Duration;
 
@@ -16,21 +15,21 @@ public class Enemy5 extends Enemy {
 
     public Enemy5() {
         super(-ENEMY_SPEED, 0, 1, 4, "enemy5.png");
-        onCollisionBegin(GameType.ENEMY5, GameType.BRICK, (enemy5, brick) -> {
+        onCollisionBegin(ENEMY5, BRICK, (enemy5, brick) -> {
             if (speedFactor == 1) {
                 enemy5.getComponent(Enemy5.class).turn();
             }
         });
-        onCollisionBegin(GameType.ENEMY5, GameType.WALL, (enemy5, wall) -> {
+        onCollisionBegin(ENEMY5, WALL, (enemy5, wall) -> {
             enemy5.getComponent(Enemy5.class).turn();
         });
-        onCollisionBegin(GameType.ENEMY5, GameType.DOOR, (enemy5, door) -> {
+        onCollisionBegin(ENEMY5, DOOR, (enemy5, door) -> {
             enemy5.getComponent(Enemy5.class).turn();
         });
-        onCollisionBegin(GameType.ENEMY5, GameType.BOMB, (enemy5, bomb) -> {
+        onCollisionBegin(ENEMY5, BOMB, (enemy5, bomb) -> {
             enemy5.getComponent(Enemy5.class).turn();
         });
-        onCollisionBegin(GameType.ENEMY5, GameType.FLAME, (enemy5, flame) -> {
+        onCollisionBegin(ENEMY5, FLAME, (enemy5, flame) -> {
             enemy5.getComponent(Enemy5.class).setStateDie();
             getGameTimer().runOnceAfter(() -> {
                 enemy5.removeFromWorld();
@@ -45,7 +44,7 @@ public class Enemy5 extends Enemy {
     public void onUpdate(double tpf) {
         super.onUpdate(tpf);
 
-        Entity player = getGameWorld().getSingleton(GameType.PLAYER);
+        Entity player = getGameWorld().getSingleton(PLAYER);
 
         if (state == DIE || player
                 .getComponent(PlayerComponent.class)

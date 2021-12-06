@@ -1,8 +1,6 @@
 package Bomberman.Components.Enemy;
 
-import Bomberman.GameType;
 import javafx.util.Duration;
-
 import static Bomberman.GameType.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGL.onCollisionBegin;
@@ -10,19 +8,19 @@ import static com.almasb.fxgl.dsl.FXGL.onCollisionBegin;
 public class Enemy4 extends Enemy {
     public Enemy4() {
         super(-ENEMY_SPEED, 0, 2.25, 4.5, "enemy4.png");
-        onCollisionBegin(GameType.ENEMY4, GameType.BRICK, (enemy4, brick) -> {
+        onCollisionBegin(ENEMY4, BRICK, (enemy4, brick) -> {
             enemy4.getComponent(Enemy4.class).turn();
         });
-        onCollisionBegin(GameType.ENEMY4, GameType.WALL, (enemy4, wall) -> {
+        onCollisionBegin(ENEMY4, WALL, (enemy4, wall) -> {
             enemy4.getComponent(Enemy4.class).turn();
         });
-        onCollisionBegin(GameType.ENEMY4, GameType.DOOR, (enemy4, door) -> {
+        onCollisionBegin(ENEMY4, DOOR, (enemy4, door) -> {
             enemy4.getComponent(Enemy4.class).turn();
         });
-        onCollisionBegin(GameType.ENEMY4, GameType.BOMB, (enemy4, bomb) -> {
+        onCollisionBegin(ENEMY4, BOMB, (enemy4, bomb) -> {
             enemy4.getComponent(Enemy4.class).turn();
         });
-        onCollisionBegin(GameType.ENEMY4, GameType.FLAME, (enemy4, flame) -> {
+        onCollisionBegin(ENEMY4, FLAME, (enemy4, flame) -> {
             enemy4.getComponent(Enemy4.class).setStateDie();
             getGameTimer().runOnceAfter(() -> {
                 enemy4.removeFromWorld();
