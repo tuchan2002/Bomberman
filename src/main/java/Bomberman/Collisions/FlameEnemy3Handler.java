@@ -11,8 +11,9 @@ import javafx.util.Duration;
 
 import static Bomberman.Components.Enemy.Enemy.ENEMY_SPEED;
 import static Bomberman.DynamicEntityState.State.*;
-import static com.almasb.fxgl.dsl.FXGL.getGameTimer;
-import static com.almasb.fxgl.dsl.FXGL.spawn;
+import static Bomberman.GameType.*;
+import static com.almasb.fxgl.dsl.FXGL.*;
+import static com.almasb.fxgl.dsl.FXGL.getGameWorld;
 
 public class FlameEnemy3Handler extends CollisionHandler {
     public FlameEnemy3Handler() {
@@ -27,6 +28,8 @@ public class FlameEnemy3Handler extends CollisionHandler {
             getGameTimer().runOnceAfter(() -> {
                 onTransform(enemy);
                 enemy.removeFromWorld();
+                set("enemies", getGameWorld().getGroup(ENEMY1,
+                        ENEMY2, ENEMY3, ENEMY4, ENEMY5).getSize());
             }, Duration.seconds(2.4));
         }
     }

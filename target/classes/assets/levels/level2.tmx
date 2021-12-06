@@ -91,7 +91,6 @@
   <object id="69" type="wall" x="192" y="576" width="48" height="48"/>
   <object id="70" type="enemy2" x="676.333" y="340.333" width="42" height="42"/>
   <object id="71" type="enemy1" x="627.667" y="580.333" width="42" height="42"/>
-  <object id="72" type="enemy2" x="1204.33" y="386.333" width="42" height="42"/>
   <object id="77" type="brick" x="288" y="240" width="48" height="48"/>
   <object id="78" type="brick" x="288" y="336" width="48" height="48"/>
   <object id="80" type="brick" x="336" y="144" width="48" height="48"/>
@@ -122,7 +121,7 @@
   <object id="110" type="brick" x="1344" y="144" width="48" height="48"/>
   <object id="111" type="brick" x="1296" y="240" width="48" height="48"/>
   <object id="112" type="brick" x="1296" y="432" width="48" height="48"/>
-  <object id="113" type="enemy1" x="1394.67" y="338" width="42" height="42"/>
+  <object id="113" type="enemy2" x="1394.67" y="338" width="42" height="42"/>
   <object id="115" type="brick" x="48" y="432" width="48" height="48"/>
   <object id="116" type="brick" x="144" y="384" width="48" height="48"/>
   <object id="117" type="brick" x="192" y="528" width="48" height="48"/>

@@ -7,6 +7,7 @@ import javafx.util.Duration;
 
 import static Bomberman.DynamicEntityState.State.DIE;
 import static Bomberman.GameApp.TILED_SIZE;
+import static Bomberman.GameType.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class Enemy2 extends Enemy {
@@ -30,6 +31,8 @@ public class Enemy2 extends Enemy {
             enemy2.getComponent(Enemy2.class).setStateDie();
             getGameTimer().runOnceAfter(() -> {
                 enemy2.removeFromWorld();
+                set("enemies", getGameWorld().getGroup(ENEMY1,
+                        ENEMY2, ENEMY3, ENEMY4, ENEMY5).getSize());
             }, Duration.seconds(2.4));
         });
 

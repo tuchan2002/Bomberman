@@ -15,8 +15,6 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import Bomberman.Components.PlayerComponent;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -56,8 +54,8 @@ public class GameApp extends GameApplication {
         gameSettings.setTitle(GAME_TITLE);
         gameSettings.setVersion(GAME_VERSION);
 
-//        gameSettings.setFullScreenAllowed(true);
-//        gameSettings.setFullScreenFromStart(true);
+        gameSettings.setFullScreenAllowed(true);
+        gameSettings.setFullScreenFromStart(true);
 
         gameSettings.setIntroEnabled(false);
         gameSettings.setGameMenuEnabled(true);
@@ -174,9 +172,7 @@ public class GameApp extends GameApplication {
 
         onCollisionOneTimeOnly(GameType.PLAYER, GameType.DOOR, (player, door) -> {
             isLoading = true;
-            var entityGroup = getGameWorld().getGroup(ENEMY1,
-                    ENEMY2, ENEMY3, ENEMY4, ENEMY5);
-            if (entityGroup.getSize() == 0) {
+            if (geti("enemies") == 0) {
                 getPlayerComponent().setBombInvalidation(true);
                 turnOffMusic();
                 play("next_level.wav");
@@ -249,6 +245,7 @@ public class GameApp extends GameApplication {
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("level", STARTING_LEVEL);
         vars.put("life", 3);
+        vars.put("enemies", 0);
         vars.put("score", 0);
         vars.put("flame", 1);
         vars.put("speed", PLAYER_SPEED);
@@ -292,7 +289,7 @@ public class GameApp extends GameApplication {
         Label enemies = new Label();
         enemies.setTextFill(Color.BLACK);
         enemies.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        enemies.textProperty().bind(getip("bomb").asString("👻 %d"));
+        enemies.textProperty().bind(getip("enemies").asString("👻 %d"));
         FXGL.addUINode(enemies, 930, 25);
 
         Label timeLabel = new Label();
@@ -316,24 +313,26 @@ public class GameApp extends GameApplication {
                     setLevel();
                 } else {
                     turnOffMusic();
-                    getSceneService().pushSubScene(new EndingScene("   GAME OVER !!!\n\n\n\n  DO YOUR BEST"));
+                    getSceneService().pushSubScene(new EndingScene("   GAME OVER !!!\n\n\n\n   DO YOUR BEST"));
                 }
             });
         }, Duration.seconds(2.1));
     }
 
     private void setLevel() {
-        set("score", temp.get("score"));
-        set("flame", temp.get("flame"));
-        set("bomb", temp.get("bomb"));
-        set("levelTime", TIME_LEVEL);
-
         isLoading = false;
         setLevelFromMap("level" + geti("level") + ".tmx");
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(0, 0, GAME_WORLD_WIDTH, GAME_WORLD_HEIGHT);
         viewport.bindToEntity(getPlayer(), getAppWidth() / 2, getAppHeight() / 2);
         viewport.setLazy(true);
+
+        set("score", temp.get("score"));
+        set("flame", temp.get("flame"));
+        set("bomb", temp.get("bomb"));
+        set("levelTime", TIME_LEVEL);
+        set("enemies", getGameWorld().getGroup(ENEMY1,
+                ENEMY2, ENEMY3, ENEMY4, ENEMY5).getSize());
     }
 
     private void nextLevel() {

@@ -2,6 +2,8 @@ package Bomberman.Components.Enemy;
 
 import Bomberman.GameType;
 import javafx.util.Duration;
+
+import static Bomberman.GameType.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class Enemy1 extends Enemy {
@@ -24,6 +26,8 @@ public class Enemy1 extends Enemy {
             enemy1.getComponent(Enemy1.class).setStateDie();
             getGameTimer().runOnceAfter(() -> {
                 enemy1.removeFromWorld();
+                set("enemies", getGameWorld().getGroup(ENEMY1,
+                        ENEMY2, ENEMY3, ENEMY4, ENEMY5).getSize());
             }, Duration.seconds(2.4));
         });
     }
