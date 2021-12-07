@@ -172,7 +172,8 @@ public class GameApp extends GameApplication {
 
         onCollisionOneTimeOnly(PLAYER, DOOR, (player, door) -> {
             isLoading = true;
-            if (geti("enemies") == 0) {
+            if (getGameWorld().getGroup(ENEMY1,
+                    ENEMY2, ENEMY3, ENEMY4, ENEMY5).getSize() == 0) {
                 getPlayerComponent().setBombInvalidation(true);
                 turnOffMusic();
                 play("next_level.wav");
@@ -295,7 +296,7 @@ public class GameApp extends GameApplication {
                     getSceneService().pushSubScene(new EndingScene("   GAME OVER !!!\n\n\n\n   DO YOUR BEST"));
                 }
             });
-        }, Duration.seconds(2.1));
+        }, Duration.seconds(2.2));
     }
 
     private void setLevel() {

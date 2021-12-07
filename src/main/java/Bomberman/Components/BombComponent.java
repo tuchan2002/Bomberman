@@ -1,12 +1,9 @@
 package Bomberman.Components;
 
-import Bomberman.Components.Enemy.Enemy5;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.physics.CollisionHandler;
 import Bomberman.GameType;
-import com.almasb.fxgl.physics.PhysicsWorld;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
@@ -30,7 +27,7 @@ public class BombComponent extends Component {
             }
         });
 
-        animation = new AnimationChannel(image("bomb.png"), 3, TILED_SIZE, TILED_SIZE, Duration.seconds(0.3), 0, 2);
+        animation = new AnimationChannel(image("bomb.png"), 3, TILED_SIZE, TILED_SIZE, Duration.seconds(0.4), 0, 2);
         texture = new AnimatedTexture(animation);
         texture.loop();
     }
