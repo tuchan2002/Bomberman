@@ -36,7 +36,7 @@ public class GameApp extends GameApplication {
     public static final int SCENE_HEIGHT = 720;
     public static final int GAME_WORLD_WIDTH = 1488;
     public static final int GAME_WORLD_HEIGHT = 720;
-    public static final String GAME_TITLE = "BOMBERMAN";
+    public static final String GAME_TITLE = "BOMBER\n MAN";
     public static final String GAME_VERSION = "1.0";
     public static final Double UI_FONT_SIZE = 36.0;
     public static final int MAX_LEVEL = 6;

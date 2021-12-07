@@ -1,0 +1,1 @@
+## Mô tả về các đối tượng trong trò chơi

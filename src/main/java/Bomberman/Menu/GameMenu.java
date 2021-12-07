@@ -26,30 +26,37 @@ public class GameMenu extends FXGLMenu {
 
         ImageView background = new ImageView();
         background.setImage(new Image("assets/textures/esc_background.png"));
-        background.setX(200);
-        background.setY(120);
+        background.setX(160);
+        background.setY(90);
         background.setEffect(new DropShadow(5, 3.5, 3.5, Color.WHITE));
         background.setEffect(new Lighting());
 
-        var title = getUIFactoryService().newText(getSettings().getTitle(), Color.WHITE, 30);
-        title.setStroke(Color.WHITESMOKE);
-        title.setStrokeWidth(1.5);
-        title.setEffect(new Bloom(0.6));
-        centerTextBind(title, getAppWidth() / 2.0, 180);
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setColor(Color.rgb(185, 19, 21));
+        dropShadow.setHeight(7);
+        dropShadow.setWidth(7);
+        dropShadow.setOffsetX(6);
+        dropShadow.setOffsetY(8);
+        dropShadow.setSpread(8);
+
+        var title = getUIFactoryService().newText(getSettings().getTitle(), Color.rgb(248, 185, 54), 90);
+        title.setEffect(dropShadow);
+        centerTextBind(title, getAppWidth() / 2.0, 310);
 
         var version = getUIFactoryService().newText(getSettings().getVersion(), Color.WHITE, 20);
-        centerTextBind(version, getAppWidth() / 2.0, 230);
+        version.setEffect(new DropShadow(3, 3, 3, Color.RED));
+        centerTextBind(version, 800, 280);
 
         var menuBox = new VBox(
-                new MenuButton("Resume", () -> fireResume()),
-                new MenuButton("Menu", () -> fireExitToMainMenu()),
-                new MenuButton("Sound", () -> setSoundSwitch()),
-                new MenuButton("Exit", () -> fireExit())
+                new MenuButton("Resume", 20, () -> fireResume()),
+                new MenuButton("Sound", 20, () -> setSoundSwitch()),
+                new MenuButton("Menu", 20, () -> fireExitToMainMenu()),
+                new MenuButton("Exit", 20, () -> fireExit())
         );
 
         menuBox.setAlignment(Pos.CENTER_LEFT);
-        menuBox.setTranslateX(getAppWidth() / 2.0 - 70);
-        menuBox.setTranslateY(getAppHeight() / 2.0);
+        menuBox.setTranslateX(getAppWidth() / 2.0 - 110);
+        menuBox.setTranslateY(getAppHeight() / 2.0 + 50);
         menuBox.setSpacing(20);
 
         getContentRoot().getChildren().addAll(shape, background, title, version, menuBox);
