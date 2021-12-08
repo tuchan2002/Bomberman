@@ -17,7 +17,7 @@ public abstract class Enemy extends Component {
     protected double speedFactor;
     private double reactionForce;
 
-    protected State state = LEFT;
+    protected State state;
     protected AnimatedTexture texture;
     protected AnimationChannel animDie;
     protected AnimationChannel animWalkDown, animWalkRight, animWalkUp, animWalkLeft;
@@ -27,7 +27,8 @@ public abstract class Enemy extends Component {
         this.dy = dy;
         this.speedFactor = speedFactor;
         this.reactionForce = reactionForce;
-
+        state = LEFT;
+        
         animDie = new AnimationChannel(image(assetName), 6, FRAME_SIZE, FRAME_SIZE, Duration.seconds(2.4), 0, 5);
 
         animWalkDown = new AnimationChannel(image(assetName), 3, FRAME_SIZE, FRAME_SIZE, Duration.seconds(0.5), 3, 5);

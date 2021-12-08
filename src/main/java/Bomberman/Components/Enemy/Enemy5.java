@@ -11,10 +11,12 @@ import static com.almasb.fxgl.dsl.FXGL.getGameTimer;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class Enemy5 extends Enemy {
-    private boolean isCatching = true;
+    private boolean isCatching;
 
     public Enemy5() {
         super(-ENEMY_SPEED, 0, 1, 4, "enemy5.png");
+        isCatching = true;
+
         onCollisionBegin(ENEMY5, BRICK, (enemy5, brick) -> {
             if (speedFactor == 1) {
                 enemy5.getComponent(Enemy5.class).turn();

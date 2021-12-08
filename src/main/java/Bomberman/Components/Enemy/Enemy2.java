@@ -10,10 +10,11 @@ import static Bomberman.GameType.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class Enemy2 extends Enemy {
-    private boolean isCatching = true;
+    private boolean isCatching;
 
     public Enemy2() {
         super(-ENEMY_SPEED, 0, 1, 3, "enemy2.png");
+        isCatching = true;
         onCollisionBegin(ENEMY2, BRICK, (enemy2, brick) -> {
             enemy2.getComponent(Enemy2.class).turn();
         });

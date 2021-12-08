@@ -17,18 +17,18 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class PlayerComponent extends Component {
     public static final int PLAYER_SPEED = 160;
-    public static final int BONUS_SPEED = 100;
+    private final int BONUS_SPEED = 100;
+    private final int FRAME_SIZE = 45;
 
     public enum PlayerSkin {
         NORMAL, GOLD
     }
 
-    private State state = STOP;
+    private State state;
     private PhysicsComponent physics;
 
-    private boolean bombInvalidation = false;
-    private int bombCounter = 0;
-    private final int FRAME_SIZE = 45;
+    private boolean bombInvalidation;
+    private int bombCounter;
     private PlayerSkin playerSkin;
 
     private AnimatedTexture texture;
@@ -37,6 +37,10 @@ public class PlayerComponent extends Component {
     private AnimationChannel animDie;
 
     public PlayerComponent() {
+        state = STOP;
+        bombInvalidation = false;
+        bombCounter = 0;
+
         onCollisionBegin(PLAYER, POWERUP_FLAMES, (player, powerup) -> {
             powerup.removeFromWorld();
             play("powerup.wav");
@@ -61,7 +65,7 @@ public class PlayerComponent extends Component {
         onCollisionBegin(PLAYER, POWERUP_LIFE, (player, powerup) -> {
             powerup.removeFromWorld();
             play("powerup.wav");
-            inc("life",1);
+            inc("life", 1);
         });
 
         setSkin(PlayerSkin.NORMAL);
