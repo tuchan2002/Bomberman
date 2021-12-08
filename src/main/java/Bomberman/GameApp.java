@@ -45,7 +45,7 @@ public class GameApp extends GameApplication {
     public static final double TIME_LEVEL = 280.0;
 
     private Map temp = new HashMap();
-    private boolean isLoading;
+    private boolean isLoading = false;
 
     @Override
     protected void initSettings(GameSettings gameSettings) {
@@ -170,10 +170,11 @@ public class GameApp extends GameApplication {
         PhysicsWorld physics = getPhysicsWorld();
         physics.setGravity(0, 0);
 
-        onCollisionOneTimeOnly(PLAYER, DOOR, (player, door) -> {
-            isLoading = true;
-            if (getGameWorld().getGroup(ENEMY1,
-                    ENEMY2, ENEMY3, ENEMY4, ENEMY5).getSize() == 0) {
+        onCollisionBegin(PLAYER, DOOR, (player, door) -> {
+            if (isLoading == false
+                    && getGameWorld().getGroup(ENEMY1, ENEMY2,
+                    ENEMY3, ENEMY4, ENEMY5).getSize() == 0) {
+                isLoading = true;
                 getPlayerComponent().setBombInvalidation(true);
                 turnOffMusic();
                 play("next_level.wav");
@@ -256,26 +257,29 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        addLabelUI("level", "🚩 %d", 35, 25);
-        addLabelUI("life", "💜 %d", 160, 25);
-        addLabelUI("score", "💵  %d", 300, 25);
-        addLabelUI("flame", "🔥 %d", 560, 25);
-        addLabelUI("speed", "👟  %d", 670, 25);
-        addLabelUI("bomb", "💣 %d", 840, 25);
-        addLabelUI("enemies", "👻 %d", 1010, 25);
-
-        Label timeLabel = new Label();
-        timeLabel.setTextFill(Color.BLACK);
-        timeLabel.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        timeLabel.textProperty().bind(getdp("levelTime").asString("⏰ %.0f"));
-        FXGL.addUINode(timeLabel, 1140, 25);
+        addILabelUI("level", "🚩 %d", 35, 25);
+        addILabelUI("life", "💜 %d", 160, 25);
+        addILabelUI("score", "💵  %d", 300, 25);
+        addILabelUI("flame", "🔥 %d", 560, 25);
+        addILabelUI("speed", "👟  %d", 670, 25);
+        addILabelUI("bomb", "💣 %d", 840, 25);
+        addILabelUI("enemies", "👻 %d", 1010, 25);
+        addDLabelUI("levelTime", "⏰ %.0f", 1140, 25);
     }
 
-    public void addLabelUI(String varName, String title, double x, double y) {
+    public void addILabelUI(String varName, String title, double x, double y) {
         Label text = new Label();
         text.setTextFill(Color.BLACK);
         text.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
         text.textProperty().bind(getip(varName).asString(title));
+        addUINode(text, x, y);
+    }
+
+    public void addDLabelUI(String varName, String title, double x, double y) {
+        Label text = new Label();
+        text.setTextFill(Color.BLACK);
+        text.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
+        text.textProperty().bind(getdp(varName).asString(title));
         addUINode(text, x, y);
     }
 
