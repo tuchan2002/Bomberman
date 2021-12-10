@@ -2,14 +2,14 @@ package Bomberman.Collisions;
 
 import Bomberman.Components.Enemy.Enemy1;
 import Bomberman.Components.Enemy.Enemy3;
+import Bomberman.Components.FlameComponent;
 import Bomberman.GameType;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.util.Duration;
 
-
-import static Bomberman.Components.Enemy.Enemy.ENEMY_SPEED;
+import static Bomberman.Constants.Constant.ENEMY_SPEED;
 import static Bomberman.DynamicEntityState.State.*;
 import static Bomberman.GameType.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
@@ -21,10 +21,10 @@ public class FlameEnemy3Handler extends CollisionHandler {
     }
 
     @Override
-    protected void onCollisionBegin(Entity fire, Entity enemy) {
-        if(enemy.getComponent(Enemy3.class).getState() != DIE) {
+    protected void onCollision(Entity flame, Entity enemy) {
+        if (flame.getComponent(FlameComponent.class).isActivation()
+                && enemy.getComponent(Enemy3.class).getState() != DIE) {
             enemy.getComponent(Enemy3.class).setStateDie();
-
             getGameTimer().runOnceAfter(() -> {
                 onTransform(enemy);
                 enemy.removeFromWorld();

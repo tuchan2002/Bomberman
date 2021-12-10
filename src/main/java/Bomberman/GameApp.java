@@ -1,6 +1,7 @@
 package Bomberman;
 
 import Bomberman.Components.Enemy.*;
+import Bomberman.Components.FlameComponent;
 import Bomberman.Menu.GameMenu;
 import Bomberman.Menu.MainMenu;
 import Bomberman.UI.EndingScene;
@@ -10,7 +11,6 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.app.scene.Viewport;
-import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.PhysicsWorld;
@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static Bomberman.Components.PlayerComponent.*;
+import static Bomberman.Constants.Constant.*;
 import static Bomberman.DynamicEntityState.State.*;
 import static Bomberman.GameType.*;
 import static Bomberman.Sounds.SoundEffect.*;
@@ -32,18 +33,6 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 
 public class GameApp extends GameApplication {
-    public static final int SCENE_WIDTH = 1280;
-    public static final int SCENE_HEIGHT = 720;
-    public static final int GAME_WORLD_WIDTH = 1488;
-    public static final int GAME_WORLD_HEIGHT = 720;
-    public static final String GAME_TITLE = "BOMBER\n MAN";
-    public static final String GAME_VERSION = "1.0";
-    public static final Double UI_FONT_SIZE = 36.0;
-    public static final int MAX_LEVEL = 6;
-    public static final int STARTING_LEVEL = 0;
-    public static final int TILED_SIZE = 48;
-    public static final double TIME_LEVEL = 280.0;
-
     private Map temp = new HashMap();
     private boolean isLoading = false;
 
@@ -73,7 +62,7 @@ public class GameApp extends GameApplication {
             }
 
         });
-//        gameSettings.setDeveloperMenuEnabled(true);
+        gameSettings.setDeveloperMenuEnabled(true);
     }
 
     @Override
@@ -149,20 +138,20 @@ public class GameApp extends GameApplication {
             }
         }, KeyCode.SPACE);
 
-//        getInput().addAction(new UserAction("test") {
-//            @Override
-//            protected void onActionBegin() {
-//                isLoading = true;
-//                getPlayerComponent().setBombInvalidation(true);
-//                turnOffMusic();
-//                play("next_level.wav");
-//                getGameTimer().runOnceAfter(() -> {
-//                    turnOnMusic();
-//                    nextLevel();
-//                }, Duration.seconds(4));
-//            }
-//
-//        }, KeyCode.P);
+        getInput().addAction(new UserAction("test") {
+            @Override
+            protected void onActionBegin() {
+                isLoading = true;
+                getPlayerComponent().setBombInvalidation(true);
+                turnOffMusic();
+                play("next_level.wav");
+                getGameTimer().runOnceAfter(() -> {
+                    turnOnMusic();
+                    nextLevel();
+                }, Duration.seconds(4));
+            }
+
+        }, KeyCode.P);
     }
 
     @Override
@@ -215,8 +204,9 @@ public class GameApp extends GameApplication {
                 onPlayerDied();
             }
         });
-        onCollisionBegin(PLAYER, FLAME, (player, flame) -> {
-            if (getPlayerComponent().getPlayerSkin() == PlayerSkin.NORMAL
+        onCollision(PLAYER, FLAME, (player, flame) -> {
+            if (flame.getComponent(FlameComponent.class).isActivation()
+                    && getPlayerComponent().getPlayerSkin() == PlayerSkin.NORMAL
                     && getPlayerComponent().getState() != DIE) {
                 onPlayerDied();
             }

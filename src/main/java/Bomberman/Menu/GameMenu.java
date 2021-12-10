@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-import static Bomberman.GameApp.*;
+import static Bomberman.Constants.Constant.*;
 import static Bomberman.Sounds.SoundEffect.setSoundSwitch;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static com.almasb.fxgl.dsl.FXGL.centerTextBind;

@@ -2,6 +2,8 @@ package Bomberman.Components.Enemy;
 
 import Bomberman.Collisions.FlameEnemy3Handler;
 import com.almasb.fxgl.physics.PhysicsWorld;
+
+import static Bomberman.Constants.Constant.ENEMY_SPEED;
 import static Bomberman.GameType.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 

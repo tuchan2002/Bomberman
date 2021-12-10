@@ -10,7 +10,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-import static Bomberman.GameApp.TILED_SIZE;
+import static Bomberman.Constants.Constant.TILED_SIZE;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class BombComponent extends Component {
@@ -40,15 +40,15 @@ public class BombComponent extends Component {
     public void explode(int flames) {
         for (int i = 1; i <= flames; i++) {
             if (i != flames) {
-                listFlame.add(spawn("horizontal_flame", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY())));
-                listFlame.add(spawn("horizontal_flame", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY())));
-                listFlame.add(spawn("vertical_flame", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i)));
-                listFlame.add(spawn("vertical_flame", new SpawnData(entity.getX(), entity.getY() - TILED_SIZE * i)));
+                listFlame.add(spawn("right_flame", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY(), TILED_SIZE * i)));
+                listFlame.add(spawn("left_flame", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY(), TILED_SIZE * i)));
+                listFlame.add(spawn("down_flame", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i, TILED_SIZE * i)));
+                listFlame.add(spawn("up_flame", new SpawnData(entity.getX(), entity.getY() - TILED_SIZE * i, TILED_SIZE * i)));
             } else {
-                listFlame.add(spawn("top_right_flame", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY())));
-                listFlame.add(spawn("top_left_flame", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY())));
-                listFlame.add(spawn("top_down_flame", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i)));
-                listFlame.add(spawn("top_up_flame", new SpawnData(entity.getX(), entity.getY() - TILED_SIZE * i)));
+                listFlame.add(spawn("top_right_flame", new SpawnData(entity.getX() + TILED_SIZE * i, entity.getY(), TILED_SIZE * i)));
+                listFlame.add(spawn("top_left_flame", new SpawnData(entity.getX() - TILED_SIZE * i, entity.getY(), TILED_SIZE * i)));
+                listFlame.add(spawn("top_down_flame", new SpawnData(entity.getX(), entity.getY() + TILED_SIZE * i, TILED_SIZE * i)));
+                listFlame.add(spawn("top_up_flame", new SpawnData(entity.getX(), entity.getY() - TILED_SIZE * i, TILED_SIZE * i)));
             }
         }
         listFlame.add(spawn("central_flame", new SpawnData(entity.getX(), entity.getY())));

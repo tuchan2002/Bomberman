@@ -6,11 +6,11 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
 
+import static Bomberman.Constants.Constant.ENEMY_SPEED;
 import static Bomberman.DynamicEntityState.State.*;
 import static com.almasb.fxgl.dsl.FXGL.image;
 
 public abstract class Enemy extends Component {
-    public static final int ENEMY_SPEED = 80;
     private final int FRAME_SIZE = 48;
     protected double dx;
     protected double dy;

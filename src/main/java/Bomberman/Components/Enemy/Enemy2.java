@@ -1,11 +1,13 @@
 package Bomberman.Components.Enemy;
 
+import Bomberman.Components.FlameComponent;
 import Bomberman.Components.PlayerComponent;
 import com.almasb.fxgl.entity.Entity;
 import javafx.util.Duration;
 
+import static Bomberman.Constants.Constant.ENEMY_SPEED;
+import static Bomberman.Constants.Constant.TILED_SIZE;
 import static Bomberman.DynamicEntityState.State.DIE;
-import static Bomberman.GameApp.TILED_SIZE;
 import static Bomberman.GameType.*;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
@@ -27,13 +29,15 @@ public class Enemy2 extends Enemy {
         onCollisionBegin(ENEMY2, BOMB, (enemy2, bomb) -> {
             enemy2.getComponent(Enemy2.class).turn();
         });
-        onCollisionBegin(ENEMY2, FLAME, (enemy2, flame) -> {
-            enemy2.getComponent(Enemy2.class).setStateDie();
-            getGameTimer().runOnceAfter(() -> {
-                enemy2.removeFromWorld();
-                set("enemies", getGameWorld().getGroup(ENEMY1,
-                        ENEMY2, ENEMY3, ENEMY4, ENEMY5).getSize());
-            }, Duration.seconds(2.4));
+        onCollision(ENEMY2, FLAME, (enemy2, flame) -> {
+            if(flame.getComponent(FlameComponent.class).isActivation()) {
+                enemy2.getComponent(Enemy2.class).setStateDie();
+                getGameTimer().runOnceAfter(() -> {
+                    enemy2.removeFromWorld();
+                    set("enemies", getGameWorld().getGroup(ENEMY1,
+                            ENEMY2, ENEMY3, ENEMY4, ENEMY5).getSize());
+                }, Duration.seconds(2.4));
+            }
         });
 
     }

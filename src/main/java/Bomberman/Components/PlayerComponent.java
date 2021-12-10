@@ -10,13 +10,12 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
 
+import static Bomberman.Constants.Constant.TILED_SIZE;
 import static Bomberman.GameType.*;
 import static Bomberman.DynamicEntityState.State.*;
-import static Bomberman.GameApp.TILED_SIZE;
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class PlayerComponent extends Component {
-    public static final int PLAYER_SPEED = 160;
     private final int BONUS_SPEED = 100;
     private final int FRAME_SIZE = 45;
 

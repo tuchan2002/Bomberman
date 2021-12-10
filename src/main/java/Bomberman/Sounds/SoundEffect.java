@@ -1,9 +1,9 @@
 package Bomberman.Sounds;
+import static Bomberman.Constants.Constant.MAX_VOLUME;
 import static com.almasb.fxgl.dsl.FXGL.getSettings;
 import static com.almasb.fxgl.dsl.FXGL.showMessage;
 
 public class SoundEffect {
-    public static final double MAX_VOLUME = 0.3;
     public static boolean isSoundEnabled = true;
     public static boolean isMusicEnabled = true;
 

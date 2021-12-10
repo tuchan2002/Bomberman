@@ -5,7 +5,7 @@ import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.util.Duration;
 
-import static Bomberman.GameApp.TILED_SIZE;
+import static Bomberman.Constants.Constant.TILED_SIZE;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.image;
 
 public class BrickBreakComponent extends Component {
