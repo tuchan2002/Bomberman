@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.github.almasb:fxgl-scene:11.17">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/almasb/fxgl-scene/11.17/fxgl-scene-11.17.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/almasb/fxgl-scene/11.17/fxgl-scene-11.17-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/almasb/fxgl-scene/11.17/fxgl-scene-11.17-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

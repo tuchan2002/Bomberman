@@ -6,6 +6,7 @@ import Bomberman.Menu.GameMenu;
 import Bomberman.Menu.MainMenu;
 import Bomberman.UI.EndingScene;
 import Bomberman.UI.StageStartScene;
+import Bomberman.UI.UIComponents;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
@@ -15,10 +16,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.physics.PhysicsWorld;
 import Bomberman.Components.PlayerComponent;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.util.HashMap;
@@ -62,7 +60,7 @@ public class GameApp extends GameApplication {
             }
 
         });
-        gameSettings.setDeveloperMenuEnabled(true);
+//        gameSettings.setDeveloperMenuEnabled(true);
     }
 
     @Override
@@ -247,30 +245,14 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        addILabelUI("level", "🚩 %d", 35, 25);
-        addILabelUI("life", "💜 %d", 160, 25);
-        addILabelUI("score", "💵  %d", 300, 25);
-        addILabelUI("flame", "🔥 %d", 560, 25);
-        addILabelUI("speed", "👟  %d", 670, 25);
-        addILabelUI("bomb", "💣 %d", 840, 25);
-        addILabelUI("enemies", "👻 %d", 1010, 25);
-        addDLabelUI("levelTime", "⏰ %.0f", 1140, 25);
-    }
-
-    public void addILabelUI(String varName, String title, double x, double y) {
-        Label text = new Label();
-        text.setTextFill(Color.BLACK);
-        text.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        text.textProperty().bind(getip(varName).asString(title));
-        addUINode(text, x, y);
-    }
-
-    public void addDLabelUI(String varName, String title, double x, double y) {
-        Label text = new Label();
-        text.setTextFill(Color.BLACK);
-        text.setFont(Font.font("Showcard Gothic", UI_FONT_SIZE));
-        text.textProperty().bind(getdp(varName).asString(title));
-        addUINode(text, x, y);
+        UIComponents.addILabelUI("level", "🚩 %d", 35, 25);
+        UIComponents.addILabelUI("life", "💜 %d", 160, 25);
+        UIComponents.addILabelUI("score", "💵  %d", 300, 25);
+        UIComponents.addILabelUI("flame", "🔥 %d", 560, 25);
+        UIComponents.addILabelUI("speed", "👟  %d", 670, 25);
+        UIComponents.addILabelUI("bomb", "💣 %d", 840, 25);
+        UIComponents.addILabelUI("enemies", "👻 %d", 1010, 25);
+        UIComponents.addDLabelUI("levelTime", "⏰ %.0f", 1140, 25);
     }
 
     public void onPlayerDied() {

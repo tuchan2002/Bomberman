@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.github.almasb:fxgl-core:11.17">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/almasb/fxgl-core/11.17/fxgl-core-11.17.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/almasb/fxgl-core/11.17/fxgl-core-11.17-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/almasb/fxgl-core/11.17/fxgl-core-11.17-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
