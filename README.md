@@ -1,3 +1,5 @@
+## Demo
+- Youtube: https://youtu.be/A061etp1Djw
 ## Mô tả về các đối tượng trong trò chơi
 
 - ![](readme/player.png) *Bomber* là nhân vật chính của trò chơi. Bomber có thể di chuyển theo 4 hướng trái/phải/lên/xuống theo sự điều khiển của người chơi. 
